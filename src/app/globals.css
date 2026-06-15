@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ──────────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-ink:   #0B0E14;
+  --color-slate: #1C2231;
+  --color-pearl: #F5F2EC;
+  --color-gold:  #C9A84C;
+  --color-blue:  #4B7BEC;
+  --color-teal:  #1A4D5C;
+
+  /* Fonts */
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-inter:    Inter, system-ui, sans-serif;
+
+  /* Font sizes — fluid */
+  --text-display-xl: clamp(3rem, 8vw, 7rem);
+  --text-display-lg: clamp(2rem, 5vw, 4.5rem);
+  --text-display-md: clamp(1.5rem, 3vw, 2.75rem);
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label-sm:   0.8125rem;
+
+  /* Spacing */
+  --spacing-section: clamp(5rem, 12vw, 10rem);
+}
+
+/* ── CSS Variable Aliases (for raw CSS use) ─────────────────── */
+:root {
+  --ink:   var(--color-ink);
+  --slate: var(--color-slate);
+  --pearl: var(--color-pearl);
+  --gold:  var(--color-gold);
+  --blue:  var(--color-blue);
+  --teal:  var(--color-teal);
+}
+
+/* ── Base Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-pearl);
+  font-family: var(--font-inter);
+  font-weight: 300;
+  min-height: 100dvh;
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-ink); }
+::-webkit-scrollbar-thumb { background: var(--color-slate); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-teal); }
+
+/* ── Font Utilities ─────────────────────────────────────────── */
+.font-playfair { font-family: var(--font-playfair); }
+.font-inter    { font-family: var(--font-inter); }
+
+/* ── Gold Shimmer Text ──────────────────────────────────────── */
+.text-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-gold) 0%,
+    #e8c96a 30%,
+    var(--color-gold) 60%,
+    #a8833a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Grain Texture ──────────────────────────────────────────── */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
