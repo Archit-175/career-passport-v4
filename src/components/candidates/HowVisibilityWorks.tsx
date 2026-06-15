@@ -7,7 +7,7 @@ const STEPS = [
     num: "01",
     icon: Link2,
     title: "Connect Your Signals",
-    body: "Import what already exists LinkedIn, CV, project docs.",
+    body: "Import what already exists — LinkedIn, CV, project docs.",
   },
   {
     num: "02",
@@ -32,17 +32,17 @@ const STEPS = [
 export function HowVisibilityWorks() {
   return (
     <section className="bg-black min-h-screen flex flex-col justify-center overflow-hidden py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-16 flex flex-col md:flex-row items-stretch">
+      <div className="mx-auto w-full max-w-7xl px-6 md:px-16 flex flex-col md:flex-row items-stretch">
 
-        {/* ── Left text — 40% ── */}
-        <div className="md:w-[48%] shrink-0 flex flex-col justify-center gap-7 pr-4">
+        {/* ── Left text — 38% ── */}
+        <div className="md:w-[38%] shrink-0 flex flex-col justify-center gap-7">
           <p className="font-inter text-[0.68rem] tracking-[0.22em] uppercase text-gold">
             How Visibility Works
           </p>
 
           <h2
             className="font-playfair text-white leading-[1.08]"
-            style={{ fontSize: "clamp(2.4rem, 4.2vw, 4rem)", letterSpacing: "-0.02em" }}
+            style={{ fontSize: "clamp(2.2rem, 3.8vw, 3.6rem)", letterSpacing: "-0.02em" }}
           >
             We{" "}
             <span className="italic" style={{ color: "#C9A84C" }}>listen</span>
@@ -55,8 +55,9 @@ export function HowVisibilityWorks() {
             your identity.
           </h2>
 
-          <p className="font-inter font-light text-white/55 leading-relaxed"
-            style={{ fontSize: "clamp(0.9rem, 1.2vw, 1rem)" }}
+          <p
+            className="font-inter font-light text-white/55 leading-relaxed"
+            style={{ fontSize: "clamp(0.9rem, 1.1vw, 1rem)" }}
           >
             Honestly talk about who you are<br />
             and what your aspirations are.
@@ -72,13 +73,13 @@ export function HowVisibilityWorks() {
           </Link>
         </div>
 
-        {/* ── 20% gap ── */}
-        <div className="md:w-[20%] shrink-0" />
+        {/* ── 14% gap ── */}
+        <div className="md:w-[14%] shrink-0" />
 
-        {/* ── Right image + cards — 40% ── */}
+        {/* ── Right image + cards — 48% ── */}
         <div
-          className="md:w-[40%] shrink-0 relative"
-          style={{ height: "clamp(460px, 72vh, 680px)" }}
+          className="md:w-[48%] shrink-0 relative"
+          style={{ height: "clamp(460px, 74vh, 700px)" }}
         >
           {/* Image fills the container */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden">
@@ -89,18 +90,17 @@ export function HowVisibilityWorks() {
               quality={90}
               className="object-cover object-center"
             />
-            {/* Gradient: clear top-left, dark bottom-right where cards overlay */}
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.82) 100%)",
+                  "linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.88) 100%)",
               }}
             />
           </div>
 
-          {/* Cards — inside the image, right 60%, vertically centred */}
-          <div className="absolute inset-y-6 right-4 w-[60%] flex flex-col justify-center gap-2.5">
+          {/* Cards — right half of the image, vertically centred */}
+          <div className="absolute inset-y-8 right-5 w-[55%] flex flex-col justify-center gap-3">
             {STEPS.map(({ num, icon: Icon, title, body }) => (
               <div
                 key={num}
@@ -132,12 +132,13 @@ export function HowVisibilityWorks() {
                   >
                     {num}
                   </p>
-                  <p className="font-inter font-semibold text-[0.8rem] uppercase tracking-wide leading-tight mb-1.5"
+                  <p
+                    className="font-inter font-semibold text-[0.78rem] uppercase tracking-wide leading-tight mb-1"
                     style={{ color: "#C9A84C" }}
                   >
                     {title}
                   </p>
-                  <p className="font-inter font-light text-white/75 text-[0.75rem] leading-snug">
+                  <p className="font-inter font-light text-white/75 text-[0.73rem] leading-snug">
                     {body}
                   </p>
                 </div>
@@ -150,9 +151,7 @@ export function HowVisibilityWorks() {
                     border: "1px solid rgba(255,255,255,0.1)",
                   }}
                 >
-                  <span className="text-[0.6rem] transition-colors duration-200" style={{ color: "#C9A84C" }}>
-                    →
-                  </span>
+                  <span className="text-[0.6rem]" style={{ color: "#C9A84C" }}>→</span>
                 </div>
               </div>
             ))}
