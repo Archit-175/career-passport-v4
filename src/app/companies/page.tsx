@@ -1,7 +1,30 @@
+import { CompanyHero } from "@/components/companies/CompanyHero";
+import { CompanyHowItWorks } from "@/components/companies/CompanyHowItWorks";
+import { CompanyWhatHappensInBackend } from "@/components/companies/CompanyWhatHappensInBackend";
+import { CompanyCta } from "@/components/companies/CompanyCta";
+import { SnapHtml } from "./SnapHtml";
+
+const snapSection: React.CSSProperties = {
+  scrollSnapAlign: "start",
+  minHeight: "100dvh",
+};
+
 export default function CompaniesPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="font-playfair text-pearl/40 text-2xl">Companies page — coming soon</p>
-    </div>
+    <>
+      <SnapHtml />
+      <div style={snapSection}>
+        <CompanyHero />
+      </div>
+      <div style={{ scrollSnapAlign: "start" }}>
+        <CompanyHowItWorks />
+      </div>
+      <div style={snapSection}>
+        <CompanyWhatHappensInBackend />
+      </div>
+      <div style={snapSection}>
+        <CompanyCta />
+      </div>
+    </>
   );
 }

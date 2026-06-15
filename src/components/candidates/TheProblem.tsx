@@ -1,7 +1,9 @@
+import TileOverlay from "@/components/TileOverlay";
+
 export function TheProblem() {
   return (
-    <section className="bg-black min-h-screen flex flex-col justify-center px-6 py-20">
-      <div className="mx-auto max-w-6xl">
+    <section className="relative bg-black min-h-screen flex flex-col justify-center px-6 py-20">
+      <div data-tile-content className="mx-auto max-w-6xl">
 
         {/* Label */}
         <p className="font-inter text-[0.7rem] tracking-[0.22em] uppercase text-gold text-center mb-8">
@@ -85,6 +87,9 @@ export function TheProblem() {
 
         </div>
       </div>
+
+      {/* Tile hover effect overlay — transparent tiles lift in 3D toward cursor */}
+      <TileOverlay className="absolute inset-0 z-10" />
     </section>
   );
 }

@@ -120,3 +120,37 @@ body {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
+
+/* ── Tile Hover Effect ──────────────────────────────────────── */
+.tile-scene {
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+}
+
+.tile {
+  position: absolute;
+}
+
+.tile.lifted {
+  transform-style: preserve-3d;
+  z-index: 10;
+}
+
+.tile-depth {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  transform: translateZ(-24px);
+}
+
+.tile.lifted .tile-depth {
+  display: block;
+}
+
+.tile-face {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}

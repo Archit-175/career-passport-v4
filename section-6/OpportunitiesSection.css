@@ -1,0 +1,380 @@
+/*
+ * OpportunitiesSection.css — portable, theme-agnostic
+ *
+ * Override these tokens in your project's CSS before importing this file:
+ *
+ *   :root {
+ *     --opp-bg:      #efe3cf;   // section / wrap background
+ *     --opp-text:    #2a2218;   // headline color
+ *     --opp-subtext: #5a4636;   // body / footer text
+ *     --opp-accent:  #B7792A;   // looping word accent color
+ *   }
+ *
+ * Image: place `opportunities-new.png` in your public folder.
+ * Pass the path via the `imageSrc` prop on <OpportunitiesSection>.
+ *
+ * Font: headline uses "Playfair Display", serif.
+ * Body text uses system-ui stack.
+ *
+ * Dependencies: framer-motion (card entrance), gsap (LoopingWord animation).
+ *
+ * Entrance animation: the section element gets class `.reveal-up` and `.in`
+ * is added by useReveal (IntersectionObserver) when it enters the viewport.
+ * Wire .reveal-up / .in in your global CSS, or remove the ref from the TSX.
+ *
+ * No snap-scroll dependency.
+ */
+
+/* ── DEFAULT TOKENS ── */
+.opps-shell {
+  --opp-bg:      #efe3cf;
+  --opp-text:    #2a2218;
+  --opp-subtext: #5a4636;
+  --opp-accent:  #B7792A;
+
+  width: 100%;
+  min-height: 100svh;
+  background: var(--opp-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Top fade — softens nav overlap */
+.opps-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 12vh;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--opp-bg) 0%, color-mix(in srgb, var(--opp-bg) 50%, transparent) 48%, transparent 100%);
+}
+
+/* ── REVEAL ANIMATION (hook adds .in on scroll into view) ── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── WRAP (full-viewport container) ── */
+.opps-wrap {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--opp-bg);
+}
+
+/* Gradient wash that hides any baked-in headline in the PNG */
+.opps-headline-cover {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: calc(max(45vw, 70vh) * 0.41);
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--opp-bg) 96%, transparent) 0%, color-mix(in srgb, var(--opp-bg) 88%, transparent) 88%, transparent 100%);
+}
+
+/* ── BACKGROUND ILLUSTRATION ── */
+.opps-artboard {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border: 0;
+  box-shadow: none;
+  transform: scale(1.13);
+  transform-origin: center bottom;
+}
+
+/* ── HEADLINE ── */
+.opps-headline {
+  position: absolute;
+  top: clamp(80px, 13vh, 180px); /* adjust to match your navbar height */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: min(92vw, 880px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.opps-h {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 3.6vw, 60px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--opp-text);
+  text-wrap: balance;
+}
+
+/* Looping word — italic accent */
+.opps-loop {
+  font-style: italic;
+  color: var(--opp-accent);
+}
+
+.loop-word__item {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+/* ── FLOATING CARDS ── */
+.opps-cards-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.opp-card {
+  position: absolute;
+  pointer-events: auto;
+  width: clamp(250px, 22vw, 310px);
+  background: rgba(253, 250, 244, 0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(169, 122, 53, 0.22);
+  border-radius: 16px;
+  padding: clamp(14px, 1.2vw, 18px);
+  box-shadow:
+    0 12px 32px rgba(46, 32, 20, 0.09),
+    0 3px 10px rgba(46, 32, 20, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+  animation: oppFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes oppFloat {
+  0%   { transform: translateY(0px); }
+  100% { transform: translateY(-3px); }
+}
+
+@keyframes oppFloatCentered {
+  0%   { transform: translateX(-50%) translateY(0px); }
+  100% { transform: translateX(-50%) translateY(-3px); }
+}
+
+.opp-card--top-left    { animation-delay: 0s; }
+.opp-card--bottom-left { animation-delay: 1.2s; }
+.opp-card--top-right   { animation-delay: 0.6s; }
+.opp-card--bottom-right { animation-delay: 1.8s; }
+
+/* Icon circles — each card gets its own accent color */
+.opp-card-icon-container {
+  width: clamp(32px, 2.5vw, 38px);
+  height: clamp(32px, 2.5vw, 38px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+}
+
+.opp-card-svg {
+  width: clamp(14px, 1.2vw, 18px);
+  height: clamp(14px, 1.2vw, 18px);
+}
+
+/* Card 1 — olive green */
+.opp-card--top-left .opp-card-icon-container { background-color: rgba(92, 107, 77, 0.15); border-color: rgba(92, 107, 77, 0.28); }
+.opp-card--top-left .opp-card-svg { color: #44523a; }
+
+/* Card 2 — slate blue */
+.opp-card--bottom-left .opp-card-icon-container { background-color: rgba(59, 98, 135, 0.15); border-color: rgba(59, 98, 135, 0.28); }
+.opp-card--bottom-left .opp-card-svg { color: #294867; }
+
+/* Card 3 — terracotta */
+.opp-card--top-right .opp-card-icon-container { background-color: rgba(167, 93, 76, 0.15); border-color: rgba(167, 93, 76, 0.28); }
+.opp-card--top-right .opp-card-svg { color: #8e4235; }
+
+/* Card 4 — amber gold */
+.opp-card--bottom-right .opp-card-icon-container { background-color: rgba(169, 122, 53, 0.15); border-color: rgba(169, 122, 53, 0.28); }
+.opp-card--bottom-right .opp-card-svg { color: #8d6223; }
+
+/* Card content */
+.opp-card-content { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+
+.opp-card-text {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(12.5px, 0.88vw, 14px);
+  font-weight: 500;
+  line-height: 1.48;
+  color: #2b1f14;
+}
+
+.opp-card-attribution {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(10.5px, 0.72vw, 12px);
+  font-weight: 600;
+  color: var(--opp-subtext);
+}
+
+/* ── CARD POSITIONS — DESKTOP ── */
+.opp-card--top-left    { top: 36%; left: clamp(40px, 5.5vw, 120px); }
+.opp-card--bottom-left { top: 59%; left: clamp(130px, 10.5vw, 240px); }
+.opp-card--top-right   { top: 40%; right: clamp(40px, 5.5vw, 120px); }
+.opp-card--bottom-right {
+  top: 73%; left: 50%;
+  animation: oppFloatCentered 6s ease-in-out infinite alternate;
+  animation-delay: 1.8s;
+}
+
+/* ── FOOTER STATEMENT ── */
+.opps-footer-statement {
+  position: absolute;
+  bottom: clamp(24px, 4.5vh, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  text-align: center;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 450;
+  color: var(--opp-subtext);
+  opacity: 0.85;
+  letter-spacing: -0.01em;
+  width: 90%;
+  max-width: 500px;
+}
+
+/* ── TABLET (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .opps-artboard {
+    object-position: center 20%;
+    transform: scale(1.06);
+  }
+
+  .opps-headline {
+    top: clamp(80px, 13vh, 160px);
+    width: min(92vw, 760px);
+  }
+
+  .opp-card {
+    width: clamp(200px, 22vw, 240px);
+    padding: 12px;
+  }
+
+  .opp-card--top-left    { top: 34%; left: 2.5vw; }
+  .opp-card--bottom-left { top: 57%; left: 7.5vw; }
+  .opp-card--top-right   { top: 38%; right: 2.5vw; }
+
+  .opp-card--bottom-right {
+    top: 72%;
+    left: clamp(140px, 26vw, 280px);
+    right: auto;
+    animation: oppFloat 6s ease-in-out infinite alternate;
+    animation-delay: 1.8s;
+  }
+}
+
+/* ── MOBILE (≤ 767px) ── */
+@media (max-width: 767px) {
+  .opps-shell {
+    height: auto;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  .opps-wrap {
+    position: relative;
+    display: block;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .opps-artboard {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: none !important;
+  }
+
+  .opps-headline-cover {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 42%;
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--opp-bg) 96%, transparent) 0%,
+      color-mix(in srgb, var(--opp-bg) 82%, transparent) 55%,
+      transparent 100%
+    );
+    z-index: 2;
+  }
+
+  .opps-headline {
+    position: absolute;
+    top: clamp(70px, 10svh, 100px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92vw, 400px);
+    z-index: 3;
+    text-align: center;
+  }
+
+  .opps-h { font-size: clamp(22px, 6.4vw, 30px); line-height: 1.2; }
+
+  .opps-cards-container {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .opp-card {
+    position: absolute !important;
+    width: clamp(140px, 41vw, 170px) !important;
+    padding: 9px 10px !important;
+    animation: oppFloat 6s ease-in-out infinite alternate;
+  }
+
+  /* Staggered zigzag — right col, then left col, alternating top-to-bottom */
+  .opp-card--top-right   { top: 23%; right: 2vw; left: auto; }
+  .opp-card--top-left    { top: 41%; left: 2vw; right: auto; }
+  .opp-card--bottom-right { top: 49%; right: 2vw; left: auto; }
+  .opp-card--bottom-left  { top: 66%; left: 2vw; right: auto; }
+
+  .opps-footer-statement {
+    position: absolute;
+    bottom: clamp(16px, 3svh, 28px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    margin: 0;
+    font-size: clamp(11px, 3vw, 13px);
+  }
+}
+
+/* ── Safe-area bottom (notched phones) ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .opps-wrap { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .opp-card { animation: none !important; }
+  .loop-word__item { animation: none !important; transition: none !important; }
+  .reveal-up { transition: none; }
+}
