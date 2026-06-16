@@ -101,6 +101,8 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
                 ✅ S3 CompanyWhatHappensInBackend
                 ✅ S4 CompanyCta             — GSAP/SplitText entrance + slot-text button roller
 
+/blog           ✅ BlogGallery              — full-screen Three.js gallery (phantom.land-style): flat tight grid at rest, curves into a sphere + zooms out while dragging; click a card → article dialog animates in. See "Blog — Gallery" below.
+
 /trips          🔲 placeholder — not yet built
                    (linked from /candidates S4, NOT in global nav)
 ```
@@ -137,6 +139,8 @@ src/
 │   ├── companies/
 │   │   ├── page.tsx                  ← scroll-snap wrapper + 4 sections
 │   │   └── SnapHtml.tsx              ← "use client" — applies html scroll-snap
+│   ├── blog/
+│   │   └── page.tsx                  ← server component; renders <BlogGallery /> + route metadata
 │   └── trips/
 │       └── page.tsx                  ← placeholder
 │
@@ -154,14 +158,17 @@ src/
 │   │   ├── OpportunitiesSection.tsx  ← S6
 │   │   ├── CandidateCta.tsx          ← S7
 │   │   └── CandidateCta.css
-│   └── companies/
-│       ├── CompanyHero.tsx           ← S1
-│       ├── CompanyHowItWorks.tsx     ← S2
-│       ├── CompanyHowItWorks.css
-│       ├── CompanyWhatHappensInBackend.tsx  ← S3
-│       ├── CompanyWhatHappensInBackend.css
-│       ├── CompanyCta.tsx            ← S4
-│       └── CompanyCta.css
+│   ├── companies/
+│   │   ├── CompanyHero.tsx           ← S1
+│   │   ├── CompanyHowItWorks.tsx     ← S2
+│   │   ├── CompanyHowItWorks.css
+│   │   ├── CompanyWhatHappensInBackend.tsx  ← S3
+│   │   ├── CompanyWhatHappensInBackend.css
+│   │   ├── CompanyCta.tsx            ← S4
+│   │   └── CompanyCta.css
+│   └── blog/
+│       ├── BlogGallery.tsx           ← "use client" — Three.js sphere gallery + GSAP + article dialog
+│       └── blogData.ts               ← POSTS array, image list, shared article body/pull-quote
 │
 └── lib/
     └── utils.ts                      ← cn() helper (clsx + tailwind-merge)
@@ -310,6 +317,24 @@ Applied to `/candidates` S2 (`TheProblem`). On hover, nearby tiles lift in 3D to
   <TileOverlay className="absolute inset-0 z-10" />
 </section>
 ```
+
+---
+
+## Blog — Gallery (`/blog`)
+
+`BlogGallery.tsx` (`"use client"`) is a full-screen phantom.land-style gallery: a **flat, tightly-packed grid at rest** that **curves into a sphere and zooms out while you drag**, relaxing back to flat when you stop. Cards (one per `POSTS` entry — 54 posts, 24 `journal-NN.jpeg` photos cycled) are drawn as canvas textures.
+
+**Grid & curve (the core model):**
+- Cards are a `COLS × ROWS` block of centred grid coordinates (`cellX`/`cellY`); the camera sits at the origin looking `-Z` at a flat plane at `z = -FLAT_DEPTH`. Each card is a shared `PlaneGeometry` + per-card `CanvasTexture` from `drawCard()` (photo + ink gradient + gold category + Playfair title + date + read-time; header text has a shadow for contrast over bright photos).
+- **Pan** is a 2D offset driven by drag (`target`→`pan` `FOLLOW` lerp + release inertia). Each card's flat position wraps toroidally via `wrap(cell + pan, GRID_W/H)` → an **infinite** grid (block dims exceed the visible window, so no duplicate is ever on screen at once).
+- **`curve` ∈ [0,1]** eases toward 1 while there's drag motion and back to 0 at rest (`CURVE_EASE`; forced 0 under `prefers-reduced-motion`). Per frame each card's flat `(fx,fy,-FLAT_DEPTH)` is bent onto a sphere whose front pole sits at the grid centre (`SPHERE_R`); `position = lerp(flat, sphere, curve)` and orientation `slerp`s from identity (faces camera) to the sphere normal. A `CURVE_ZOOM` factor pushes everything back as it curves → the "zoom out into a globe" feel.
+- `computeFov(aspect)` derives vertical FOV to preserve a constant **horizontal** field (`HFOV_TARGET`) so density is consistent from ultrawide desktop to portrait phone.
+
+**Open/close:** clicking a card raycasts (`world.updateMatrixWorld(true)` first so hit-testing matches the drawn frame), then `openArticle` zooms the chosen card toward the camera while others fade and the HTML article overlay crossfades in. `closeArticle` reverses it. The selected card is `frozen` (render loop skips it) while GSAP owns its transform; the open/close tweens are tracked in `openTween`/`overlayTween` and killed in cleanup / on close to avoid the close-during-open race and post-unmount ticking.
+
+**Accessibility:** the WebGL canvas is `aria-hidden`; an `sr-only` `<ul>` lists every story (title + category + read-time) as focusable buttons — the keyboard entry point **and** crawlable content. The article overlay is a real dialog (`role="dialog"`, `aria-modal`, `aria-labelledby`), focus moves to the Back button on open and is restored to the originating list item on close, **Esc** closes, Tab is trapped, and the gallery chrome is `inert` while open. All large motion (entrance, open-zoom, overlay reveal) honours `prefers-reduced-motion`.
+
+**Lifecycle:** cleanup disposes every material + `CanvasTexture` + the shared geometry + the starfield, kills all GSAP tweens, removes listeners, and calls **both** `renderer.dispose()` and `renderer.forceContextLoss()` (dispose alone does not release the GL context — important for StrictMode double-mount / HMR).
 
 ---
 

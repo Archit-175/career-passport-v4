@@ -1,0 +1,384 @@
+/* ── YourPassportMeasured ──────────────────────────────────── */
+
+.ypm-section {
+  background-color: #000000;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial glow behind chart */
+.ypm-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 55%;
+  height: 80%;
+  background: radial-gradient(
+    ellipse at 40% 50%,
+    rgba(201, 168, 76, 0.035) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+/* ── Two-column layout ──────────────────────────────────────── */
+
+.ypm-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1160px;
+}
+
+/* ── Left: chart column ─────────────────────────────────────── */
+
+.ypm-chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.radar-svg {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  overflow: visible;
+}
+
+/* ── Legend ─────────────────────────────────────────────────── */
+
+.ypm-legend {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ypm-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.32);
+  letter-spacing: 0.04em;
+}
+
+.ypm-legend__line {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  flex-shrink: 0;
+}
+
+.ypm-legend__line--avg {
+  background: repeating-linear-gradient(
+    to right,
+    rgba(245, 242, 236, 0.28) 0,
+    rgba(245, 242, 236, 0.28) 3px,
+    transparent 3px,
+    transparent 7px
+  );
+}
+
+.ypm-legend__line--you {
+  background: var(--gold);
+}
+
+/* ── Right: content column ──────────────────────────────────── */
+
+.ypm-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+
+.ypm-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ypm-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.ypm-headline {
+  font-size: clamp(1.75rem, 3vw, 2.85rem);
+  font-weight: 400;
+  color: var(--pearl);
+  line-height: 1.18;
+  margin: 0;
+}
+
+.ypm-headline__em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.ypm-subhead {
+  font-size: 0.9375rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.4);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Card area ──────────────────────────────────────────────── */
+
+.ypm-card-area {
+  min-height: 260px;
+  position: relative;
+}
+
+/* ── Default panel (nothing hovered) ───────────────────────── */
+
+.ypm-default-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(245, 242, 236, 0.06);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ypm-default-panel__dims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ypm-default-panel__dim {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.35);
+  background: rgba(245, 242, 236, 0.04);
+  border: 1px solid rgba(245, 242, 236, 0.07);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+.ypm-default-panel__hint {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.22);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Dimension detail card ──────────────────────────────────── */
+
+.ypm-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.75rem;
+  background: rgba(28, 34, 49, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  border-radius: 12px;
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 0 0 0.5px rgba(201, 168, 76, 0.08) inset,
+    0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.ypm-detail-card__rank {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(201, 168, 76, 0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ypm-detail-card__name {
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-weight: 400;
+  color: var(--pearl);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.ypm-detail-card__score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.ypm-detail-card__score {
+  font-size: clamp(2.75rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.ypm-detail-card__score-unit {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.3);
+}
+
+/* Progress bar */
+.ypm-detail-card__bar-wrap {
+  position: relative;
+  margin-top: 0.5rem;
+  padding-top: 1.4rem;
+}
+
+.ypm-detail-card__avg-marker {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ypm-detail-card__avg-marker::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 8px;
+  background: rgba(245, 242, 236, 0.25);
+}
+
+.ypm-detail-card__avg-label {
+  font-size: 0.6rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.3);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.ypm-detail-card__bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(245, 242, 236, 0.07);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ypm-detail-card__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(201,168,76,0.6) 0%, #C9A84C 100%);
+  border-radius: 2px;
+}
+
+/* Description */
+.ypm-detail-card__desc {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.55);
+  line-height: 1.65;
+  margin: 0.25rem 0 0;
+}
+
+.ypm-detail-card__divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(245, 242, 236, 0.06);
+  margin: 0.25rem 0;
+}
+
+.ypm-detail-card__compare {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.38);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.ypm-detail-card__compare-delta {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── Trip CTA ───────────────────────────────────────────────── */
+
+.ypm-trip-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ypm-trip-cta__divider {
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: rgba(245, 242, 236, 0.1);
+}
+
+.ypm-trip-cta__text {
+  font-size: 0.84rem;
+  font-weight: 300;
+  color: rgba(245, 242, 236, 0.38);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.ypm-trip-cta__strong {
+  color: rgba(245, 242, 236, 0.62);
+  font-weight: 500;
+}
+
+.ypm-trip-cta__link {
+  color: var(--blue);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  font-weight: 400;
+}
+
+.ypm-trip-cta__link:hover {
+  opacity: 0.72;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .ypm-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .ypm-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .radar-svg {
+    max-width: 360px;
+  }
+
+  .ypm-card-area {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ypm-section {
+    padding: 3rem 1.25rem;
+  }
+}
