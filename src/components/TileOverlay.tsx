@@ -87,8 +87,8 @@ export default function TileOverlay({ className }: TileOverlayProps) {
 
     // ── Content capture ──────────────────────────────────────────
     //
-    // The section lives inside a scroll-snap container and is below the fold
-    // on mount, so html2canvas can't see it. Fix: clone it to document.body
+    // The section is below the fold on mount, so html2canvas can't see it.
+    // Fix: clone it to document.body
     // (always in-viewport) before capturing, then remove the clone.
     const contentEl = container.querySelector<HTMLElement>('[data-tile-content]')
     let cancelled = false

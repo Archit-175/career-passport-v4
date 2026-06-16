@@ -2,7 +2,7 @@ import TileOverlay from "@/components/TileOverlay";
 
 export function TheProblem() {
   return (
-    <section className="relative bg-black min-h-screen flex flex-col justify-center px-6 py-20">
+    <section className="relative bg-black flex flex-col justify-center px-6 py-24">
       <div data-tile-content className="mx-auto max-w-6xl">
 
         {/* Label */}

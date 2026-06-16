@@ -19,7 +19,7 @@ const fadeUp: Variants = {
 export function Bridge() {
   return (
     <section className="relative">
-      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
 
         <Image
           src="/images/bridge.jpeg"

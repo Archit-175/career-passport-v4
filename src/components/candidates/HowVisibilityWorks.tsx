@@ -34,7 +34,7 @@ const STEPS = [
 
 export function HowVisibilityWorks() {
   return (
-    <section className="bg-black min-h-screen flex flex-col justify-center overflow-hidden py-20">
+    <section className="bg-black flex flex-col justify-center overflow-hidden py-24">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-16 flex flex-col md:flex-row items-stretch">
 
         {/* ── Left text — 38% ── */}
@@ -98,12 +98,18 @@ export function HowVisibilityWorks() {
         <div className="md:w-[14%] shrink-0" />
 
         {/* ── Right image + step cards — 48% ── */}
+        {/* Outer glass frame */}
         <div
-          className="md:w-[48%] shrink-0 relative"
-          style={{ height: "clamp(460px, 74vh, 700px)" }}
+          className="md:w-[48%] shrink-0 relative rounded-2xl"
+          style={{
+            height: "clamp(460px, 74vh, 700px)",
+            border: "1px solid rgba(255,255,255,0.13)",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 8px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12)",
+          }}
         >
-          {/* Image */}
+          {/* Image — full bleed, no gap */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden">
+            {/* Photo */}
             <Image
               src="/images/trip.jpeg"
               alt="Take a Trip"
@@ -111,16 +117,34 @@ export function HowVisibilityWorks() {
               quality={90}
               className="object-cover object-center"
             />
+            {/* Dark gradient — preserves readability of cards */}
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.88) 100%)",
+                  "linear-gradient(135deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.85) 100%)",
+              }}
+            />
+            {/* Glass tint over the whole image */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "rgba(180,200,255,0.04)",
+                backdropFilter: "blur(2px) saturate(140%) brightness(0.96)",
+                WebkitBackdropFilter: "blur(2px) saturate(140%) brightness(0.96)",
               }}
             />
           </div>
 
-          {/* Step cards — staggered entrance */}
+          {/* Inner glow on image */}
+          <div
+            className="absolute inset-0 rounded-2xl pointer-events-none"
+            style={{
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+            }}
+          />
+
+          {/* Step cards — staggered entrance, centred */}
           <motion.div
             className="absolute inset-y-8 right-5 w-[55%] flex flex-col justify-center gap-3"
             initial="hidden"

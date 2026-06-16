@@ -92,12 +92,12 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
                 ✅ S2 TheProblem             — black bg, 3-panel numbered grid; TileOverlay (RSC — no Framer Motion, no opacity:0 on mount)
                 ✅ S3 Bridge                 — bridge.jpeg bg, glass card, 3-col layout; Framer Motion fade-up stagger on scroll
                 ✅ S4 HowVisibilityWorks     — black bg, text + trip.jpeg; Framer Motion stagger (left col fade-up, right step cards slide-in from right)
-                🔲 S5 YourPassportMeasured  — blank black placeholder (content TBD)
+                ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, hover-to-detail) left + headline/detail-card/trip-CTA right; Framer Motion reveals
                 ✅ S6 OpportunitiesSection   — section6.jpeg bg, glass card (heading strip at top with GSAP looping gold word, opportunities-new.png fills body, 4 recruiter cards float absolutely with CSS oppFloat keyframe + Framer Motion stagger)
                 ✅ S7 CandidateCta          — final waitlist CTA; GSAP/SplitText entrance + slot-text button roller
 
 /companies      ✅ S1 CompanyHero            — companies hero.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger
-                ✅ S2 CompanyHowItWorks
+                ✅ S2 CompanyHowItWorks    — flat-ink static zigzag: heading + 4 alternating text/demo rows (compact dark-glass demos), Framer Motion fade-up on scroll
                 ✅ S3 CompanyWhatHappensInBackend
                 ✅ S4 CompanyCta             — GSAP/SplitText entrance + slot-text button roller
 
@@ -107,11 +107,9 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
                    (linked from /candidates S4, NOT in global nav)
 ```
 
-### Scroll Snapping
+### Scrolling
 
-**Candidates** (`/candidates`) uses `<SmoothSnapScroller>` — a custom client component that intercepts `wheel`, `touch`, and keyboard events and calls `scrollTo({ behavior: "smooth" })` one section at a time. Native `scroll-snap-type` is intentionally absent here; the interceptor locks for ~950ms per gesture to prevent multi-section skipping. Each section child must have `data-snap` attribute so the scroller can find them via `querySelectorAll(":scope > [data-snap]")`.
-
-**Companies** (`/companies`) uses native CSS scroll snapping via `<SnapHtml>` — a client component that sets `scroll-snap-type: y mandatory` on `document.documentElement`. This is required because `CompanyHowItWorks` uses `window` scroll events for its step animations; intercepting wheel events (as candidates does) would break that. Each section div has `scroll-snap-align: start`.
+Both pages use **normal document scrolling** — no scroll snapping. (The former `SmoothSnapScroller` on candidates and `SnapHtml` on companies were removed.) Since there's no snap, mid-page sections need not be one screen each — on **both** pages only the **hero** and **CTA** wrappers force `minHeight: 100dvh`; every middle section is a plain `<div>` sized by its own content. To make that real, the middle sections' own forced heights were relaxed: `TheProblem` / `HowVisibilityWorks` dropped `min-h-screen` (kept `py-24`); `Bridge` uses `min-h-[80vh]` (its content is `absolute inset-0`, so it needs an explicit height or it collapses); `YourPassportMeasured` (`.ypm-section`) dropped `min-height: 100dvh`; `CompanyHowItWorks` rows are content-height; `CompanyWhatHappensInBackend` shell has no `min-height`.
 
 ### Global Nav (all pages)
 
@@ -135,10 +133,9 @@ src/
 │   ├── globals.css                   ← @theme tokens, base styles, animations
 │   ├── page.tsx                      ← redirects to /candidates
 │   ├── candidates/
-│   │   └── page.tsx                  ← SmoothSnapScroller wrapper + 7 sections (data-snap on each)
+│   │   └── page.tsx                  ← 6 sections (normal scroll, each full-height)
 │   ├── companies/
-│   │   ├── page.tsx                  ← scroll-snap wrapper + 4 sections
-│   │   └── SnapHtml.tsx              ← "use client" — applies html scroll-snap
+│   │   └── page.tsx                  ← 4 sections (normal scroll)
 │   ├── blog/
 │   │   └── page.tsx                  ← server component; renders <BlogGallery /> + route metadata
 │   └── trips/
@@ -148,13 +145,12 @@ src/
 │   ├── layout/
 │   │   └── Nav.tsx                   ← global nav (always glassmorphic)
 │   ├── TileOverlay.tsx               ← shared overlay utility
-│   ├── SmoothSnapScroller.tsx        ← "use client" — wheel/touch/keyboard interceptor for candidates scroll
 │   ├── candidates/
 │   │   ├── CandidateHero.tsx         ← S1
 │   │   ├── TheProblem.tsx            ← S2
 │   │   ├── Bridge.tsx                ← S3
 │   │   ├── HowVisibilityWorks.tsx    ← S4
-│   │   ├── YourPassportMeasured.tsx  ← S5 (blank black placeholder)
+│   │   ├── YourPassportMeasured.tsx  ← S5 (radar-chart skill section)
 │   │   ├── OpportunitiesSection.tsx  ← S6
 │   │   ├── CandidateCta.tsx          ← S7
 │   │   └── CandidateCta.css
@@ -192,7 +188,7 @@ src/
 | `section6.jpeg` | OpportunitiesSection (S6) background |
 | `opportunities-new.png` | OpportunitiesSection (S6) illustration (inside glass card body) |
 | `companies hero.png` | CompanyHero (S1) background |
-| `companiess2.jpeg` | CompanyHowItWorks (S2) glassmorphism background |
+| `companiess2.jpeg` | Available, unused (was CompanyHowItWorks S2 background before the static-zigzag redesign) |
 | `section3.jpeg` | Available, unused |
 | `Candidatehero2.png` | Available, unused |
 
@@ -307,7 +303,7 @@ Applied to `/candidates` S2 (`TheProblem`). On hover, nearby tiles lift in 3D to
 **Critical gotchas:**
 - **Never use `html2canvas`** — it throws on Tailwind v4's `color-mix(in oklab, ...)` opacity utilities; use `modern-screenshot` instead
 - **Tile geometry must be exact `TW × TH`** — any fractional reduction (`TW - 0.5`) creates visible seam lines
-- The section is below the fold on mount (scroll-snap) — `modern-screenshot` captures it correctly; a `document.body` clone does not
+- The section is below the fold on mount — `modern-screenshot` captures it correctly; a `document.body` clone does not
 - **Never use Framer Motion `initial="hidden"` (or any `opacity: 0` initial state) inside `[data-tile-content]`** — `domToCanvas` captures the DOM at mount time, before the user scrolls to the section. Elements at `opacity: 0` produce a black canvas, which gets applied as tile textures, making the entire section appear black. `TheProblem` (S2) is a pure RSC with no Framer Motion for this reason.
 
 **Usage pattern:**
@@ -351,26 +347,28 @@ Applied to `/candidates` S2 (`TheProblem`). On hover, nearby tiles lift in 3D to
 
 ## Companies Page — Architecture Notes
 
-### Scroll Snap: Why `<html>` and Not a Div
+### Scrolling: Only Hero + CTA Are Full-Height
 
-`SnapHtml.tsx` applies `scroll-snap-type: y mandatory` on `document.documentElement`, **not** a wrapper div. This is critical: `CompanyHowItWorks` detects active steps via `window` scroll events + `getBoundingClientRect`. Snap on a div kills `window` scroll events. The HIW section wrapper also has no `minHeight: "100dvh"` — it is taller than the viewport (multi-step scroll triggers) and the snap engine is allowed to scroll freely through it.
+The page uses normal document scrolling, so mid-page sections need not be one screen each. In `companies/page.tsx` only the **hero** and **CTA** wrappers carry `minHeight: 100dvh`; `CompanyHowItWorks` and `CompanyWhatHappensInBackend` are plain `<div>`s sized by their own content. `CompanyHowItWorks` is a static section (no scroll-tracking) whose 4 stacked rows define its height (~1.8 screens); `CompanyWhatHappensInBackend` has **no** internal `min-height` either (its shell sizes to content).
 
-### CompanyHowItWorks — Glassmorphism
+### CompanyHowItWorks — Static Dark Zigzag
 
-- **Background**: `companiess2.jpeg`, `background-attachment: fixed` (parallax). No full-page overlay — photo shows raw in 40px side margins
-- **Glass card** (`.company-hiw-container`): `width: calc(100% - 80px)`, `background: rgba(11,14,20,0.86)`, `backdrop-filter: blur(48px) saturate(160%)`
-- **Critical**: `.company-hiw-shell` must keep `overflow: visible` — sticky header/footer break otherwise
-- **Token scoping**: `.premium-showcase-window` overrides `--hiw-text: #111111` locally — pearl on white = invisible without this
-- **Mobile**: `background-attachment: scroll` at ≤960px
+Rebuilt as a flat-ink section (no photo, no glassmorphism, no sticky/scroll machinery). Heading at top, then **4 alternating text↔demo rows** that fade up on scroll via Framer Motion `whileInView` (parent `staggerChildren`, `useReducedMotion` guard) — same reveal pattern as `Bridge`/`HowVisibilityWorks`.
+
+- **Shell**: `.hiw-section` flat `--hiw-bg` (ink). Rows are CSS grid `1fr 1fr`; even rows get `.reverse` which flips column `order`. Collapses to single column (text above demo) at ≤900px.
+- **Demos** (`DemoCard` shell + `BriefDemo`/`JourneyDemo`/`MomentsDemo`/`CalendarDemo`): compact **dark-glass** cards — gradient `linear-gradient(160deg,#232b3e→#1C2231→#161d2b)`, gold top hairline, pearl text. **All demos stay dark** (no `#fff` surfaces — same rule as S3 below). One gold accent per demo.
+- **Teal token**: `--hiw-teal: #6fd0a3` (lightened from the design-system teal for legibility on the dark surface).
+- The `MiraRaoAvatar`/`ArnavNairAvatar` inline SVGs are reused in `CalendarDemo`.
+- `companiess2.jpeg` is **no longer used** by this section.
 
 ### CompanyWhatHappensInBackend — Dark Theme Rules
 
-- Background: `#000000` via `--backend-bg` token
+- Background: `#0B0E14` (ink) via `--backend-bg` token — matches S2 for a seamless transition
 - Cards: gradient `linear-gradient(160deg, #232b3e → #1C2231 → #161d2b)` + gold top border `1.5px solid rgba(201,168,76,0.32)`
 - **All mockup components must stay dark** — never `background: #ffffff`. Use `rgba(255,255,255,0.05–0.07)` glass + pearl text
 - Mockup 1 CTA: gold `rgba(201,168,76,0.85)`. Mockup 2 tags: tinted dark glass. Mockup 3 trip: dark glass + `#93b4f8`. Mockup 4 metrics: dark glass + gold Playfair numbers
 - Connector arrows: `color: rgba(201,168,76,0.55)`
 
-### Preview Server
+### Preview / Verification
 
-Config at `.claude/launch.json` (port 3000, `autoPort: false`). Start with `preview_start`, use Playwright for screenshots, then **stop immediately with `preview_stop`** — never leave idle. Use `npm run dev` externally for longer sessions.
+**Always use Playwright for previewing the app — never the `preview_*` tools.** Start the dev server with `npm run dev` (port 3000), then verify with the `playwright` MCP (`browser_navigate` to `http://localhost:3000`, `browser_take_screenshot`, `browser_console_messages`, etc.). Stop the dev server when done — never leave it idle.

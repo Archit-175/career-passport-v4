@@ -105,7 +105,7 @@ export function CompanyHero() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(11,14,20,0.4) 0%, rgba(11,14,20,0.25) 30%, rgba(11,14,20,0.5) 65%, rgba(11,14,20,0.88) 100%)",
+            "linear-gradient(180deg, rgba(11,14,20,0.4) 0%, rgba(11,14,20,0.25) 30%, rgba(11,14,20,0.5) 60%, rgba(11,14,20,0.92) 85%, rgba(11,14,20,1) 100%)",
         }}
       />
 

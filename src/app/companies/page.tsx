@@ -2,27 +2,24 @@ import { CompanyHero } from "@/components/companies/CompanyHero";
 import { CompanyHowItWorks } from "@/components/companies/CompanyHowItWorks";
 import { CompanyWhatHappensInBackend } from "@/components/companies/CompanyWhatHappensInBackend";
 import { CompanyCta } from "@/components/companies/CompanyCta";
-import { SnapHtml } from "./SnapHtml";
 
-const snapSection: React.CSSProperties = {
-  scrollSnapAlign: "start",
+const fullSection: React.CSSProperties = {
   minHeight: "100dvh",
 };
 
 export default function CompaniesPage() {
   return (
     <>
-      <SnapHtml />
-      <div style={snapSection}>
+      <div style={fullSection}>
         <CompanyHero />
       </div>
-      <div style={{ scrollSnapAlign: "start" }}>
+      <div>
         <CompanyHowItWorks />
       </div>
-      <div style={snapSection}>
+      <div>
         <CompanyWhatHappensInBackend />
       </div>
-      <div style={snapSection}>
+      <div style={fullSection}>
         <CompanyCta />
       </div>
     </>
