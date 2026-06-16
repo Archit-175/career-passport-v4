@@ -317,7 +317,6 @@ function DimensionDetailCard({ item }: { item: (typeof DIMENSIONS)[number] }) {
 
   return (
     <motion.div
-      key={item.id}
       className="ypm-detail-card"
       initial={{ opacity: 0, y: 18, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -500,7 +499,7 @@ export function YourPassportMeasured() {
           <div className="ypm-card-area">
             <AnimatePresence mode="wait">
               {activeItem ? (
-                <DimensionDetailCard key={activeItem.id} item={activeItem} />
+                <DimensionDetailCard key="detail" item={activeItem} />
               ) : (
                 <DefaultPanel key="default" />
               )}
