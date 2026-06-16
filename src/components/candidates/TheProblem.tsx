@@ -66,7 +66,7 @@ export function TheProblem() {
             </div>
           </div>
 
-          {/* Right Panel — CTA */}
+          {/* Right Panel */}
           <div className="px-10 py-12 border-t border-white/10 flex flex-col gap-10">
             <span className="font-inter text-[0.68rem] tracking-[0.2em] uppercase text-white/30">03</span>
             <div className="flex flex-col gap-5">
@@ -88,7 +88,7 @@ export function TheProblem() {
         </div>
       </div>
 
-      {/* Tile hover effect overlay — transparent tiles lift in 3D toward cursor */}
+      {/* Tile hover effect overlay */}
       <TileOverlay className="absolute inset-0 z-10" />
     </section>
   );

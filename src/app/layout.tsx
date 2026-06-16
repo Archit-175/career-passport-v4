@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import "slot-text/style.css";
 import { Nav } from "@/components/layout/Nav";
 
 const playfair = Playfair_Display({

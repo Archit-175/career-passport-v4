@@ -13,19 +13,19 @@ interface LoopingWordProps {
 
 const LoopingWord: React.FC<LoopingWordProps> = ({ words, hold = 2.2 }) => {
   const [idx, setIdx] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
+  const wordRef = useRef<HTMLSpanElement>(null);
   const longestWord = words.reduce((a, b) => (b.length > a.length ? b : a), "");
 
+  // Exit: slide current word upward out of clip
   useEffect(() => {
     if (words.length <= 1) return;
     let alive = true;
     const id = setInterval(() => {
-      const el = ref.current;
-      if (!el) return;
+      const el = wordRef.current;
+      if (!el || !alive) return;
       gsap.to(el, {
-        opacity: 0,
-        y: "-110%",
-        duration: 0.34,
+        y: "-120%",
+        duration: 0.38,
         ease: "power2.in",
         onComplete: () => { if (alive) setIdx((i) => (i + 1) % words.length); },
       });
@@ -33,30 +33,39 @@ const LoopingWord: React.FC<LoopingWordProps> = ({ words, hold = 2.2 }) => {
     return () => { alive = false; clearInterval(id); };
   }, [words, hold]);
 
+  // Enter: rise new word up from below
   useEffect(() => {
-    const el = ref.current;
+    const el = wordRef.current;
     if (!el) return;
-    gsap.fromTo(el, { opacity: 0, y: "110%" }, { opacity: 1, y: "0%", duration: 0.55, ease: "power3.out" });
+    gsap.fromTo(el, { y: "120%" }, { y: "0%", duration: 0.6, ease: "power3.out" });
   }, [idx]);
 
   return (
-    /* Extra vertical padding gives GSAP room to animate before the clip boundary */
+    // Single overflow:hidden — the only clip point.
+    // paddingTop/Bottom give GSAP room before the clip fires; negative margins keep line-height intact.
     <span style={{
       position: "relative",
       display: "inline-block",
       overflow: "hidden",
-      verticalAlign: "bottom",
-      paddingTop: "0.25em",
-      paddingBottom: "0.25em",
-      marginTop: "-0.25em",
-      marginBottom: "-0.25em",
+      verticalAlign: "middle",
+      paddingTop: "0.18em",
+      paddingBottom: "0.18em",
+      marginTop: "-0.18em",
+      marginBottom: "-0.18em",
     }}>
-      {/* Reserve width of longest word */}
-      <span style={{ visibility: "hidden", pointerEvents: "none", display: "block" }}>{longestWord}</span>
-      <span style={{ position: "absolute", top: "0.25em", left: 0, right: 0, bottom: "0.25em", display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        <span ref={ref} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
-          {words[idx]}
-        </span>
+      {/* Invisible anchor — reserves width of longest word */}
+      <span aria-hidden="true" style={{ visibility: "hidden", pointerEvents: "none" }}>
+        {longestWord}
+      </span>
+      {/* Animated word — fills container, vertically centered */}
+      <span ref={wordRef} style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        {words[idx]}
       </span>
     </span>
   );

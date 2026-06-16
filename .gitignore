@@ -48,3 +48,9 @@ Thumbs.db
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright / MCP tooling
+.playwright-mcp/
+
+# debug screenshots
+*.png

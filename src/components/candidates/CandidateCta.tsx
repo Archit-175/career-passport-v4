@@ -2,38 +2,14 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { slotText } from "slot-text";
+import type { SlotTextController } from "slot-text";
+import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { useGSAP } from "@gsap/react";
 import "./CandidateCta.css";
 
-// ── INLINED: useReveal ──
-// Adds `.in` class when the element enters the viewport.
-function useReveal<T extends HTMLElement = HTMLElement>(threshold = 0.01) {
-  const ref = useRef<T>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add("in"); obs.unobserve(el); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return ref;
-}
-
-// ── CANDIDATE CTA SECTION ──
-// Dependencies: framer-motion
-// CSS: import "./CandidateCta.css"
-// Video: place `CTABGV.mp4` at /public/common/CTABGV.mp4 (or update videoSrc prop)
-//
-// Theme tokens (override in your CSS before importing):
-//   --cta-bg       section background         (default #f8ead9)
-//   --cta-accent   gold color for highlights  (default #B87A3A)
-//
-// Form submit: replace the console.log inside handleSubmit with your API call.
-// The toast system is self-contained — success/error messages update automatically.
-//
-// No snap-scroll dependency. Section scrolls normally.
+gsap.registerPlugin(useGSAP, SplitText);
 
 interface Toast {
   id: number;
@@ -48,21 +24,91 @@ interface CandidateCtaProps {
 export const CandidateCta: React.FC<CandidateCtaProps> = ({
   videoSrc = "/common/CTABGV.mp4",
 }) => {
-  const sectionRef = useReveal<HTMLElement>();
+  const containerRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const trustRef = useRef<HTMLDivElement>(null);
+
   const [email, setEmail] = useState("");
   const [toast, setToast] = useState<Toast | null>(null);
+
+  const btnLabelRef = useRef<HTMLSpanElement>(null);
+  const btnLabelCtrl = useRef<SlotTextController | null>(null);
+
+  useEffect(() => {
+    if (!btnLabelRef.current) return;
+    btnLabelCtrl.current = slotText(btnLabelRef.current, "Join the waitlist");
+    return () => btnLabelCtrl.current?.destroy();
+  }, []);
+
+  useGSAP(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      gsap.set(
+        [eyebrowRef.current, headingRef.current, descRef.current, formRef.current, trustRef.current],
+        { clearProps: "all" }
+      );
+
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+      tl.fromTo(eyebrowRef.current, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5 });
+
+      const split = SplitText.create(headingRef.current!, { type: "lines", mask: "lines" });
+      split.lines.forEach((line) => {
+        const mask = (line as HTMLElement).parentElement;
+        if (mask) {
+          mask.style.paddingBottom = "0.35em";
+          mask.style.marginBottom = "-0.35em";
+          mask.style.paddingRight = "0.15em";
+          mask.style.marginRight = "-0.15em";
+        }
+      });
+      tl.fromTo(
+        split.lines,
+        { y: "110%" },
+        { y: "0%", duration: 0.9, stagger: 0.12, ease: "power4.out" },
+        "-=0.25"
+      );
+
+      tl.fromTo(descRef.current, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.65 }, "-=0.5");
+      tl.fromTo(formRef.current, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.55 }, "-=0.42");
+      tl.fromTo(trustRef.current, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5 }, "-=0.35");
+
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) { tl.play(); obs.unobserve(el); } },
+        { threshold: 0.05 }
+      );
+      obs.observe(el);
+
+      return () => obs.disconnect();
+    });
+
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set(
+        [eyebrowRef.current, headingRef.current, descRef.current, formRef.current, trustRef.current],
+        { clearProps: "all" }
+      );
+    });
+  }, { scope: containerRef });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       setToast({ id: Date.now(), message: "Please enter a valid email address.", type: "error" });
+      btnLabelCtrl.current?.flash("Check email", { enter: { direction: "down" }, exit: { direction: "up" } });
       return;
     }
 
-    // ↓ Replace this with your API call
     console.log("Waitlist signup:", email);
 
+    btnLabelCtrl.current?.set("You're in!", { direction: "up" });
     setToast({
       id: Date.now(),
       message: "✨ Thanks for joining the waitlist!\nWe'll keep you updated on Career Passport.",
@@ -79,8 +125,8 @@ export const CandidateCta: React.FC<CandidateCtaProps> = ({
 
   return (
     <section
-      ref={sectionRef}
-      className="cta-shell reveal-up"
+      ref={containerRef}
+      className="cta-shell"
       aria-label="Join the waitlist"
       id="waitlist"
     >
@@ -101,19 +147,19 @@ export const CandidateCta: React.FC<CandidateCtaProps> = ({
 
       {/* Content */}
       <div className="cta-content-container">
-        <p className="cta-eyebrow">YOU'RE ALMOST THERE</p>
+        <p ref={eyebrowRef} className="cta-eyebrow">YOU'RE ALMOST THERE</p>
 
-        <h2 className="cta-heading">
+        <h2 ref={headingRef} className="cta-heading">
           Ready to document,<br />
           prove, and own <span className="cta-heading-highlight">your journey?</span>
         </h2>
 
-        <p className="cta-description">
+        <p ref={descRef} className="cta-description">
           Join the waitlist to be among the first to experience Career Passport.
           Early access drops soon.
         </p>
 
-        <form onSubmit={handleSubmit} className="cta-form-row">
+        <form ref={formRef} onSubmit={handleSubmit} className="cta-form-row">
           <input
             type="email"
             value={email}
@@ -124,7 +170,7 @@ export const CandidateCta: React.FC<CandidateCtaProps> = ({
             required
           />
           <button type="submit" className="cta-submit-btn" aria-label="Join waitlist">
-            Join the waitlist
+            <span ref={btnLabelRef} />
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="cta-btn-arrow">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
@@ -132,7 +178,7 @@ export const CandidateCta: React.FC<CandidateCtaProps> = ({
           </button>
         </form>
 
-        <div className="cta-trust-row">
+        <div ref={trustRef} className="cta-trust-row">
           <div className="cta-trust-item">
             <div className="cta-trust-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
