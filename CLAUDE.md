@@ -43,14 +43,15 @@ The contrast between serif emotion and sans function creates the "premium regist
 | `ink` | `#0B0E14` | Primary background (~95% of dark surfaces) |
 | `slate` | `#1C2231` | Secondary background, cards, nav bg on scroll |
 | `pearl` | `#F5F2EC` | Primary text — **never pure white** |
-| `gold` | `#C9A84C` | **The accent** — max ONE element per screen/section |
-| `blue` | `#4B7BEC` | **Interactive only** — CTAs, hover states, links |
+| `gold` | `#A3C940` | **The accent** — lime green; max ONE element per screen/section |
+| `blue` | `#A3C940` | **Interactive only** — CTAs, hover states, links (same lime green as `gold`) |
 | `teal` | `#1A4D5C` | Cards, hover states, secondary surfaces |
 
 **Rules:**
 - No colourful gradients. Dark-to-transparent overlays only.
-- Gold is precious — use sparingly. One gold element per visual unit.
-- Blue is interactive — never decorative.
+- Gold/lime is precious — use sparingly. One accent element per visual unit.
+- **Buttons with `bg-gold`/`bg-blue` MUST use `text-ink` (dark text), not white** — the lime green is light enough to need dark text for contrast.
+- Hover state for blue/lime buttons: lighten to `#bcd96b`.
 - 95% of every page must be `ink` or `slate`.
 
 ### Tailwind v4 — Critical Notes
@@ -88,10 +89,10 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 ```
 / → redirects to /candidates
 
-/candidates     ✅ S1 CandidateHero          — images/hero/candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up
-                ✅ S2 TheProblem             — black bg, 3-panel numbered grid; TileOverlay **temporarily disabled** (commented out in TheProblem.tsx — uncomment import + JSX to restore); RSC — no Framer Motion, no opacity:0 on mount
-                ✅ S3 Bridge                 — images/sections/bridge.jpeg bg, glass card, 3-col layout; Framer Motion fade-up stagger on scroll; **bottom blend gradient** (`transparent → rgba(0,0,0,0.95)`, `h-40`, `z-[1]`) dissolves photo edge into S4
-                ✅ S4 HowVisibilityWorks     — matches Bridge pattern: full-bleed `images/sections/trip.jpeg` bg, `bg-black/60` overlay, glass card (`rgba(255,255,255,0.07)` + `blur(28px)` + `border rgba(255,255,255,0.14)`); **top blend gradient** (`rgba(0,0,0,0.95) → transparent`, `h-40`, `z-[1]`) receives the fade from S3; left 40% col (eyebrow `0.65rem / tracking-[0.28em]` gold, Playfair heading `clamp(1.75–2.6rem)` with gold italic `<em>` highlights, gold rule `w-8`, 2-line subtext `leading-[1.7]`, rounded-full gold-border CTA link); right 52% col (step list `01–04`: large Playfair gold numerals `clamp(1.3–1.7rem) / rgba(201,168,76,0.55)` + Playfair title `clamp(1.05–1.2rem) / opacity 0.95 pearl` + Inter light body `clamp(0.83–0.9rem) / rgba(245,242,236,0.65)` + `border-white/[0.12]` dividers + `py-7` rows); Framer Motion fade-up stagger on both cols
+/candidates     ✅ S1 CandidateHero          — images/hero/candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up; eyebrow "Built on what you've done"; headline "Design the career / you're *proud* of."; CTA bg `#A3C940` with `text-ink`
+                ✅ S2 TheProblem             — black bg, **2-column layout** (left 40%: eyebrow dot + divider + Playfair headline + body copy; right: 3 numbered items with strikethrough/accent lines); TileOverlay **temporarily disabled** (commented out in TheProblem.tsx — uncomment import + JSX to restore); RSC — no Framer Motion, no opacity:0 on mount
+                ✅ S3 BridgeV2              — `images/sections/bridge.jpeg` bg, glass card, **vertical transformation rail** (3 stages: Raw material → Career Passport analysis → Verified proof); left 40% col (editorial copy); right 60% col (numbered spine with connector, stage content chips/list/proof stamps); Framer Motion fade-up stagger on scroll; **bottom blend gradient** (`transparent → rgba(0,0,0,0.95)`, `h-40`, `z-[1]`) dissolves photo edge into S4
+                ✅ S4 HowVisibilityWorks     — full-bleed `images/sections/s4.png` bg, `bg-black/60` overlay, glass card (`rgba(255,255,255,0.07)` + `blur(28px)` + `border rgba(255,255,255,0.14)`); **top blend gradient** (`rgba(0,0,0,0.95) → transparent`, `h-40`, `z-[1]`) receives the fade from S3; left 40% col (eyebrow `0.65rem / tracking-[0.28em]` gold, Playfair heading `clamp(1.75–2.6rem)` with gold italic `<em>` highlights, gold rule `w-8`, 2-line subtext `leading-[1.7]`, rounded-full gold-border CTA link); right 52% col (step list `01–04`: large Playfair gold numerals `clamp(1.3–1.7rem) / rgba(163,201,64,0.55)` + Playfair title `clamp(1.05–1.2rem) / opacity 0.95 pearl` + Inter light body `clamp(0.83–0.9rem) / rgba(245,242,236,0.65)` + `border-white/[0.12]` dividers + `py-7` rows); Framer Motion fade-up stagger on both cols
                 ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, whole-chart continuous hover) left + headline/detail-card/trip-CTA right; Framer Motion reveals. See "YourPassportMeasured — Radar Hover" below.
                 ⚠️ OpportunitiesSection      — NOT rendered (dead code; see Notes). opportunities-bg.jpeg bg, glass card with GSAP looping gold word + opportunities.png + 4 floating recruiter cards
                 ✅ S7 CandidateCta          — final waitlist CTA; GSAP/SplitText entrance + slot-text button roller
@@ -108,7 +109,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 
 ### Responsiveness
 
-The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` share the same full-bleed photo → overlay → glass-card pattern. Their fixed `40%/8%/52%` flex splits go `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s content column uses `justify-center` so the whole block (eyebrow → headline → subtext → CTA → steps) sits vertically centered in the `100dvh` section; padding/gaps are all `clamp()`-based. The 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `YourPassportMeasured` uses `grid-template-areas` on `.ypm-layout` so the header can be a separate grid item from the radar/detail-block: desktop `"chart header" / "chart content"`, mobile/tablet (≤900px) `"header" / "chart" / "content"` (text → radar → hover/detail block). `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
+The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `BridgeV2` & `HowVisibilityWorks` share the same full-bleed photo → overlay → glass-card pattern. Their fixed `40%/8%/60%` flex splits go `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s content column uses `justify-center` so the whole block (eyebrow → headline → subtext → CTA → steps) sits vertically centered in the `100dvh` section; padding/gaps are all `clamp()`-based. The 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `YourPassportMeasured` uses `grid-template-areas` on `.ypm-layout` so the header can be a separate grid item from the radar/detail-block: desktop `"chart header" / "chart content"`, mobile/tablet (≤900px) `"header" / "chart" / "content"` (text → radar → hover/detail block). `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
 
 ### Loader & Page Transitions  (`src/components/loader/`)
 
@@ -119,7 +120,7 @@ The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens i
 
 ### Scrolling
 
-Both pages use **normal document scrolling** — no scroll snapping. (The former `SmoothSnapScroller` on candidates and `SnapHtml` on companies were removed.) Since there's no snap, mid-page sections need not be one screen each — on **both** pages only the **hero** and **CTA** wrappers force `minHeight: 100dvh`; every middle section is a plain `<div>` sized by its own content. Cross-route scroll-to-top is handled by `LoaderProvider` (see above), not by Next's default. `Bridge`/`HowVisibilityWorks` keep `min-h-[80vh]` on desktop (content is `absolute inset-0` there); on mobile the card is in-flow so the section grows with content.
+Both pages use **normal document scrolling** — no scroll snapping. (The former `SmoothSnapScroller` on candidates and `SnapHtml` on companies were removed.) Since there's no snap, mid-page sections need not be one screen each — on **both** pages only the **hero** and **CTA** wrappers force `minHeight: 100dvh`; every middle section is a plain `<div>` sized by its own content. Cross-route scroll-to-top is handled by `LoaderProvider` (see above), not by Next's default. `BridgeV2`/`HowVisibilityWorks` keep `min-h-[80vh]` on desktop (content is `absolute inset-0` there); on mobile the card is in-flow so the section grows with content.
 
 ### Global Nav (all pages)
 
@@ -130,7 +131,7 @@ Career Passport  ·  [Candidates | Companies toggle]  ·  About  ·  Blog  ·  J
 - Logo: Playfair Display `text-[1.35rem] sm:text-[1.6rem]` — "Career" pearl, "Passport" gold
 - Toggle pill: `absolute left-1/2 -translate-x-1/2` — truly centred in nav
 - Right: About / Blog / "Join the Waitlist" (blue pill)
-- Nav is always glassmorphic: `bg-white/5 backdrop-blur-xl`
+- Nav is **transparent at rest** (top of page: `bg-transparent border-transparent`); becomes glassmorphic on scroll (`bg-white/5 backdrop-blur-xl border-white/10`)
 
 ---
 
@@ -148,8 +149,11 @@ src/
 │   │   └── page.tsx                  ← 4 sections (normal scroll)
 │   ├── blog/
 │   │   └── page.tsx                  ← server component; renders <BlogGallery /> + route metadata
-│   └── trips/
-│       └── page.tsx                  ← placeholder
+│   ├── trips/
+│   │   └── page.tsx                  ← placeholder
+│   └── sandbox/
+│       └── bridge/
+│           └── page.tsx              ← isolated preview route for BridgeV2 (safe to delete)
 │
 ├── components/
 │   ├── layout/
@@ -158,7 +162,8 @@ src/
 │   ├── candidates/
 │   │   ├── CandidateHero.tsx         ← S1
 │   │   ├── TheProblem.tsx            ← S2
-│   │   ├── Bridge.tsx                ← S3
+│   │   ├── BridgeV2.tsx              ← S3 (active)
+│   │   ├── Bridge.tsx                ← S3 legacy (dead code — replaced by BridgeV2; uses s3.png bg)
 │   │   ├── HowVisibilityWorks.tsx    ← S4
 │   │   ├── YourPassportMeasured.tsx  ← S5 (radar-chart skill section)
 │   │   ├── OpportunitiesSection.tsx  ← S6
@@ -194,8 +199,10 @@ public/
   images/
     hero/candidate.png                  → CandidateHero (S1) background
     hero/companies.png                  → CompanyHero (S1) background
-    sections/bridge.jpeg                → Bridge (S3) background
-    sections/trip.jpeg                  → HowVisibilityWorks (S4) background
+    sections/bridge.jpeg                → BridgeV2 (S3 active) background
+    sections/s3.png                     → Bridge.tsx (S3 legacy/dead code) background — do not recreate references
+    sections/s4.png                     → HowVisibilityWorks (S4) background (replaced trip.jpeg)
+    sections/trip.jpeg                  → old S4 background (superseded by s4.png — no longer referenced)
     sections/cta-candidate.png          → CandidateCta (S7) background image
     sections/opportunities-bg.jpeg      → OpportunitiesSection background (component currently unused — see Notes)
     sections/opportunities.png          → OpportunitiesSection illustration (unused)
@@ -218,7 +225,7 @@ Path generator for blog images lives in `blogData.ts` (`/images/blog/journal-NN.
 
 - All components are **React Server Components by default**. Add `"use client"` only when hooks or event listeners are needed.
 - Use the `cn()` utility from `@/lib/utils` for conditional Tailwind classes.
-- **Framer Motion** (`motion.div`, `whileInView`, stagger `variants`) for scroll-triggered entrance animations in `Bridge` and `HowVisibilityWorks`. Toast in CTA sections uses `AnimatePresence`.
+- **Framer Motion** (`motion.div`, `whileInView`, stagger `variants`) for scroll-triggered entrance animations in `BridgeV2` and `HowVisibilityWorks`. Toast in CTA sections uses `AnimatePresence`.
 - **GSAP** (`useGSAP` + `SplitText`) for hero entrance animations (`CandidateHero`, `CompanyHero`) and CTA reveals (`CandidateCta`, `CompanyCta`). Also used imperatively for the `LoopingWord` cycling word swap in `OpportunitiesSection`.
 - Sections use `<section id="...">` with `py-section` vertical rhythm.
 - Every section header uses `font-playfair` for the headline and `font-inter font-light` for the subhead.
@@ -275,8 +282,12 @@ Both CTAs use **co-located `.css` files** (not Tailwind utilities) — intention
 
 Structure:
 - `CompanyCta` background: `/common/CTA.png` at opacity 0.85 with top-blend gradient overlay; `CandidateCta` background: video `/video/cta-background.mp4`
-- Eyebrow monospace label in gold + Playfair heading with italic gold `<span>` highlight
-- Email `<input>` (slate-glass, gold focus ring) + blue submit `<button>` in a flex row — stacks on mobile
+- Eyebrow label now rendered as a **solid lime-green chip** (background `#A3C940`, text `#0B0E14` dark ink, uppercase) — not just text color
+- Playfair heading with italic `<span>` highlight (now pearl/white, not gold)
+- Heading size reduced: `clamp(34px,3.6vw,52px)` (previously `clamp(46px,5vw,68px)`)
+- **Form row uses underline style** — `border-bottom: 1px solid rgba(163,201,64,0.4)` + `border-bottom-color: var(--cta-accent)` on focus; no box border, no background box
+- Email `<input>` (transparent, no border box) + lime submit `<button>` (`text-ink`, `color: #0B0E14`) in an underline row — stacks on mobile
+- Submit button hover: `background: #bcd96b`
 - 3 trust badge items: slate-glass icon circle (gold icon stroke) + label text
 - Framer Motion `AnimatePresence` toast — success (gold border) / error (red border), auto-dismisses after 3.5s
 - **`CandidateCta`** uses `useGSAP` + `SplitText` for scroll-triggered entrance animations (eyebrow, heading, desc, form, trust badges stagger in). Button label uses `slot-text` for character-roller hover effect. No `useReveal` hook — GSAP drives all reveals.
@@ -394,7 +405,8 @@ This means moving the cursor anywhere over the chart always shows a detail card 
 
 ## Notes
 
-- `OpportunitiesSection.tsx` exists but is **not rendered** anywhere (the candidates page renders Hero → TheProblem → Bridge → HowVisibilityWorks → YourPassportMeasured → CandidateCta). It is dead code — wire it into `candidates/page.tsx` or delete it. (`Payoff.tsx` stub was removed.)
+- `OpportunitiesSection.tsx` exists but is **not rendered** anywhere (the candidates page renders Hero → TheProblem → BridgeV2 → HowVisibilityWorks → YourPassportMeasured → CandidateCta). It is dead code — wire it into `candidates/page.tsx` or delete it. (`Payoff.tsx` stub was removed.)
+- `Bridge.tsx` is also dead code — replaced by `BridgeV2.tsx` as S3. Keep for reference or delete. Its image reference (`s3.png`) should not be used in active components.
 - Trips page (`/trips`) is a supporting explainer page (currently a placeholder). It is **not** in the top nav — only linked from Candidates S4.
 - The `#waitlist` form section appears on every page as the final CTA.
 - No analytics, no CMS, no auth. Pure frontend.
@@ -414,7 +426,7 @@ The page uses normal document scrolling, so mid-page sections need not be one sc
 Rebuilt as a flat-ink section (no photo, no glassmorphism, no sticky/scroll machinery). Heading at top, then **4 alternating text↔demo rows** that fade up on scroll via Framer Motion `whileInView` (parent `staggerChildren`, `useReducedMotion` guard) — same reveal pattern as `Bridge`/`HowVisibilityWorks`.
 
 - **Shell**: `.hiw-section` flat `--hiw-bg` (ink). Rows are CSS grid `1fr 1fr`; even rows get `.reverse` which flips column `order`. Collapses to single column (text above demo) at ≤900px.
-- **Demos** (`DemoCard` shell + `BriefDemo`/`JourneyDemo`/`MomentsDemo`/`CalendarDemo`): compact **dark-glass** cards — gradient `linear-gradient(160deg,#232b3e→#1C2231→#161d2b)`, gold top hairline, pearl text. **All demos stay dark** (no `#fff` surfaces — same rule as S3 below). One gold accent per demo.
+- **Demos** (`DemoCard` shell + `BriefDemo`/`JourneyDemo`/`MomentsDemo`/`CalendarDemo`): compact **dark-glass** cards — gradient `linear-gradient(160deg,#232b3e→#1C2231→#161d2b)`, lime-gold top hairline (`rgba(163,201,64,0.20)`), pearl text. **All demos stay dark** (no `#fff` surfaces — same rule as S3 below). One gold accent per demo.
 - **`DemoCard` header**: macOS-style **traffic-light dots** (red `#ff5f57` / amber `#febc2e` / green `#28c840`) pinned **left** via `.hiw-demo-dots i:nth-child(n)`, followed by the section label.
 - **Teal token**: `--hiw-teal: #6fd0a3` (lightened from the design-system teal for legibility on the dark surface).
 - The `MiraRaoAvatar`/`ArnavNairAvatar` inline SVGs are reused in `CalendarDemo`.
@@ -427,10 +439,10 @@ Rebuilt as a flat-ink section (no photo, no glassmorphism, no sticky/scroll mach
 ### CompanyWhatHappensInBackend — Dark Theme Rules
 
 - Background: `#0B0E14` (ink) via `--backend-bg` token — matches S2 for a seamless transition
-- Cards: gradient `linear-gradient(160deg, #232b3e → #1C2231 → #161d2b)` + gold top border `1.5px solid rgba(201,168,76,0.32)`
+- Cards: gradient `linear-gradient(160deg, #232b3e → #1C2231 → #161d2b)` + gold top border `1.5px solid rgba(163,201,64,0.32)`
 - **All mockup components must stay dark** — never `background: #ffffff`. Use `rgba(255,255,255,0.05–0.07)` glass + pearl text
-- Mockup 1 CTA: gold `rgba(201,168,76,0.85)`. Mockup 2 tags: tinted dark glass. Mockup 3 trip: dark glass + `#93b4f8`. Mockup 4 metrics: dark glass + gold Playfair numbers
-- Connector arrows: `color: rgba(201,168,76,0.55)`
+- Mockup 1 CTA: gold `rgba(163,201,64,0.85)`. Mockup 2 tags: tinted dark glass. Mockup 3 trip: dark glass + `#93b4f8`. Mockup 4 metrics: dark glass + gold Playfair numbers
+- Connector arrows: `color: rgba(163,201,64,0.55)`
 
 ### Preview / Verification
 
