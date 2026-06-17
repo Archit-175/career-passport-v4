@@ -96,7 +96,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
                 ⚠️ OpportunitiesSection      — NOT rendered (dead code; see Notes). opportunities-bg.jpeg bg, glass card with GSAP looping gold word + opportunities.png + 4 floating recruiter cards
                 ✅ S7 CandidateCta          — final waitlist CTA; GSAP/SplitText entrance + slot-text button roller
 
-/companies      ✅ S1 CompanyHero            — images/hero/companies.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger
+/companies      ✅ S1 CompanyHero            — images/hero/companies.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger; layout: `flex-col justify-center` (single centered block, NOT justify-between); padding `clamp(4rem,10vh,7rem)` top; steps flow naturally after CTA via `marginTop: clamp(2rem,5vh,3.5rem)` — NOT pinned to bottom
                 ✅ S2 CompanyHowItWorks    — flat-ink static zigzag: heading + 4 alternating text/demo rows (compact dark-glass demos), Framer Motion fade-up on scroll
                 ✅ S3 CompanyWhatHappensInBackend
                 ✅ S4 CompanyCta             — GSAP/SplitText entrance + slot-text button roller
@@ -108,7 +108,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 
 ### Responsiveness
 
-The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` share the same full-bleed photo → overlay → glass-card pattern. Their fixed `40%/8%/52%` flex splits go `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `YourPassportMeasured` uses `grid-template-areas` on `.ypm-layout` so the header can be a separate grid item from the radar/detail-block: desktop `"chart header" / "chart content"`, mobile/tablet (≤900px) `"header" / "chart" / "content"` (text → radar → hover/detail block). `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
+The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` share the same full-bleed photo → overlay → glass-card pattern. Their fixed `40%/8%/52%` flex splits go `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s content column uses `justify-center` so the whole block (eyebrow → headline → subtext → CTA → steps) sits vertically centered in the `100dvh` section; padding/gaps are all `clamp()`-based. The 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `YourPassportMeasured` uses `grid-template-areas` on `.ypm-layout` so the header can be a separate grid item from the radar/detail-block: desktop `"chart header" / "chart content"`, mobile/tablet (≤900px) `"header" / "chart" / "content"` (text → radar → hover/detail block). `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
 
 ### Loader & Page Transitions  (`src/components/loader/`)
 
@@ -196,14 +196,16 @@ public/
     hero/companies.png                  → CompanyHero (S1) background
     sections/bridge.jpeg                → Bridge (S3) background
     sections/trip.jpeg                  → HowVisibilityWorks (S4) background
+    sections/cta-candidate.png          → CandidateCta (S7) background image
     sections/opportunities-bg.jpeg      → OpportunitiesSection background (component currently unused — see Notes)
     sections/opportunities.png          → OpportunitiesSection illustration (unused)
     blog/journal-01..24.jpeg            → BlogGallery (24 photos cycled across 54 posts)
+  video/cta-background.mp4              → CandidateCta (S7) background video
 ```
 
 Path generator for blog images lives in `blogData.ts` (`/images/blog/journal-NN.jpeg`).
 
-> **Note:** `HowVisibilityWorks.tsx` uses `/images/sections/trip.jpeg` (present). The old `how-visibility.jpeg` name referred to this same image before it was renamed; `trip.jpeg` is the correct current filename.
+> **Note on removed files:** `how-visibility.jpeg` (old name for `trip.jpeg`) and `candidate-cta.png` (duplicate of `cta-candidate.png`) were deleted — both were unused. Do not recreate them.
 
 ### next/image Rules
 
@@ -252,6 +254,16 @@ split.lines.forEach((line) => {
 - The matching negative margin cancels the layout shift so line spacing is unaffected
 
 Applied in: `CandidateHero.tsx`, `CandidateCta.tsx`, `CompanyHero.tsx`, `CompanyCta.tsx`.
+
+### GSAP `clearProps: "all"` — Never include elements with React inline styles
+
+`gsap.set(el, { clearProps: "all" })` wipes the **entire** inline `style` attribute — including properties React set via JSX `style={{...}}`. This permanently removes `background`, `border`, `boxShadow`, etc. from any element whose styling is managed by React inline styles.
+
+**Rule:** Never put an element with React inline styles (e.g. a styled `<a>` or `<button>`) inside a `clearProps: "all"` call. Only include elements that use Tailwind classes or have no inline styles of their own.
+
+**Pattern for `fromTo` targets with inline styles:** since `fromTo` sets an explicit start state, `clearProps` is unnecessary anyway — omit those refs entirely from the `gsap.set` clearProps call.
+
+Affected in: `CompanyHero.tsx` — `ctaRef.current` must NOT be in the `clearProps: "all"` set call. The eyebrow/subtext/headline/step refs are fine (they rely on Tailwind classes, not inline styles).
 
 ### CTA Sections (`CandidateCta` / `CompanyCta`)
 

@@ -22,7 +22,7 @@ export function Bridge() {
       <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
 
         <Image
-          src="/images/sections/bridge.jpeg"
+          src="/images/sections/s3.png"
           alt="Bridge section background"
           fill
           quality={90}
