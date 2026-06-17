@@ -45,7 +45,7 @@ export function HowVisibilityWorks() {
 
         {/* Photo background */}
         <Image
-          src="/images/sections/trip.jpeg"
+          src="/images/sections/s4.png"
           alt="Career Passport trip session"
           fill
           quality={90}
