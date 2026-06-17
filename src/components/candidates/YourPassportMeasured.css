@@ -141,8 +141,16 @@
 /* ── Card area ──────────────────────────────────────────────── */
 
 .ypm-card-area {
-  min-height: 260px;
+  height: 320px;
   position: relative;
+}
+
+.ypm-detail-card,
+.ypm-default-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 /* ── Default panel (nothing hovered) ───────────────────────── */
@@ -372,7 +380,7 @@
   }
 
   .ypm-card-area {
-    min-height: 200px;
+    height: 290px;
   }
 }
 

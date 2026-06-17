@@ -121,12 +121,34 @@ function RadarChart({
   const rings = [0.25, 0.5, 0.75, 1.0];
   const ringLabels = [25, 50, 75, 100];
 
+  // Map the cursor anywhere over the chart to the nearest dimension (Voronoi
+  // by angle). This makes the whole chart a continuous hover surface so the
+  // detail card glides between dimensions instead of collapsing to the default
+  // panel whenever the cursor is between the small node dots.
+  const handlePointerMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const vx = ((e.clientX - rect.left) / rect.width) * 440;
+    const vy = ((e.clientY - rect.top) / rect.height) * 440;
+    const dx = vx - CX;
+    const dy = vy - CY;
+    // Near dead-centre there is no meaningful "nearest" — keep the last one.
+    if (Math.hypot(dx, dy) < 14) return;
+    const ang = Math.atan2(dy, dx) + Math.PI / 2; // rotate so "up" = 0
+    const idx = ((Math.round((ang / (2 * Math.PI)) * N) % N) + N) % N;
+    onNodeHover(idx);
+  };
+
   return (
     <svg
       ref={svgRef}
       viewBox="0 0 440 440"
       className="radar-svg"
       aria-label="Career Passport skill radar chart"
+      onMouseMove={handlePointerMove}
+      onMouseLeave={onNodeLeave}
     >
       {/* Concentric grid rings */}
       {rings.map((ratio, ri) => (
