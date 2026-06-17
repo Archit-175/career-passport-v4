@@ -1,6 +1,6 @@
 import { CandidateHero } from "@/components/candidates/CandidateHero";
 import { TheProblem } from "@/components/candidates/TheProblem";
-import { Bridge } from "@/components/candidates/Bridge";
+import { BridgeV2 } from "@/components/candidates/BridgeV2";
 import { HowVisibilityWorks } from "@/components/candidates/HowVisibilityWorks";
 import { YourPassportMeasured } from "@/components/candidates/YourPassportMeasured";
 import { CandidateCta } from "@/components/candidates/CandidateCta";
@@ -15,7 +15,7 @@ export default function CandidatesPage() {
         <TheProblem />
       </div>
       <div>
-        <Bridge />
+        <BridgeV2 />
       </div>
       <div>
         <HowVisibilityWorks />

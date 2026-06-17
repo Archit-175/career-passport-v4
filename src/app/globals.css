@@ -6,8 +6,8 @@
   --color-ink:   #0B0E14;
   --color-slate: #1C2231;
   --color-pearl: #F5F2EC;
-  --color-gold:  #C9A84C;
-  --color-blue:  #4B7BEC;
+  --color-gold:  #A3C940;
+  --color-blue:  #A3C940;
   --color-teal:  #1A4D5C;
 
   /* Fonts */
@@ -84,9 +84,9 @@ img, svg, video, canvas {
   background: linear-gradient(
     90deg,
     var(--color-gold) 0%,
-    #e8c96a 30%,
+    #c2dd6f 30%,
     var(--color-gold) 60%,
-    #a8833a 100%
+    #7a9e2e 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -193,7 +193,7 @@ img, svg, video, canvas {
   width: clamp(120px, 30vw, 200px);
   height: 2px;
   border-radius: 2px;
-  background: rgba(201, 168, 76, 0.18);
+  background: rgba(163, 201, 64, 0.18);
   overflow: hidden;
 }
 

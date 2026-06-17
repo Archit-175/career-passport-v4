@@ -11,7 +11,7 @@
   --hiw-bg:     #0B0E14;  /* ink */
   --hiw-slate:  #1C2231;
   --hiw-text:   #F5F2EC;  /* pearl */
-  --hiw-gold:   #C9A84C;
+  --hiw-gold:   #A3C940;
   --hiw-teal:   #6fd0a3;  /* lightened teal for dark-surface legibility */
   --hiw-muted:  color-mix(in srgb, #F5F2EC 60%, transparent);
   --hiw-faint:  color-mix(in srgb, #F5F2EC 40%, transparent);
@@ -133,7 +133,7 @@
   border: 1px solid var(--hiw-border);
   border-radius: 20px;
   box-shadow:
-    0 1px 0 rgba(201, 168, 76, 0.20) inset,
+    0 1px 0 rgba(163, 201, 64, 0.20) inset,
     0 28px 70px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   font-family: "Inter", sans-serif;
@@ -185,7 +185,7 @@
   padding: 3px 7px;
   border-radius: 5px;
 }
-.hiw-tag.gold { color: var(--hiw-gold); background: rgba(201, 168, 76, 0.12); border: 1px solid rgba(201, 168, 76, 0.28); }
+.hiw-tag.gold { color: var(--hiw-gold); background: rgba(163, 201, 64, 0.12); border: 1px solid rgba(163, 201, 64, 0.28); }
 .hiw-tag.teal { color: var(--hiw-teal); background: rgba(111, 208, 163, 0.10); border: 1px solid rgba(111, 208, 163, 0.24); }
 
 /* ── DEMO 1 · BRIEF ── */
@@ -224,7 +224,7 @@
   margin: 0;
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid rgba(201, 168, 76, 0.4);
+  border-left: 2px solid rgba(163, 201, 64, 0.4);
   border-radius: 0 8px 8px 0;
   font-style: italic;
 }
@@ -277,7 +277,7 @@
 .hiw-flow-pulse {
   position: absolute; inset: -5px;
   border-radius: 50%;
-  border: 1.5px solid rgba(201, 168, 76, 0.5);
+  border: 1.5px solid rgba(163, 201, 64, 0.5);
   animation: hiwPulse 1.8s ease-out infinite;
 }
 @keyframes hiwPulse { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(1.5); opacity: 0; } }
@@ -296,8 +296,8 @@
 .hiw-flow-config {
   font-size: 10.5px;
   color: var(--hiw-gold);
-  background: rgba(201, 168, 76, 0.08);
-  border: 1px solid rgba(201, 168, 76, 0.2);
+  background: rgba(163, 201, 64, 0.08);
+  border: 1px solid rgba(163, 201, 64, 0.2);
   border-radius: 6px;
   padding: 4px 9px;
   width: fit-content;
@@ -308,7 +308,7 @@
 .hiw-moments-dot {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--hiw-gold);
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.18);
+  box-shadow: 0 0 0 3px rgba(163, 201, 64, 0.18);
 }
 .hiw-moments-count {
   font-family: "Playfair Display", serif;
@@ -364,7 +364,7 @@
 .hiw-cal-fit { font-size: 10px; font-weight: 600; color: var(--hiw-teal); }
 .hiw-cal-status { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 5px; }
 .hiw-cal-status.ok { color: var(--hiw-teal); background: rgba(111, 208, 163, 0.1); border: 1px solid rgba(111, 208, 163, 0.22); }
-.hiw-cal-status.wait { color: var(--hiw-gold); background: rgba(201, 168, 76, 0.1); border: 1px solid rgba(201, 168, 76, 0.24); }
+.hiw-cal-status.wait { color: var(--hiw-gold); background: rgba(163, 201, 64, 0.1); border: 1px solid rgba(163, 201, 64, 0.24); }
 
 .hiw-cal-metrics {
   display: flex;

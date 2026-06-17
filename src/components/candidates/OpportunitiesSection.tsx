@@ -80,9 +80,9 @@ const cards = [
         <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 3v18" /><path d="M3 9h18" /><path d="M3 15h18" />
       </svg>
     ),
-    iconBg: "rgba(201,168,76,0.12)",
-    iconBorder: "rgba(201,168,76,0.28)",
-    iconColor: "#C9A84C",
+    iconBg: "rgba(163, 201, 64,0.12)",
+    iconBorder: "rgba(163, 201, 64,0.28)",
+    iconColor: "#A3C940",
     text: "We loved your dashboard project. What was your role in it?",
     attribution: "Product Lead",
     position: { top: "8%", left: "3%" },
@@ -97,9 +97,9 @@ const cards = [
         <line x1="12" y1="12" x2="6" y2="6" /><line x1="12" y1="12" x2="18" y2="6" /><line x1="12" y1="12" x2="18" y2="18" /><line x1="12" y1="12" x2="6" y2="18" />
       </svg>
     ),
-    iconBg: "rgba(75,123,236,0.12)",
-    iconBorder: "rgba(75,123,236,0.28)",
-    iconColor: "#4B7BEC",
+    iconBg: "rgba(163, 201, 64,0.12)",
+    iconBorder: "rgba(163, 201, 64,0.28)",
+    iconColor: "#A3C940",
     text: "Your workflow case study stood out. Could we talk about how you approached it?",
     attribution: "Design Director",
     position: { top: "52%", left: "5%" },
@@ -130,9 +130,9 @@ const cards = [
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
       </svg>
     ),
-    iconBg: "rgba(201,168,76,0.10)",
-    iconBorder: "rgba(201,168,76,0.22)",
-    iconColor: "#C9A84C",
+    iconBg: "rgba(163, 201, 64,0.10)",
+    iconBorder: "rgba(163, 201, 64,0.22)",
+    iconColor: "#A3C940",
     text: "This is exactly the kind of work we care about. Would love to connect.",
     attribution: "Founder",
     position: { top: "55%", right: "4%" },
@@ -198,12 +198,12 @@ export const OpportunitiesSection: React.FC = () => {
                 style={{ fontSize: "clamp(1.55rem, 2.4vw, 2.4rem)", letterSpacing: "-0.02em" }}
               >
                 When quality work is visible, the right{" "}
-                <span className="italic" style={{ color: "#C9A84C" }}>
+                <span className="italic" style={{ color: "#A3C940" }}>
                   <LoopingWord words={["doors", "people", "offers", "teams"]} />
                 </span>{" "}
                 find you.
               </h2>
-              <div className="w-10 h-px mt-5" style={{ background: "rgba(201,168,76,0.45)" }} />
+              <div className="w-10 h-px mt-5" style={{ background: "rgba(163, 201, 64,0.45)" }} />
             </div>
 
             {/* ── BOTTOM — illustration with floating cards ── */}
@@ -235,7 +235,7 @@ export const OpportunitiesSection: React.FC = () => {
                       width: "clamp(200px, 22%, 280px)",
                       ...card.position,
                       background: "rgba(28,34,49,0.82)",
-                      border: "1px solid rgba(201,168,76,0.18)",
+                      border: "1px solid rgba(163, 201, 64,0.18)",
                       backdropFilter: "blur(16px)",
                       WebkitBackdropFilter: "blur(16px)",
                       boxShadow: "0 12px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",

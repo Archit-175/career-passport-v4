@@ -142,7 +142,7 @@ function drawCard(post: BlogPost, img: HTMLImageElement): HTMLCanvasElement {
   ctx.shadowOffsetY = 1;
 
   // Category (gold, tracked, uppercase) — Inter 500 is the heaviest weight loaded
-  ctx.fillStyle = "#C9A84C";
+  ctx.fillStyle = "#A3C940";
   ctx.font = '500 24px "Inter", system-ui, sans-serif';
   setLS("2.5px");
   ctx.fillText(post.category.toUpperCase(), P, P + 22);
@@ -170,7 +170,7 @@ function drawCard(post: BlogPost, img: HTMLImageElement): HTMLCanvasElement {
   }
 
   // Read-time row with a gold dot
-  ctx.fillStyle = "#C9A84C";
+  ctx.fillStyle = "#A3C940";
   ctx.beginPath();
   ctx.arc(P + 4, readY - 7, 4, 0, Math.PI * 2);
   ctx.fill();
@@ -880,7 +880,7 @@ export default function BlogGallery() {
               </p>
               <a
                 href="/candidates#waitlist"
-                className="mt-6 inline-flex rounded-full bg-blue px-6 py-3 font-inter text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:bg-blue/90 active:scale-[0.98]"
+                className="mt-6 inline-flex rounded-full bg-blue px-6 py-3 font-inter text-sm font-medium text-ink transition-all duration-200 hover:scale-[1.02] hover:bg-[#bcd96b] active:scale-[0.98]"
               >
                 Join the Waitlist
               </a>

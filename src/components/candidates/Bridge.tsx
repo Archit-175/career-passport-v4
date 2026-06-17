@@ -69,11 +69,11 @@ export function Bridge() {
                 custom={0.1}
               >
                 Standing out is not about saying more. It is about{" "}
-                <span style={{ color: "#C9A84C" }}>showing better</span>.
+                <span style={{ color: "#A3C940" }}>showing better</span>.
               </motion.h2>
               <motion.div
                 className="w-10 h-px mb-5"
-                style={{ background: "rgba(201,168,76,0.5)" }}
+                style={{ background: "rgba(163, 201, 64,0.5)" }}
                 variants={fadeUp}
                 custom={0.18}
               />
@@ -84,8 +84,7 @@ export function Bridge() {
                 custom={0.24}
               >
                 Career Passport bridges the gap between what you've done and what the
-                world can see turning your real experience into a verified, portable
-                identity that travels with you.
+                world can see.
               </motion.p>
             </motion.div>
 
@@ -137,7 +136,7 @@ export function Bridge() {
                   <div className="w-1 h-4 rounded-full bg-blue" />
                   <p
                     className="font-inter text-[0.65rem] tracking-[0.22em] uppercase font-medium"
-                    style={{ color: "#4B7BEC" }}
+                    style={{ color: "#A3C940" }}
                   >
                     Career Passport Analysis
                   </p>
@@ -154,12 +153,12 @@ export function Bridge() {
                       {i < 4 && (
                         <div
                           className="hidden sm:block absolute top-2.5 left-[calc(50%+10px)] right-0 h-px"
-                          style={{ background: "rgba(75,123,236,0.3)" }}
+                          style={{ background: "rgba(163, 201, 64,0.3)" }}
                         />
                       )}
                       <div
                         className="w-5 h-5 rounded-full mx-auto flex items-center justify-center z-10 relative text-[0.55rem] font-inter font-semibold text-white"
-                        style={{ background: i === 4 ? "#C9A84C" : "#4B7BEC" }}
+                        style={{ background: i === 4 ? "#A3C940" : "#A3C940" }}
                       >
                         {i + 1}
                       </div>
@@ -191,12 +190,12 @@ export function Bridge() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div
                     className="rounded-xl p-4 flex flex-col gap-2"
-                    style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)" }}
+                    style={{ background: "rgba(163, 201, 64,0.1)", border: "1px solid rgba(163, 201, 64,0.25)" }}
                   >
                     <span className="font-inter text-[0.62rem] tracking-[0.16em] uppercase text-gold font-semibold">Built</span>
                     <span
                       className="font-inter text-[0.58rem] tracking-[0.1em] uppercase rounded-full px-2 py-0.5 w-fit font-medium"
-                      style={{ background: "rgba(201,168,76,0.15)", color: "#C9A84C", border: "1px solid rgba(201,168,76,0.3)" }}
+                      style={{ background: "rgba(163, 201, 64,0.15)", color: "#A3C940", border: "1px solid rgba(163, 201, 64,0.3)" }}
                     >
                       Verified Built
                     </span>
@@ -206,12 +205,12 @@ export function Bridge() {
                   </div>
                   <div
                     className="rounded-xl p-4 flex flex-col gap-2"
-                    style={{ background: "rgba(75,123,236,0.1)", border: "1px solid rgba(75,123,236,0.25)" }}
+                    style={{ background: "rgba(163, 201, 64,0.1)", border: "1px solid rgba(163, 201, 64,0.25)" }}
                   >
-                    <span className="font-inter text-[0.62rem] tracking-[0.16em] uppercase font-semibold" style={{ color: "#4B7BEC" }}>Learned</span>
+                    <span className="font-inter text-[0.62rem] tracking-[0.16em] uppercase font-semibold" style={{ color: "#A3C940" }}>Learned</span>
                     <span
                       className="font-inter text-[0.58rem] tracking-[0.1em] uppercase rounded-full px-2 py-0.5 w-fit font-medium"
-                      style={{ background: "rgba(75,123,236,0.15)", color: "#4B7BEC", border: "1px solid rgba(75,123,236,0.3)" }}
+                      style={{ background: "rgba(163, 201, 64,0.15)", color: "#A3C940", border: "1px solid rgba(163, 201, 64,0.3)" }}
                     >
                       Verified Learned
                     </span>

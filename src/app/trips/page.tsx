@@ -43,7 +43,7 @@ export default function TripsPage() {
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/candidates#waitlist"
-            className="inline-flex items-center justify-center rounded-full bg-blue px-7 py-3 font-inter text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:bg-blue/90 active:scale-[0.98]"
+            className="inline-flex items-center justify-center rounded-full bg-blue px-7 py-3 font-inter text-sm font-medium text-ink transition-all duration-200 hover:scale-[1.02] hover:bg-[#bcd96b] active:scale-[0.98]"
           >
             Join the Waitlist
           </Link>

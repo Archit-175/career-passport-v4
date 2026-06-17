@@ -21,7 +21,7 @@
   height: 80%;
   background: radial-gradient(
     ellipse at 40% 50%,
-    rgba(201, 168, 76, 0.035) 0%,
+    rgba(163, 201, 64, 0.035) 0%,
     transparent 65%
   );
   pointer-events: none;
@@ -208,18 +208,18 @@
   gap: 0.6rem;
   padding: 1.75rem;
   background: rgba(28, 34, 49, 0.6);
-  border: 1px solid rgba(201, 168, 76, 0.18);
+  border: 1px solid rgba(163, 201, 64, 0.18);
   border-radius: 12px;
   backdrop-filter: blur(20px) saturate(150%);
   box-shadow:
-    0 0 0 0.5px rgba(201, 168, 76, 0.08) inset,
+    0 0 0 0.5px rgba(163, 201, 64, 0.08) inset,
     0 16px 48px rgba(0, 0, 0, 0.5);
 }
 
 .ypm-detail-card__rank {
   font-size: 0.65rem;
   font-weight: 400;
-  color: rgba(201, 168, 76, 0.5);
+  color: rgba(163, 201, 64, 0.5);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -297,7 +297,7 @@
 
 .ypm-detail-card__bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, rgba(201,168,76,0.6) 0%, #C9A84C 100%);
+  background: linear-gradient(90deg, rgba(163, 201, 64,0.6) 0%, #A3C940 100%);
   border-radius: 2px;
 }
 

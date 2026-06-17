@@ -192,7 +192,7 @@ function RadarChart({
             y2={outer.y.toFixed(2)}
             stroke={
               activeIdx === i
-                ? "rgba(201,168,76,0.2)"
+                ? "rgba(163, 201, 64,0.2)"
                 : "rgba(245,242,236,0.06)"
             }
             strokeWidth={activeIdx === i ? 1 : 0.5}
@@ -213,8 +213,8 @@ function RadarChart({
       {/* Passport score polygon — animated grow-in */}
       <motion.polygon
         points={toPolygonPoints(scoreRatios)}
-        fill="rgba(201,168,76,0.07)"
-        stroke="#C9A84C"
+        fill="rgba(163, 201, 64,0.07)"
+        stroke="#A3C940"
         strokeWidth={1.5}
         strokeLinejoin="round"
         initial={{ opacity: 0 }}
@@ -236,8 +236,8 @@ function RadarChart({
                   cx={pt.x}
                   cy={pt.y}
                   r={16}
-                  fill="rgba(201,168,76,0.08)"
-                  stroke="rgba(201,168,76,0.22)"
+                  fill="rgba(163, 201, 64,0.08)"
+                  stroke="rgba(163, 201, 64,0.22)"
                   strokeWidth={1}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -262,8 +262,8 @@ function RadarChart({
               cx={pt.x}
               cy={pt.y}
               r={isActive ? 6 : 4.5}
-              fill={isActive ? "#C9A84C" : "rgba(201,168,76,0.8)"}
-              stroke={isActive ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.3)"}
+              fill={isActive ? "#A3C940" : "rgba(163, 201, 64,0.8)"}
+              stroke={isActive ? "rgba(163, 201, 64,0.4)" : "rgba(163, 201, 64,0.3)"}
               strokeWidth={isActive ? 2 : 1.5}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -295,7 +295,7 @@ function RadarChart({
             y={labelPt.y.toFixed(2)}
             textAnchor={anchor}
             dominantBaseline="middle"
-            fill={isActive ? "rgba(201,168,76,0.9)" : "rgba(245,242,236,0.38)"}
+            fill={isActive ? "rgba(163, 201, 64,0.9)" : "rgba(245,242,236,0.38)"}
             fontSize="9"
             fontFamily="var(--font-inter)"
             fontWeight={isActive ? "400" : "300"}
@@ -324,7 +324,7 @@ function RadarChart({
       })}
 
       {/* Centre dot */}
-      <circle cx={CX} cy={CY} r={3} fill="rgba(201,168,76,0.2)" />
+      <circle cx={CX} cy={CY} r={3} fill="rgba(163, 201, 64,0.2)" />
     </svg>
   );
 }

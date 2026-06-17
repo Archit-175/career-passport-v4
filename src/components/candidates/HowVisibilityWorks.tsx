@@ -81,7 +81,7 @@ export function HowVisibilityWorks() {
             >
               <motion.p
                 className="font-inter text-[0.65rem] tracking-[0.28em] uppercase mb-6"
-                style={{ color: "rgba(201,168,76,0.85)" }}
+                style={{ color: "rgba(163, 201, 64,0.85)" }}
                 variants={fadeUp}
                 custom={0}
               >
@@ -95,17 +95,17 @@ export function HowVisibilityWorks() {
                 custom={0.1}
               >
                 We{" "}
-                <em style={{ color: "#C9A84C", fontStyle: "italic" }}>listen</em>
+                <em style={{ color: "#A3C940", fontStyle: "italic" }}>listen</em>
                 {" "}to you,{" "}
-                <em style={{ color: "#C9A84C", fontStyle: "italic" }}>nudge</em>
+                <em style={{ color: "#A3C940", fontStyle: "italic" }}>nudge</em>
                 {" "}you and{" "}
-                <em style={{ color: "#C9A84C", fontStyle: "italic" }}>build</em>
+                <em style={{ color: "#A3C940", fontStyle: "italic" }}>build</em>
                 {" "}your identity.
               </motion.h2>
 
               <motion.div
                 className="w-8 h-px mb-6"
-                style={{ background: "rgba(201,168,76,0.45)" }}
+                style={{ background: "rgba(163, 201, 64,0.45)" }}
                 variants={fadeUp}
                 custom={0.18}
               />
@@ -124,7 +124,7 @@ export function HowVisibilityWorks() {
                 <Link
                   href="/trips"
                   className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full font-inter text-[0.78rem] tracking-[0.04em] font-light w-fit transition-all duration-300 hover:bg-gold/10 hover:border-gold/60 group"
-                  style={{ border: "1px solid rgba(201,168,76,0.35)", color: "#C9A84C" }}
+                  style={{ border: "1px solid rgba(163, 201, 64,0.35)", color: "#A3C940" }}
                 >
                   More About Trip
                   <span className="text-[0.7rem] transition-transform duration-200 group-hover:translate-x-1">→</span>
@@ -151,7 +151,7 @@ export function HowVisibilityWorks() {
                     className="font-playfair shrink-0 leading-none select-none"
                     style={{
                       fontSize: "clamp(1.3rem, 1.8vw, 1.7rem)",
-                      color: "rgba(201,168,76,0.55)",
+                      color: "rgba(163, 201, 64,0.55)",
                       letterSpacing: "-0.02em",
                       marginTop: "0.05em",
                     }}

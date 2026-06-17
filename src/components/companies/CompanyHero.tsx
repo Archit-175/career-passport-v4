@@ -141,12 +141,12 @@ export function CompanyHero() {
             className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full"
             style={{
               background: "rgba(8, 10, 16, 0.65)",
-              border: "1px solid rgba(201,168,76,0.35)",
+              border: "1px solid rgba(163, 201, 64,0.35)",
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
             }}
           >
-            <Sparkles size={11} strokeWidth={1.5} style={{ color: "#C9A84C" }} />
+            <Sparkles size={11} strokeWidth={1.5} style={{ color: "#A3C940" }} />
             <span
               className="font-inter font-light tracking-[0.14em] uppercase"
               style={{ fontSize: "0.72rem", color: "rgba(245,242,236,0.85)" }}
@@ -177,7 +177,7 @@ export function CompanyHero() {
               }}
             >
               to{" "}
-              <span className="italic" style={{ color: "#C9A84C" }}>
+              <span className="italic" style={{ color: "#A3C940" }}>
                 calendar.
               </span>
             </h1>
@@ -201,28 +201,28 @@ export function CompanyHero() {
             className="group relative inline-flex items-center gap-3 px-9 py-3.5 rounded-full font-inter font-medium transition-all duration-300"
             style={{
               fontSize: "0.9rem",
-              background: "rgba(201,168,76,0.22)",
-              border: "1.5px solid rgba(201,168,76,0.7)",
+              background: "rgba(163, 201, 64,0.22)",
+              border: "1.5px solid rgba(163, 201, 64,0.7)",
               color: "#F5F2EC",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
-              boxShadow: "0 0 40px rgba(201,168,76,0.15), inset 0 1px 0 rgba(255,255,255,0.12)",
+              boxShadow: "0 0 40px rgba(163, 201, 64,0.15), inset 0 1px 0 rgba(255,255,255,0.12)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.35)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.9)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(201,168,76,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(163, 201, 64,0.35)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(163, 201, 64,0.9)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(163, 201, 64,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.22)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.7)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(201,168,76,0.15), inset 0 1px 0 rgba(255,255,255,0.12)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(163, 201, 64,0.22)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(163, 201, 64,0.7)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(163, 201, 64,0.15), inset 0 1px 0 rgba(255,255,255,0.12)";
             }}
           >
             Post your first role
             <span
               className="transition-transform duration-300 group-hover:translate-x-1"
-              style={{ color: "#C9A84C" }}
+              style={{ color: "#A3C940" }}
             >
               →
             </span>
@@ -237,7 +237,7 @@ export function CompanyHero() {
               height: "1px",
               marginBottom: "clamp(1.2rem, 2.5vh, 2rem)",
               background:
-                "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), rgba(201,168,76,0.2), transparent)",
+                "linear-gradient(90deg, transparent, rgba(163, 201, 64,0.2), rgba(163, 201, 64,0.2), transparent)",
             }}
           />
 
@@ -249,7 +249,7 @@ export function CompanyHero() {
                 <div className="hero-step flex flex-col items-center md:flex-1" style={{ gap: "clamp(0.6rem, 1.2vh, 1rem)" }}>
                   <p
                     className="font-playfair italic"
-                    style={{ fontSize: "0.9rem", color: "#C9A84C", letterSpacing: "0.05em" }}
+                    style={{ fontSize: "0.9rem", color: "#A3C940", letterSpacing: "0.05em" }}
                   >
                     {num}
                   </p>
@@ -285,10 +285,10 @@ export function CompanyHero() {
                         flex: 1,
                         height: "1px",
                         backgroundImage:
-                          "repeating-linear-gradient(90deg, rgba(201,168,76,0.45) 0px, rgba(201,168,76,0.45) 4px, transparent 4px, transparent 8px)",
+                          "repeating-linear-gradient(90deg, rgba(163, 201, 64,0.45) 0px, rgba(163, 201, 64,0.45) 4px, transparent 4px, transparent 8px)",
                       }}
                     />
-                    <span style={{ color: "rgba(201,168,76,0.55)", fontSize: "0.6rem", marginLeft: "2px" }}>›</span>
+                    <span style={{ color: "rgba(163, 201, 64,0.55)", fontSize: "0.6rem", marginLeft: "2px" }}>›</span>
                   </div>
                 )}
               </div>

@@ -23,7 +23,7 @@
   --backend-bg:      #0B0E14;
   --backend-surface: #1C2231;
   --backend-text:    #F5F2EC;
-  --backend-accent:  #C9A84C;
+  --backend-accent:  #A3C940;
   --backend-border:  rgba(255, 255, 255, 0.10);
 
   background-color: var(--backend-bg);
@@ -115,14 +115,14 @@
   font-size: 11px;
   font-weight: 700;
   color: #0B0E14;
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.22), 0 6px 20px rgba(201, 168, 76, 0.40);
+  box-shadow: 0 0 0 3px rgba(163, 201, 64, 0.22), 0 6px 20px rgba(163, 201, 64, 0.40);
 }
 
 /* Card body */
 .company-backend-card {
   background: linear-gradient(160deg, #232b3e 0%, var(--backend-surface) 45%, #161d2b 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1.5px solid rgba(201, 168, 76, 0.32);
+  border-top: 1.5px solid rgba(163, 201, 64, 0.32);
   border-radius: 20px;
   padding: 32px 20px 24px;
   flex-grow: 1;
@@ -134,7 +134,7 @@
     0 1px 0 rgba(255, 255, 255, 0.06) inset,
     0 20px 60px rgba(0, 0, 0, 0.60),
     0 6px 20px rgba(0, 0, 0, 0.30),
-    0 0 0 1px rgba(201, 168, 76, 0.05);
+    0 0 0 1px rgba(163, 201, 64, 0.05);
   box-sizing: border-box;
 }
 
@@ -148,7 +148,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 18px;
-  box-shadow: 0 0 20px rgba(201, 168, 76, 0.12);
+  box-shadow: 0 0 20px rgba(163, 201, 64, 0.12);
 }
 
 .backend-icon { width: 22px; height: 22px; }
@@ -165,7 +165,7 @@
   width: 28px;
   flex-shrink: 0;
   padding-bottom: 120px;
-  color: rgba(201, 168, 76, 0.55);
+  color: rgba(163, 201, 64, 0.55);
   font-size: 18px;
   letter-spacing: -2px;
 }
@@ -196,7 +196,7 @@
 
 .mockup-bulk-btn {
   width: 100%;
-  background: rgba(201, 168, 76, 0.85);
+  background: rgba(163, 201, 64, 0.85);
   color: #0B0E14;
   border: none;
   font-size: 9px;
@@ -227,7 +227,7 @@
 .mockup-action-card-tags { display: flex; gap: 5px; margin-bottom: 2px; }
 
 .mockup-card-tag { font-size: 7.5px; font-weight: 700; padding: 2px 5px; border-radius: 4px; }
-.tag-ivory { background: rgba(201,168,76,0.14); border: 1px solid rgba(201,168,76,0.28); color: #C9A84C; }
+.tag-ivory { background: rgba(163, 201, 64,0.14); border: 1px solid rgba(163, 201, 64,0.28); color: #A3C940; }
 .tag-teal { background: rgba(26,122,74,0.16); border: 1px solid rgba(26,122,74,0.32); color: #4ade80; }
 .tag-orange { background: rgba(212,107,43,0.16); border: 1px solid rgba(212,107,43,0.32); color: #fb923c; }
 
@@ -284,11 +284,11 @@
 .mockup-trip-logo { display: flex; align-items: center; gap: 4px; font-size: 7.5px; font-weight: 800; color: rgba(245,242,236,0.90); letter-spacing: 0.05em; }
 
 .mockup-trip-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.mockup-trip-badge { background: rgba(29,78,216,0.22); color: #93b4f8; font-size: 7px; font-weight: 700; padding: 1px 5px; border-radius: 10px; }
+.mockup-trip-badge { background: rgba(29,78,216,0.22); color: #c2dd6f; font-size: 7px; font-weight: 700; padding: 1px 5px; border-radius: 10px; }
 .mockup-trip-time { font-size: 7px; color: rgba(245,242,236,0.40); }
 .mockup-trip-greeting { font-size: 9px; font-weight: 600; margin: 0 0 2px 0; color: rgba(245,242,236,0.70); }
 .mockup-trip-headline { font-size: 11px; font-weight: 800; line-height: 1.25; margin: 0 0 4px 0; color: rgba(245,242,236,0.95); }
-.mockup-trip-blue { color: #93b4f8; }
+.mockup-trip-blue { color: #c2dd6f; }
 .mockup-trip-desc { font-size: 8px; color: rgba(245,242,236,0.50); margin: 0; line-height: 1.3; }
 
 .mockup-trip-steps { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; border-top: 1px dashed rgba(255,255,255,0.10); padding-top: 8px; }
@@ -297,19 +297,19 @@
 .trip-step-item.active { font-weight: 600; color: rgba(245,242,236,0.90); }
 .trip-step-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 6px; }
 .trip-step-item.done .trip-step-dot { background: #1a7a4a; color: #ffffff; }
-.trip-step-item.active .trip-step-dot { background: #4B7BEC; color: #ffffff; }
+.trip-step-item.active .trip-step-dot { background: #A3C940; color: #0B0E14; }
 
 .mockup-trip-footer { display: flex; gap: 6px; align-items: center; }
 .mockup-trip-link-circle { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: rgba(245,242,236,0.50); }
-.mockup-trip-btn { flex-grow: 1; background: rgba(75,123,236,0.20); color: #93b4f8; border: 1px solid rgba(75,123,236,0.35); font-size: 7.5px; font-weight: 600; padding: 6px 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; }
-.arrow-right-icon { stroke: #93b4f8; }
+.mockup-trip-btn { flex-grow: 1; background: rgba(163, 201, 64,0.20); color: #c2dd6f; border: 1px solid rgba(163, 201, 64,0.35); font-size: 7.5px; font-weight: 600; padding: 6px 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; }
+.arrow-right-icon { stroke: #c2dd6f; }
 
 /* Mockup 4: Results */
 .mockup-results-title { font-size: 9.5px; font-weight: 700; color: #ffffff; display: block; margin-bottom: 8px; }
 .mockup-results-metrics { display: flex; gap: 4px; justify-content: space-between; margin-bottom: 10px; }
 
 .results-metric-box { flex: 1; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.10); border-radius: 6px; padding: 4px; display: flex; flex-direction: column; align-items: center; color: rgba(245,242,236,0.95); box-sizing: border-box; }
-.results-metric-num { font-family: "Playfair Display", serif; font-size: 10px; font-weight: 700; line-height: 1; margin-bottom: 1px; color: #C9A84C; }
+.results-metric-num { font-family: "Playfair Display", serif; font-size: 10px; font-weight: 700; line-height: 1; margin-bottom: 1px; color: #A3C940; }
 .results-metric-lbl { font-size: 5.5px; color: rgba(245,242,236,0.50); text-align: center; white-space: nowrap; }
 
 .mockup-results-table { display: flex; flex-direction: column; gap: 5px; }
@@ -354,7 +354,7 @@
 
 .company-backend-tagline { display: flex; justify-content: center; gap: 32px; font-size: 13px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--backend-text) 58%, transparent); font-weight: 500; }
 .company-backend-tagline span { position: relative; }
-.company-backend-tagline span:not(:last-child)::after { content: "•"; position: absolute; right: -18px; color: rgba(201, 168, 76, 0.4); }
+.company-backend-tagline span:not(:last-child)::after { content: "•"; position: absolute; right: -18px; color: rgba(163, 201, 64, 0.4); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1150px) {

@@ -120,7 +120,7 @@ export function CandidateHero() {
           className="font-inter uppercase text-gold mb-4"
           style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.72rem)", letterSpacing: "0.18em" }}
         >
-          A Trusted Identity in the Age of AI
+          Built on what you&apos;ve done
         </p>
 
         {/* Headline — wrapper carries font-size so SplitText can't clear it.
@@ -130,9 +130,13 @@ export function CandidateHero() {
             ref={headlineRef}
             className="font-playfair leading-[1.12] tracking-[-0.01em] mb-8"
           >
-            <span className="text-white block whitespace-nowrap">Your life is a journey</span>
-            <span style={{ color: "#C9A84C" }} className="block whitespace-nowrap">
-              worth designing.
+            <span className="text-white block whitespace-nowrap">Design the career</span>
+            <span className="text-white block whitespace-nowrap">
+              you&apos;re{" "}
+              <em className="italic" style={{ color: "#A3C940" }}>
+                proud
+              </em>{" "}
+              of.
             </span>
           </h1>
         </div>
@@ -143,17 +147,17 @@ export function CandidateHero() {
           className="font-inter font-light leading-[1.75] text-white/90 max-w-lg mx-auto mb-10 sm:mb-12"
           style={{ fontSize: "clamp(0.95rem, 3.4vw, 1.05rem)" }}
         >
-          Career Passport turns your work, your personality,
+     Career Passport turns your work, your personality,
+
           <br className="hidden sm:block" />
-          and your experiences into a trustworthy, proof-backed identity.
-        </p>
+and your experiences into a trustworthy, proof-backed identity.        </p>
 
         {/* CTA */}
         <div ref={ctaRef}>
           <Link
             href="#waitlist"
-            className="inline-block px-12 py-4 rounded-full font-inter font-medium text-[1rem] text-white transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
-            style={{ backgroundColor: "#C9A84C" }}
+            className="inline-block px-12 py-4 rounded-full font-inter font-medium text-[1rem] text-ink transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+            style={{ backgroundColor: "#A3C940" }}
           >
             Join the waitlist
           </Link>

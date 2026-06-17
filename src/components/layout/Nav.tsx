@@ -27,9 +27,8 @@ export function Nav() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-white/10"
-          : "border-b border-white/5",
-        "bg-white/5 backdrop-blur-xl"
+          ? "border-b border-white/10 bg-white/5 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       )}
     >
       <nav className="relative mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
@@ -88,7 +87,7 @@ export function Nav() {
           </Link>
           <Link
             href="#waitlist"
-            className="ml-2 px-5 py-2 text-[0.82rem] font-inter font-medium rounded-full bg-blue hover:bg-blue/90 text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="ml-2 px-5 py-2 text-[0.82rem] font-inter font-medium rounded-full bg-blue hover:bg-[#bcd96b] text-ink transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             Join the Waitlist
           </Link>
@@ -138,7 +137,7 @@ export function Nav() {
           <Link
             href="#waitlist"
             onClick={() => setMobileOpen(false)}
-            className="w-full text-center py-3 rounded-full bg-blue text-white text-sm font-inter font-medium"
+            className="w-full text-center py-3 rounded-full bg-blue hover:bg-[#bcd96b] text-ink text-sm font-inter font-medium transition-colors"
           >
             Join the Waitlist
           </Link>

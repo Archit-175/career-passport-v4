@@ -3,8 +3,8 @@
 /* ── TOKENS ── */
 .company-cta-shell {
   --company-cta-bg:     #0B0E14;
-  --company-cta-accent: #C9A84C;
-  --company-cta-blue:   #4B7BEC;
+  --company-cta-accent: #A3C940;
+  --company-cta-blue:   #A3C940;
   --company-cta-slate:  #1C2231;
   --company-cta-pearl:  #F5F2EC;
 
@@ -168,7 +168,7 @@
 
 .company-cta-input-field:focus {
   border-color: var(--company-cta-accent);
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+  box-shadow: 0 0 0 3px rgba(163, 201, 64, 0.15);
   background: rgba(28, 34, 49, 0.85);
 }
 
@@ -182,7 +182,7 @@
   padding: 0 28px;
   border-radius: 10px;
   background: var(--company-cta-blue);
-  color: #ffffff;
+  color: #0B0E14;
   font-family: Inter, system-ui, sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -193,14 +193,14 @@
   justify-content: center;
   gap: 8px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(75, 123, 236, 0.3);
+  box-shadow: 0 4px 16px rgba(163, 201, 64, 0.3);
   white-space: nowrap;
 }
 
 .company-cta-submit-btn:hover {
   transform: translateY(-2px);
-  background: #6090f5;
-  box-shadow: 0 8px 24px rgba(75, 123, 236, 0.45);
+  background: #bcd96b;
+  box-shadow: 0 8px 24px rgba(163, 201, 64, 0.45);
 }
 
 .company-cta-submit-btn:active {
@@ -243,7 +243,7 @@
   align-items: center;
   justify-content: center;
   color: var(--company-cta-accent);
-  border: 1px solid rgba(201, 168, 76, 0.2);
+  border: 1px solid rgba(163, 201, 64, 0.2);
   flex-shrink: 0;
 }
 
@@ -292,7 +292,7 @@
   bottom: max(24px, env(safe-area-inset-bottom, 0px) + 16px);
   pointer-events: auto;
   background: #1C2231;
-  border: 1px solid rgba(201, 168, 76, 0.25);
+  border: 1px solid rgba(163, 201, 64, 0.25);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   border-radius: 14px;
   padding: 14px 24px;
