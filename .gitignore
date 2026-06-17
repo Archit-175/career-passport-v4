@@ -52,6 +52,6 @@ next-env.d.ts
 # playwright / MCP tooling
 .playwright-mcp/
 
-# debug screenshots
-*.png
-*.jpeg
+# debug screenshots (root-level only)
+/*.png
+/*.jpeg
