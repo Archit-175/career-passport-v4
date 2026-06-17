@@ -32,10 +32,13 @@ export function Bridge() {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/60" />
 
+        {/* Bottom blend — fades into HowVisibilityWorks */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 z-[1] pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.95))" }} />
+
         {/* Glass card — absolute-fill on desktop, in-flow & stacked on mobile */}
         <div className="relative lg:absolute lg:inset-0 z-10 w-full p-4 sm:p-6 lg:p-12">
           <div
-            className="w-full h-auto lg:h-full rounded-2xl flex flex-col lg:flex-row overflow-hidden"
+            className="w-full rounded-2xl flex flex-col lg:flex-row min-h-[70vh]"
             style={{
               background: "rgba(255, 255, 255, 0.07)",
               backdropFilter: "blur(28px)",

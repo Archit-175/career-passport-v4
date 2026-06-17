@@ -88,15 +88,15 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 ```
 / → redirects to /candidates
 
-/candidates     ✅ S1 CandidateHero          — hero candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up
-                ✅ S2 TheProblem             — black bg, 3-panel numbered grid; TileOverlay (RSC — no Framer Motion, no opacity:0 on mount)
-                ✅ S3 Bridge                 — bridge.jpeg bg, glass card, 3-col layout; Framer Motion fade-up stagger on scroll
-                ✅ S4 HowVisibilityWorks     — black bg, text + how-visibility.jpeg; glass card stacks vertically below lg; Framer Motion stagger (left col fade-up, right step cards slide-in from right)
-                ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, hover-to-detail) left + headline/detail-card/trip-CTA right; Framer Motion reveals
+/candidates     ✅ S1 CandidateHero          — images/hero/candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up
+                ✅ S2 TheProblem             — black bg, 3-panel numbered grid; TileOverlay **temporarily disabled** (commented out in TheProblem.tsx — uncomment import + JSX to restore); RSC — no Framer Motion, no opacity:0 on mount
+                ✅ S3 Bridge                 — images/sections/bridge.jpeg bg, glass card, 3-col layout; Framer Motion fade-up stagger on scroll; **bottom blend gradient** (`transparent → rgba(0,0,0,0.95)`, `h-40`, `z-[1]`) dissolves photo edge into S4
+                ✅ S4 HowVisibilityWorks     — matches Bridge pattern: full-bleed `images/sections/trip.jpeg` bg, `bg-black/60` overlay, glass card (`rgba(255,255,255,0.07)` + `blur(28px)` + `border rgba(255,255,255,0.14)`); **top blend gradient** (`rgba(0,0,0,0.95) → transparent`, `h-40`, `z-[1]`) receives the fade from S3; left 40% col (eyebrow `0.65rem / tracking-[0.28em]` gold, Playfair heading `clamp(1.75–2.6rem)` with gold italic `<em>` highlights, gold rule `w-8`, 2-line subtext `leading-[1.7]`, rounded-full gold-border CTA link); right 52% col (step list `01–04`: large Playfair gold numerals `clamp(1.3–1.7rem) / rgba(201,168,76,0.55)` + Playfair title `clamp(1.05–1.2rem) / opacity 0.95 pearl` + Inter light body `clamp(0.83–0.9rem) / rgba(245,242,236,0.65)` + `border-white/[0.12]` dividers + `py-7` rows); Framer Motion fade-up stagger on both cols
+                ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, whole-chart continuous hover) left + headline/detail-card/trip-CTA right; Framer Motion reveals. See "YourPassportMeasured — Radar Hover" below.
                 ⚠️ OpportunitiesSection      — NOT rendered (dead code; see Notes). opportunities-bg.jpeg bg, glass card with GSAP looping gold word + opportunities.png + 4 floating recruiter cards
                 ✅ S7 CandidateCta          — final waitlist CTA; GSAP/SplitText entrance + slot-text button roller
 
-/companies      ✅ S1 CompanyHero            — companies hero.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger
+/companies      ✅ S1 CompanyHero            — images/hero/companies.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger
                 ✅ S2 CompanyHowItWorks    — flat-ink static zigzag: heading + 4 alternating text/demo rows (compact dark-glass demos), Framer Motion fade-up on scroll
                 ✅ S3 CompanyWhatHappensInBackend
                 ✅ S4 CompanyCta             — GSAP/SplitText entrance + slot-text button roller
@@ -108,7 +108,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 
 ### Responsiveness
 
-The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` were the main offenders: their fixed `40%/8–10%/50–52%` flex splits now `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
+The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` share the same full-bleed photo → overlay → glass-card pattern. Their fixed `40%/8%/52%` flex splits go `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `YourPassportMeasured` uses `grid-template-areas` on `.ypm-layout` so the header can be a separate grid item from the radar/detail-block: desktop `"chart header" / "chart content"`, mobile/tablet (≤900px) `"header" / "chart" / "content"` (text → radar → hover/detail block). `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
 
 ### Loader & Page Transitions  (`src/components/loader/`)
 
@@ -190,18 +190,25 @@ The `/public` folder is organised into subfolders with kebab-case, conventionall
 
 ```
 public/
-  video/cta-background.mp4              → CandidateCta (S7) + CompanyCta (S4) background video
+  common/CTA.png                        → CompanyCta (S4) background image (opacity 0.85; top-blend gradient in CSS)
   images/
     hero/candidate.png                  → CandidateHero (S1) background
     hero/companies.png                  → CompanyHero (S1) background
     sections/bridge.jpeg                → Bridge (S3) background
-    sections/how-visibility.jpeg        → HowVisibilityWorks (S4) background
+    sections/trip.jpeg                  → HowVisibilityWorks (S4) background
     sections/opportunities-bg.jpeg      → OpportunitiesSection background (component currently unused — see Notes)
     sections/opportunities.png          → OpportunitiesSection illustration (unused)
     blog/journal-01..24.jpeg            → BlogGallery (24 photos cycled across 54 posts)
 ```
 
 Path generator for blog images lives in `blogData.ts` (`/images/blog/journal-NN.jpeg`).
+
+> **Note:** `HowVisibilityWorks.tsx` uses `/images/sections/trip.jpeg` (present). The old `how-visibility.jpeg` name referred to this same image before it was renamed; `trip.jpeg` is the correct current filename.
+
+### next/image Rules
+
+- `next.config.ts` explicitly allows `images.qualities: [75, 90]` — only these two quality values are valid. Do not use other values (e.g. `quality={85}`) without adding them to the config.
+- Every `<Image fill …>` component **must** include a `sizes` prop (Next.js 16 enforces this). Pattern: `sizes="(max-width: 768px) 100vw, 50vw"` — adjust breakpoints to match the actual layout column width.
 
 ---
 
@@ -250,8 +257,12 @@ Applied in: `CandidateHero.tsx`, `CandidateCta.tsx`, `CompanyHero.tsx`, `Company
 
 Both CTAs use **co-located `.css` files** (not Tailwind utilities) — intentional for components with many CSS custom properties and glass effects. Each CSS file defines scoped tokens on the shell class (`--cta-bg`, `--cta-accent`, `--cta-blue`).
 
+**Background — `CompanyCta`:** `/common/CTA.png` at `opacity: 0.85`. A `::after` on `.company-cta-bg-layer` (z-index 2) applies a top-blend gradient: `rgba(11,14,20,1)` 0% → transparent ~35% → light centre → `rgba(11,14,20,0.60)` 100%. Blends seamlessly into the `#0B0E14` `CompanyWhatHappensInBackend` section above. **Never remove this overlay or reset image opacity to 1 — the abrupt black-to-bright-image jump will return.**
+
+**Background — `CompanyHero`:** Two-layer overlay — gradient (`rgba(11,14,20,0.72)` 0%, `0.62` 25%, `0.70` 55%, `0.94` 82%, `1.0` 100%) plus a flat `rgba(11,14,20,0.28)` layer on top. Intentionally dark to match the page's black-first aesthetic.
+
 Structure:
-- Looping background video (`/video/cta-background.mp4`, `opacity: 0.35`) with an ink-to-transparent gradient overlay
+- `CompanyCta` background: `/common/CTA.png` at opacity 0.85 with top-blend gradient overlay; `CandidateCta` background: video `/video/cta-background.mp4`
 - Eyebrow monospace label in gold + Playfair heading with italic gold `<span>` highlight
 - Email `<input>` (slate-glass, gold focus ring) + blue submit `<button>` in a flex row — stacks on mobile
 - 3 trust badge items: slate-glass icon circle (gold icon stroke) + label text
@@ -260,7 +271,7 @@ Structure:
 - **`CompanyCta`** mirrors `CandidateCta` exactly — same `useGSAP` + `SplitText` entrance sequence, same `slot-text` button roller. Label initialises to "Connect with us"; success rolls to "We'll be in touch!".
 - **`handleSubmit` is a `console.log` placeholder** — replace with real API call when backend exists
 - Candidate CTA: `id="waitlist"` · Company CTA: `id="company-waitlist"`
-- Video asset: `public/video/cta-background.mp4` → served at `/video/cta-background.mp4`
+- Image asset: `public/common/CTA.png` → served at `/common/CTA.png`
 
 ---
 
@@ -327,6 +338,30 @@ Applied to `/candidates` S2 (`TheProblem`). On hover, nearby tiles lift in 3D to
 
 ---
 
+## YourPassportMeasured — Radar Hover (`/candidates` S5)
+
+`YourPassportMeasured.tsx` (`"use client"`) + `YourPassportMeasured.css`. 8-dimension SVG radar chart on the left; a detail card / default panel on the right driven by hover state (`activeIdx: number | null`).
+
+**Hover model — whole-chart surface (not point targets):**
+The SVG has `onMouseMove` / `onMouseLeave` directly on it. `handlePointerMove` maps cursor position to the nearest dimension by angle from centre (Voronoi-by-angle):
+```ts
+const dx = ((e.clientX - rect.left) / rect.width) * 440 - CX;
+const dy = ((e.clientY - rect.top) / rect.height) * 440 - CY;
+if (Math.hypot(dx, dy) < 14) return; // dead-centre: keep last active
+const ang = Math.atan2(dy, dx) + Math.PI / 2; // rotate so "up" = idx 0
+const idx = ((Math.round((ang / (2*Math.PI)) * N) % N) + N) % N;
+onNodeHover(idx);
+```
+This means moving the cursor anywhere over the chart always shows a detail card — no dead zones between the 8 small dot targets. `onMouseLeave` on the SVG clears `activeIdx` → shows the default panel.
+
+**Critical: do not key the detail card by dimension id.**
+`AnimatePresence mode="wait"` is used to animate between the default panel and the detail card. The detail card uses `key="detail"` (stable), **not** `key={activeItem.id}`. This keeps the card mounted while switching dimensions so content updates in place (progress bar tweens, name/score swap) — using `key={id}` would remount the card on every node change, causing a 0.28s exit-then-enter stutter under `mode="wait"`.
+
+**Fixed card-area height — no layout shift on hover:**
+`.ypm-card-area` has a fixed `height: 320px` (desktop) / `height: 290px` (≤900px). Both `.ypm-detail-card` and `.ypm-default-panel` are `position: absolute; top: 0; left: 0; right: 0;` so they overlay within the fixed container. Without this, the taller detail card would push the section height up on hover.
+
+---
+
 ## Blog — Gallery (`/blog`)
 
 `BlogGallery.tsx` (`"use client"`) is a full-screen phantom.land-style gallery: a **flat, tightly-packed grid at rest** that **curves into a sphere and zooms out while you drag**, relaxing back to flat when you stop. Cards (one per `POSTS` entry — 54 posts, 24 `journal-NN.jpeg` photos cycled) are drawn as canvas textures.
@@ -368,9 +403,14 @@ Rebuilt as a flat-ink section (no photo, no glassmorphism, no sticky/scroll mach
 
 - **Shell**: `.hiw-section` flat `--hiw-bg` (ink). Rows are CSS grid `1fr 1fr`; even rows get `.reverse` which flips column `order`. Collapses to single column (text above demo) at ≤900px.
 - **Demos** (`DemoCard` shell + `BriefDemo`/`JourneyDemo`/`MomentsDemo`/`CalendarDemo`): compact **dark-glass** cards — gradient `linear-gradient(160deg,#232b3e→#1C2231→#161d2b)`, gold top hairline, pearl text. **All demos stay dark** (no `#fff` surfaces — same rule as S3 below). One gold accent per demo.
+- **`DemoCard` header**: macOS-style **traffic-light dots** (red `#ff5f57` / amber `#febc2e` / green `#28c840`) pinned **left** via `.hiw-demo-dots i:nth-child(n)`, followed by the section label.
 - **Teal token**: `--hiw-teal: #6fd0a3` (lightened from the design-system teal for legibility on the dark surface).
 - The `MiraRaoAvatar`/`ArnavNairAvatar` inline SVGs are reused in `CalendarDemo`.
 - `companiess2.jpeg` was deleted (it was this section's pre-redesign background; the static zigzag uses no photo).
+
+### CompanyHero → S2 blend
+
+`CompanyHero`'s bottom overlay gradient ramps to **fully opaque ink** at the very bottom (`…rgba(11,14,20,0.92) 85%, rgba(11,14,20,1) 100%`) so the hero photo dissolves into the exact ink colour S2 starts on — no visible seam between the hero and the flat-ink "How it works" section.
 
 ### CompanyWhatHappensInBackend — Dark Theme Rules
 

@@ -217,11 +217,10 @@ function RadarChart({
         stroke="#C9A84C"
         strokeWidth={1.5}
         strokeLinejoin="round"
-        initial={{ opacity: 0, scale: 0.2 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformOrigin: `${CX}px ${CY}px` }}
       />
 
       {/* Interactive score dots */}
@@ -266,8 +265,8 @@ function RadarChart({
               fill={isActive ? "#C9A84C" : "rgba(201,168,76,0.8)"}
               stroke={isActive ? "rgba(201,168,76,0.4)" : "rgba(201,168,76,0.3)"}
               strokeWidth={isActive ? 2 : 1.5}
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{
                 delay: 0.5 + i * 0.06,

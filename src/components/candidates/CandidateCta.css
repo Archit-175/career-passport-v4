@@ -2,7 +2,7 @@
 
 /* ── TOKENS ── */
 .cta-shell {
-  --cta-bg:     #0B0E14;
+  --cta-bg:     #000000;
   --cta-accent: #C9A84C;
   --cta-blue:   #4B7BEC;
   --cta-slate:  #1C2231;
@@ -19,6 +19,7 @@
   align-items: center;
   box-sizing: border-box;
 }
+
 
 /* ── REVEAL ANIMATION ── */
 .reveal-up {
@@ -42,6 +43,24 @@
   pointer-events: none;
 }
 
+.cta-bg-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #000000 22%,
+    rgba(0, 0, 0, 0.95) 30%,
+    rgba(0, 0, 0, 0.75) 42%,
+    rgba(0, 0, 0, 0.3) 58%,
+    rgba(0, 0, 0, 0) 72%
+  );
+}
+
+
 .cta-bg-image {
   position: absolute;
   inset: 0;
@@ -50,22 +69,7 @@
   object-fit: cover;
   object-position: center bottom;
   pointer-events: none;
-  opacity: 0.35;
-}
-
-/* Ink bleeds in from top; video shows through at bottom */
-.cta-bg-overlay-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    #0B0E14 0%,
-    rgba(11, 14, 20, 0.92) 18%,
-    rgba(11, 14, 20, 0.65) 50%,
-    rgba(11, 14, 20, 0.25) 80%,
-    rgba(11, 14, 20, 0.05) 100%
-  );
-  pointer-events: none;
+  opacity: 1;
 }
 
 /* ── CONTENT CONTAINER ── */

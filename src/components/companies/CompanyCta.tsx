@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { slotText } from "slot-text";
 import type { SlotTextController } from "slot-text";
@@ -17,13 +18,7 @@ interface Toast {
   type: "success" | "error";
 }
 
-interface CompanyCtaProps {
-  videoSrc?: string;
-}
-
-export const CompanyCta: React.FC<CompanyCtaProps> = ({
-  videoSrc = "/video/cta-background.mp4",
-}) => {
+export const CompanyCta: React.FC = () => {
   const containerRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -130,19 +125,17 @@ export const CompanyCta: React.FC<CompanyCtaProps> = ({
       aria-label="Ready to hire differently"
       id="company-waitlist"
     >
-      {/* Background video */}
+      {/* Background image */}
       <div className="company-cta-bg-layer">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
+        <Image
+          src="/common/CTA.png"
+          alt=""
+          fill
           className="company-cta-bg-image"
-          style={{ objectFit: "cover", width: "100%", height: "100%" }}
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-        <div className="company-cta-bg-overlay-fade" />
+          style={{ objectFit: "cover" }}
+          sizes="100vw"
+          priority
+        />
       </div>
 
       {/* Content */}

@@ -37,9 +37,9 @@ export function CompanyHero() {
           ? Array.from(stepsRef.current.querySelectorAll<HTMLElement>(".hero-step"))
           : [];
 
-        // Clear any stale HMR GSAP inline styles
+        // Clear any stale HMR GSAP inline styles (exclude ctaRef — it has React inline styles for border/bg)
         gsap.set(
-          [eyebrowRef.current, subtextRef.current, ctaRef.current, headlineRef.current, ...stepEls],
+          [eyebrowRef.current, subtextRef.current, headlineRef.current, ...stepEls],
           { clearProps: "all" }
         );
 
@@ -92,7 +92,11 @@ export function CompanyHero() {
   );
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex flex-col overflow-hidden">
+    <section
+      ref={containerRef}
+      className="relative flex flex-col overflow-hidden"
+      style={{ minHeight: "100dvh" }}
+    >
 
       {/* Background image */}
       <Image
@@ -102,6 +106,7 @@ export function CompanyHero() {
         quality={90}
         priority
         className="object-cover object-center"
+        sizes="100vw"
         onLoad={onHeroReady}
         ref={(el) => {
           if (el?.complete) onHeroReady();
@@ -113,15 +118,22 @@ export function CompanyHero() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(11,14,20,0.4) 0%, rgba(11,14,20,0.25) 30%, rgba(11,14,20,0.5) 60%, rgba(11,14,20,0.92) 85%, rgba(11,14,20,1) 100%)",
+            "linear-gradient(180deg, rgba(11,14,20,0.72) 0%, rgba(11,14,20,0.62) 25%, rgba(11,14,20,0.70) 55%, rgba(11,14,20,0.94) 82%, rgba(11,14,20,1) 100%)",
         }}
       />
+      <div
+        className="absolute inset-0"
+        style={{ background: "rgba(11,14,20,0.28)" }}
+      />
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-between flex-1 w-full max-w-5xl mx-auto px-6 pt-36 pb-14">
+      {/* Content — vertically centered as a single flowing column */}
+      <div
+        className="relative z-10 flex flex-col items-center justify-center flex-1 w-full max-w-5xl mx-auto px-6"
+        style={{ paddingTop: "clamp(4rem, 10vh, 7rem)", paddingBottom: "clamp(2rem, 4vh, 3.5rem)" }}
+      >
 
         {/* ── Upper block ── */}
-        <div className="flex flex-col items-center text-center gap-7">
+        <div className="flex flex-col items-center text-center" style={{ gap: "clamp(1rem, 2vh, 1.5rem)" }}>
 
           {/* Eyebrow pill */}
           <div
@@ -148,7 +160,7 @@ export function CompanyHero() {
             <h1
               className="font-playfair text-pearl leading-[1.05]"
               style={{
-                fontSize: "clamp(2.8rem, 5.5vw, 5.2rem)",
+                fontSize: "clamp(2.4rem, 5vw, 5.2rem)",
                 letterSpacing: "-0.025em",
                 textShadow: "0 2px 40px rgba(0,0,0,0.4)",
               }}
@@ -158,7 +170,7 @@ export function CompanyHero() {
             <h1
               className="font-playfair leading-[1.05]"
               style={{
-                fontSize: "clamp(2.8rem, 5.5vw, 5.2rem)",
+                fontSize: "clamp(2.4rem, 5vw, 5.2rem)",
                 letterSpacing: "-0.025em",
                 color: "#F5F2EC",
                 textShadow: "0 2px 40px rgba(0,0,0,0.4)",
@@ -175,7 +187,7 @@ export function CompanyHero() {
           <p
             ref={subtextRef}
             className="font-inter font-light text-pearl/70 leading-relaxed max-w-md"
-            style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)", lineHeight: "1.7" }}
+            style={{ fontSize: "clamp(0.88rem, 1.2vw, 1.05rem)", lineHeight: "1.65" }}
           >
             Tell us what you need. We handle everything
             <br />
@@ -189,20 +201,22 @@ export function CompanyHero() {
             className="group relative inline-flex items-center gap-3 px-9 py-3.5 rounded-full font-inter font-medium transition-all duration-300"
             style={{
               fontSize: "0.9rem",
-              background: "rgba(201,168,76,0.12)",
-              border: "1px solid rgba(201,168,76,0.5)",
+              background: "rgba(201,168,76,0.22)",
+              border: "1.5px solid rgba(201,168,76,0.7)",
               color: "#F5F2EC",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
-              boxShadow: "0 0 32px rgba(201,168,76,0.08), inset 0 1px 0 rgba(255,255,255,0.08)",
+              boxShadow: "0 0 40px rgba(201,168,76,0.15), inset 0 1px 0 rgba(255,255,255,0.12)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.2)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.7)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.35)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.9)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(201,168,76,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.12)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.5)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.22)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.7)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(201,168,76,0.15), inset 0 1px 0 rgba(255,255,255,0.12)";
             }}
           >
             Post your first role
@@ -216,70 +230,69 @@ export function CompanyHero() {
         </div>
 
         {/* ── Steps row ── */}
-        <div className="w-full flex items-center justify-center mt-12 md:mt-16">
-          <div className="w-full">
-            <div
-              className="w-full mb-10"
-              style={{
-                height: "1px",
-                background:
-                  "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), rgba(201,168,76,0.2), transparent)",
-              }}
-            />
+        <div className="w-full" style={{ marginTop: "clamp(2rem, 5vh, 3.5rem)" }}>
+          <div
+            className="w-full"
+            style={{
+              height: "1px",
+              marginBottom: "clamp(1.2rem, 2.5vh, 2rem)",
+              background:
+                "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), rgba(201,168,76,0.2), transparent)",
+            }}
+          />
 
-            <div ref={stepsRef} className="grid grid-cols-2 gap-x-6 gap-y-10 md:flex md:items-center md:justify-between w-full">
-              {STEPS.map(({ num, icon: Icon, label }, i) => (
-                <div key={num} className="flex items-center justify-center md:flex-1">
+          <div ref={stepsRef} className="grid grid-cols-2 gap-x-6 gap-y-8 md:flex md:items-center md:justify-between w-full">
+            {STEPS.map(({ num, icon: Icon, label }, i) => (
+              <div key={num} className="flex items-center justify-center md:flex-1">
 
-                  {/* Step card */}
-                  <div className="hero-step flex flex-col items-center gap-4 md:flex-1">
-                    <p
-                      className="font-playfair italic"
-                      style={{ fontSize: "1rem", color: "#C9A84C", letterSpacing: "0.05em" }}
-                    >
-                      {num}
-                    </p>
+                {/* Step card */}
+                <div className="hero-step flex flex-col items-center md:flex-1" style={{ gap: "clamp(0.6rem, 1.2vh, 1rem)" }}>
+                  <p
+                    className="font-playfair italic"
+                    style={{ fontSize: "0.9rem", color: "#C9A84C", letterSpacing: "0.05em" }}
+                  >
+                    {num}
+                  </p>
 
-                    <div
-                      className="flex items-center justify-center rounded-full transition-all duration-300"
-                      style={{
-                        width: "64px",
-                        height: "64px",
-                        background: "rgba(245,242,236,0.06)",
-                        border: "1px solid rgba(245,242,236,0.2)",
-                        backdropFilter: "blur(12px)",
-                        WebkitBackdropFilter: "blur(12px)",
-                        boxShadow: "0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)",
-                      }}
-                    >
-                      <Icon size={24} strokeWidth={1.4} style={{ color: "rgba(245,242,236,0.85)" }} />
-                    </div>
-
-                    <p
-                      className="font-inter font-light text-center leading-snug whitespace-pre-line"
-                      style={{ fontSize: "0.82rem", color: "rgba(245,242,236,0.7)", lineHeight: "1.55" }}
-                    >
-                      {label}
-                    </p>
+                  <div
+                    className="flex items-center justify-center rounded-full transition-all duration-300"
+                    style={{
+                      width: "clamp(48px, 6vh, 64px)",
+                      height: "clamp(48px, 6vh, 64px)",
+                      background: "rgba(245,242,236,0.06)",
+                      border: "1px solid rgba(245,242,236,0.2)",
+                      backdropFilter: "blur(12px)",
+                      WebkitBackdropFilter: "blur(12px)",
+                      boxShadow: "0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <Icon size={20} strokeWidth={1.4} style={{ color: "rgba(245,242,236,0.85)" }} />
                   </div>
 
-                  {/* Connector — desktop row only */}
-                  {i < STEPS.length - 1 && (
-                    <div className="hidden md:flex items-center gap-1 shrink-0 mb-6" style={{ width: "60px" }}>
-                      <div
-                        style={{
-                          flex: 1,
-                          height: "1px",
-                          backgroundImage:
-                            "repeating-linear-gradient(90deg, rgba(201,168,76,0.45) 0px, rgba(201,168,76,0.45) 4px, transparent 4px, transparent 8px)",
-                        }}
-                      />
-                      <span style={{ color: "rgba(201,168,76,0.55)", fontSize: "0.6rem", marginLeft: "2px" }}>›</span>
-                    </div>
-                  )}
+                  <p
+                    className="font-inter font-light text-center leading-snug whitespace-pre-line"
+                    style={{ fontSize: "0.8rem", color: "rgba(245,242,236,0.7)", lineHeight: "1.5" }}
+                  >
+                    {label}
+                  </p>
                 </div>
-              ))}
-            </div>
+
+                {/* Connector — desktop row only */}
+                {i < STEPS.length - 1 && (
+                  <div className="hidden md:flex items-center gap-1 shrink-0 mb-5" style={{ width: "60px" }}>
+                    <div
+                      style={{
+                        flex: 1,
+                        height: "1px",
+                        backgroundImage:
+                          "repeating-linear-gradient(90deg, rgba(201,168,76,0.45) 0px, rgba(201,168,76,0.45) 4px, transparent 4px, transparent 8px)",
+                      }}
+                    />
+                    <span style={{ color: "rgba(201,168,76,0.55)", fontSize: "0.6rem", marginLeft: "2px" }}>›</span>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 

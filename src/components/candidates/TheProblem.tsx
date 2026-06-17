@@ -1,4 +1,4 @@
-import TileOverlay from "@/components/TileOverlay";
+// import TileOverlay from "@/components/TileOverlay"; // temporarily disabled
 
 export function TheProblem() {
   return (
@@ -89,7 +89,7 @@ export function TheProblem() {
       </div>
 
       {/* Tile hover effect overlay */}
-      <TileOverlay className="absolute inset-0 z-10" />
+      {/* <TileOverlay className="absolute inset-0 z-10" /> */}
     </section>
   );
 }

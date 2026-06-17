@@ -125,13 +125,13 @@ export function CandidateHero() {
 
         {/* Headline — wrapper carries font-size so SplitText can't clear it.
             No whitespace-nowrap: lines wrap gracefully instead of clipping on phones. */}
-        <div style={{ fontSize: "clamp(2rem, 7.5vw, 6rem)" }}>
+        <div style={{ fontSize: "clamp(1.5rem, 7.2vw, 6rem)" }}>
           <h1
             ref={headlineRef}
             className="font-playfair leading-[1.12] tracking-[-0.01em] mb-8"
           >
-            <span className="text-white block">Your life is a journey</span>
-            <span style={{ color: "#C9A84C" }} className="block">
+            <span className="text-white block whitespace-nowrap">Your life is a journey</span>
+            <span style={{ color: "#C9A84C" }} className="block whitespace-nowrap">
               worth designing.
             </span>
           </h1>

@@ -50,22 +50,26 @@
   object-fit: cover;
   object-position: center bottom;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.85;
 }
 
-/* Ink bleeds in from top; video shows through at bottom */
-.company-cta-bg-overlay-fade {
+/* Top-blend overlay: fades from ink black into the image */
+.company-cta-bg-layer::after {
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    #0B0E14 0%,
-    rgba(11, 14, 20, 0.92) 18%,
-    rgba(11, 14, 20, 0.65) 50%,
-    rgba(11, 14, 20, 0.25) 80%,
-    rgba(11, 14, 20, 0.05) 100%
-  );
+  z-index: 2;
   pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 14, 20, 1)    0%,
+    rgba(11, 14, 20, 0.75) 8%,
+    rgba(11, 14, 20, 0.35) 18%,
+    rgba(11, 14, 20, 0.12) 35%,
+    rgba(11, 14, 20, 0.10) 65%,
+    rgba(11, 14, 20, 0.30) 85%,
+    rgba(11, 14, 20, 0.60) 100%
+  );
 }
 
 /* ── CONTENT CONTAINER ── */
