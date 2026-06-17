@@ -12,7 +12,7 @@ export function TheProblem() {
 
         {/* Main Header */}
         <h2
-          className="font-playfair text-white text-center mb-24"
+          className="font-playfair text-white text-center mb-12 sm:mb-24"
           style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)", lineHeight: "1.1", letterSpacing: "-0.01em" }}
         >
           The best candidate doesn't always get noticed.
@@ -22,7 +22,7 @@ export function TheProblem() {
         <div className="grid grid-cols-1 md:grid-cols-3">
 
           {/* Left Panel */}
-          <div className="px-10 py-12 border-t border-white/10 md:border-r md:border-b-0 border-b flex flex-col gap-10">
+          <div className="px-6 py-10 sm:px-10 sm:py-12 border-t border-white/10 md:border-r md:border-b-0 border-b flex flex-col gap-10">
             <span className="font-inter text-[0.68rem] tracking-[0.2em] uppercase text-white/30">01</span>
             <div className="flex flex-col gap-4">
               <p
@@ -44,7 +44,7 @@ export function TheProblem() {
           </div>
 
           {/* Middle Panel */}
-          <div className="px-10 py-12 border-t border-white/10 md:border-r md:border-b-0 border-b flex flex-col gap-10">
+          <div className="px-6 py-10 sm:px-10 sm:py-12 border-t border-white/10 md:border-r md:border-b-0 border-b flex flex-col gap-10">
             <span className="font-inter text-[0.68rem] tracking-[0.2em] uppercase text-white/30">02</span>
             <div className="flex flex-col gap-4">
               <p
@@ -67,7 +67,7 @@ export function TheProblem() {
           </div>
 
           {/* Right Panel */}
-          <div className="px-10 py-12 border-t border-white/10 flex flex-col gap-10">
+          <div className="px-6 py-10 sm:px-10 sm:py-12 border-t border-white/10 flex flex-col gap-10">
             <span className="font-inter text-[0.68rem] tracking-[0.2em] uppercase text-white/30">03</span>
             <div className="flex flex-col gap-5">
               <p

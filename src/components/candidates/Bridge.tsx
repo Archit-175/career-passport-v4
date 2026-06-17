@@ -22,7 +22,7 @@ export function Bridge() {
       <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
 
         <Image
-          src="/images/bridge.jpeg"
+          src="/images/sections/bridge.jpeg"
           alt="Bridge section background"
           fill
           quality={90}
@@ -32,10 +32,10 @@ export function Bridge() {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/60" />
 
-        {/* Glass card */}
-        <div className="absolute inset-0 z-10 p-6 md:p-12">
+        {/* Glass card — absolute-fill on desktop, in-flow & stacked on mobile */}
+        <div className="relative lg:absolute lg:inset-0 z-10 w-full p-4 sm:p-6 lg:p-12">
           <div
-            className="w-full h-full rounded-2xl flex overflow-hidden"
+            className="w-full h-auto lg:h-full rounded-2xl flex flex-col lg:flex-row overflow-hidden"
             style={{
               background: "rgba(255, 255, 255, 0.07)",
               backdropFilter: "blur(28px)",
@@ -47,7 +47,7 @@ export function Bridge() {
 
             {/* ── LEFT 40% ── */}
             <motion.div
-              className="w-[40%] shrink-0 flex flex-col justify-center px-10 py-12 md:px-14 border-r border-white/10"
+              className="w-full lg:w-[40%] shrink-0 flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-14 border-b lg:border-b-0 lg:border-r border-white/10"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
@@ -86,11 +86,11 @@ export function Bridge() {
               </motion.p>
             </motion.div>
 
-            {/* ── 10% gap ── */}
-            <div className="w-[10%] shrink-0" />
+            {/* ── 10% gap (desktop only) ── */}
+            <div className="hidden lg:block lg:w-[10%] shrink-0" />
 
             {/* ── RIGHT 50% ── */}
-            <div className="w-[50%] shrink-0 flex flex-col py-10 pr-8 gap-0">
+            <div className="w-full lg:w-[50%] shrink-0 flex flex-col px-6 py-8 sm:px-8 lg:pl-0 lg:pr-8 lg:py-10 gap-6 lg:gap-0">
 
               {/* 1. RAW DATA */}
               <motion.div
@@ -139,7 +139,7 @@ export function Bridge() {
                     Career Passport Analysis
                   </p>
                 </div>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-2">
                   {[
                     { title: "Evaluated Assessments", sub: "Aptitude, skills & domain tests" },
                     { title: "AI-Powered Analysis", sub: "Understands patterns & potential" },
@@ -150,7 +150,7 @@ export function Bridge() {
                     <div key={item.title} className="flex flex-col gap-1.5 relative">
                       {i < 4 && (
                         <div
-                          className="absolute top-2.5 left-[calc(50%+10px)] right-0 h-px"
+                          className="hidden sm:block absolute top-2.5 left-[calc(50%+10px)] right-0 h-px"
                           style={{ background: "rgba(75,123,236,0.3)" }}
                         />
                       )}
@@ -185,7 +185,7 @@ export function Bridge() {
                     Trusted Outcomes
                   </p>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div
                     className="rounded-xl p-4 flex flex-col gap-2"
                     style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)" }}

@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useLoader } from "@/components/loader/loaderContext";
 
 export function Nav() {
   const pathname = usePathname();
+  const { beginToggle } = useLoader();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -33,7 +35,7 @@ export function Nav() {
       <nav className="relative mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         {/* Logo — extreme left */}
         <Link href="/" className="flex items-center shrink-0">
-          <span className="font-playfair text-[1.6rem] tracking-tight text-pearl">
+          <span className="font-playfair text-[1.35rem] sm:text-[1.6rem] tracking-tight text-pearl">
             Career <span className="text-gold">Passport</span>
           </span>
         </Link>
@@ -43,6 +45,8 @@ export function Nav() {
           <div className="flex items-center bg-slate/60 rounded-full p-1">
             <Link
               href="/candidates"
+              scroll={false}
+              onClick={() => beginToggle("/candidates")}
               className={cn(
                 "px-5 py-1.5 text-[0.8rem] font-inter tracking-wide rounded-full transition-colors duration-300",
                 isCandidate
@@ -54,6 +58,8 @@ export function Nav() {
             </Link>
             <Link
               href="/companies"
+              scroll={false}
+              onClick={() => beginToggle("/companies")}
               className={cn(
                 "px-5 py-1.5 text-[0.8rem] font-inter tracking-wide rounded-full transition-colors duration-300",
                 isCompany
@@ -106,7 +112,8 @@ export function Nav() {
           <div className="flex gap-2">
             <Link
               href="/candidates"
-              onClick={() => setMobileOpen(false)}
+              scroll={false}
+              onClick={() => { beginToggle("/candidates"); setMobileOpen(false); }}
               className={cn(
                 "flex-1 text-center py-2 rounded-full text-sm font-inter transition-colors",
                 isCandidate ? "bg-pearl text-ink" : "bg-slate text-pearl/75"
@@ -116,7 +123,8 @@ export function Nav() {
             </Link>
             <Link
               href="/companies"
-              onClick={() => setMobileOpen(false)}
+              scroll={false}
+              onClick={() => { beginToggle("/companies"); setMobileOpen(false); }}
               className={cn(
                 "flex-1 text-center py-2 rounded-full text-sm font-inter transition-colors",
                 isCompany ? "bg-pearl text-ink" : "bg-slate text-pearl/75"

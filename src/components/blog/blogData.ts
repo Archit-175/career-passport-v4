@@ -14,7 +14,7 @@ export interface BlogPost {
 // each card read as a distinct editorial entry.
 const IMAGE_COUNT = 24;
 const imageFor = (i: number) =>
-  `/images/journal-${String((i % IMAGE_COUNT) + 1).padStart(2, "0")}.jpeg`;
+  `/images/blog/journal-${String((i % IMAGE_COUNT) + 1).padStart(2, "0")}.jpeg`;
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",

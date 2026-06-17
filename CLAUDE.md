@@ -91,9 +91,9 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 /candidates     ✅ S1 CandidateHero          — hero candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up
                 ✅ S2 TheProblem             — black bg, 3-panel numbered grid; TileOverlay (RSC — no Framer Motion, no opacity:0 on mount)
                 ✅ S3 Bridge                 — bridge.jpeg bg, glass card, 3-col layout; Framer Motion fade-up stagger on scroll
-                ✅ S4 HowVisibilityWorks     — black bg, text + trip.jpeg; Framer Motion stagger (left col fade-up, right step cards slide-in from right)
+                ✅ S4 HowVisibilityWorks     — black bg, text + how-visibility.jpeg; glass card stacks vertically below lg; Framer Motion stagger (left col fade-up, right step cards slide-in from right)
                 ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, hover-to-detail) left + headline/detail-card/trip-CTA right; Framer Motion reveals
-                ✅ S6 OpportunitiesSection   — section6.jpeg bg, glass card (heading strip at top with GSAP looping gold word, opportunities-new.png fills body, 4 recruiter cards float absolutely with CSS oppFloat keyframe + Framer Motion stagger)
+                ⚠️ OpportunitiesSection      — NOT rendered (dead code; see Notes). opportunities-bg.jpeg bg, glass card with GSAP looping gold word + opportunities.png + 4 floating recruiter cards
                 ✅ S7 CandidateCta          — final waitlist CTA; GSAP/SplitText entrance + slot-text button roller
 
 /companies      ✅ S1 CompanyHero            — companies hero.png bg, 4-step flow; GSAP/SplitText masked-line headline entrance + step cards stagger
@@ -103,13 +103,23 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 
 /blog           ✅ BlogGallery              — full-screen Three.js gallery (phantom.land-style): flat tight grid at rest, curves into a sphere + zooms out while dragging; click a card → article dialog animates in. See "Blog — Gallery" below.
 
-/trips          🔲 placeholder — not yet built
-                   (linked from /candidates S4, NOT in global nav)
+/trips          ✅ TripsPage                — branded responsive "coming soon" page (eyebrow + Playfair headline + body + waitlist/back links). Linked from /candidates S4 & S5, NOT in global nav.
 ```
+
+### Responsiveness
+
+The whole site is **fully fluid** from ~360px phones to ultrawide. Type tokens in `globals.css` are all `clamp()`-based (display **and** body/label). `body { overflow-x: clip }` + `img,svg,video,canvas { max-width:100% }` are global safety nets, but overflow is fixed at the source per-section. The glass-card sections `Bridge` & `HowVisibilityWorks` were the main offenders: their fixed `40%/8–10%/50–52%` flex splits now `flex-col` and become `position: relative` (in-flow) **below `lg` (1024px)**, switching back to the `absolute inset-0` desktop row at `lg`+. `CompanyHero`'s 4-step row is a `grid grid-cols-2` on mobile, `md:flex` row on desktop. `BlogGallery` is WebGL with adaptive FOV (`HFOV_TARGET`) so it self-scales — no CSS grid to break. Verify with Playwright at 375 / 768 / 1024 / 1440 (assert `scrollWidth <= clientWidth`).
+
+### Loader & Page Transitions  (`src/components/loader/`)
+
+`LoaderProvider` (client) is mounted once in `layout.tsx`, wrapping `<Nav/>` + `<main/>`; it owns a `"initial" | "transition" | "idle"` phase machine and renders the `Loader` overlay (fixed, `z-index:1000` above `.grain`, "Career **Passport**" wordmark reusing `.text-gold-shimmer`). The splash is **server-rendered opaque** so there's no flash on first paint.
+- **First load:** held until the current route's hero `next/image` `onLoad` fires (`reportHeroReady`), with a `MIN_DISPLAY_MS` floor and `SAFETY_TIMEOUT_MS` ceiling. Routes with no hero (blog/trips) lift after the floor.
+- **Candidates↔Companies toggle:** Nav's toggle `<Link>`s call `beginToggle()` (and use `scroll={false}`); the overlay re-shows, scroll resets to top via `useLayoutEffect` (`scrollTo({behavior:"instant"})`) **under** the overlay, so the new page always lands on Section 1. Other navs just instant-reset scroll, no overlay.
+- Heroes gate their GSAP entrance on the context `heroStart` flag so the reveal plays **as the loader lifts** (`useGSAP(..., { dependencies:[heroStart] })`). `history.scrollRestoration="manual"`. Honors `prefers-reduced-motion`.
 
 ### Scrolling
 
-Both pages use **normal document scrolling** — no scroll snapping. (The former `SmoothSnapScroller` on candidates and `SnapHtml` on companies were removed.) Since there's no snap, mid-page sections need not be one screen each — on **both** pages only the **hero** and **CTA** wrappers force `minHeight: 100dvh`; every middle section is a plain `<div>` sized by its own content. To make that real, the middle sections' own forced heights were relaxed: `TheProblem` / `HowVisibilityWorks` dropped `min-h-screen` (kept `py-24`); `Bridge` uses `min-h-[80vh]` (its content is `absolute inset-0`, so it needs an explicit height or it collapses); `YourPassportMeasured` (`.ypm-section`) dropped `min-height: 100dvh`; `CompanyHowItWorks` rows are content-height; `CompanyWhatHappensInBackend` shell has no `min-height`.
+Both pages use **normal document scrolling** — no scroll snapping. (The former `SmoothSnapScroller` on candidates and `SnapHtml` on companies were removed.) Since there's no snap, mid-page sections need not be one screen each — on **both** pages only the **hero** and **CTA** wrappers force `minHeight: 100dvh`; every middle section is a plain `<div>` sized by its own content. Cross-route scroll-to-top is handled by `LoaderProvider` (see above), not by Next's default. `Bridge`/`HowVisibilityWorks` keep `min-h-[80vh]` on desktop (content is `absolute inset-0` there); on mobile the card is in-flow so the section grows with content.
 
 ### Global Nav (all pages)
 
@@ -117,7 +127,7 @@ Both pages use **normal document scrolling** — no scroll snapping. (The former
 Career Passport  ·  [Candidates | Companies toggle]  ·  About  ·  Blog  ·  Join the Waitlist
 ```
 
-- Logo: Playfair Display `text-[1.6rem]` — "Career" pearl, "Passport" gold
+- Logo: Playfair Display `text-[1.35rem] sm:text-[1.6rem]` — "Career" pearl, "Passport" gold
 - Toggle pill: `absolute left-1/2 -translate-x-1/2` — truly centred in nav
 - Right: About / Blog / "Join the Waitlist" (blue pill)
 - Nav is always glassmorphic: `bg-white/5 backdrop-blur-xl`
@@ -162,9 +172,13 @@ src/
 │   │   ├── CompanyWhatHappensInBackend.css
 │   │   ├── CompanyCta.tsx            ← S4
 │   │   └── CompanyCta.css
-│   └── blog/
-│       ├── BlogGallery.tsx           ← "use client" — Three.js sphere gallery + GSAP + article dialog
-│       └── blogData.ts               ← POSTS array, image list, shared article body/pull-quote
+│   ├── blog/
+│   │   ├── BlogGallery.tsx           ← "use client" — Three.js sphere gallery + GSAP + article dialog
+│   │   └── blogData.ts               ← POSTS array, image list, shared article body/pull-quote
+│   └── loader/
+│       ├── LoaderProvider.tsx        ← "use client" — phase machine, scroll-reset, body-lock (wraps Nav + main)
+│       ├── Loader.tsx                ← "use client" — branded splash overlay
+│       └── loaderContext.ts          ← context + useLoader()/useHeroLoad() hooks + constants
 │
 └── lib/
     └── utils.ts                      ← cn() helper (clsx + tailwind-merge)
@@ -172,25 +186,22 @@ src/
 
 ## Static Assets
 
-### Video (`/public/common/`)
+The `/public` folder is organised into subfolders with kebab-case, conventionally-named files (renamed from the old spaced names; unused assets were deleted).
 
-| File | Used in |
-|---|---|
-| `CTABGV.mp4` | `CandidateCta` (S7) and `CompanyCta` (S4) background video |
+```
+public/
+  video/cta-background.mp4              → CandidateCta (S7) + CompanyCta (S4) background video
+  images/
+    hero/candidate.png                  → CandidateHero (S1) background
+    hero/companies.png                  → CompanyHero (S1) background
+    sections/bridge.jpeg                → Bridge (S3) background
+    sections/how-visibility.jpeg        → HowVisibilityWorks (S4) background
+    sections/opportunities-bg.jpeg      → OpportunitiesSection background (component currently unused — see Notes)
+    sections/opportunities.png          → OpportunitiesSection illustration (unused)
+    blog/journal-01..24.jpeg            → BlogGallery (24 photos cycled across 54 posts)
+```
 
-### Images (`/public/images/`)
-
-| File | Used in |
-|---|---|
-| `hero candidate.png` | CandidateHero (S1) background |
-| `bridge.jpeg` | Bridge (S3) background |
-| `trip.jpeg` | HowVisibilityWorks (S4) right image |
-| `section6.jpeg` | OpportunitiesSection (S6) background |
-| `opportunities-new.png` | OpportunitiesSection (S6) illustration (inside glass card body) |
-| `companies hero.png` | CompanyHero (S1) background |
-| `companiess2.jpeg` | Available, unused (was CompanyHowItWorks S2 background before the static-zigzag redesign) |
-| `section3.jpeg` | Available, unused |
-| `Candidatehero2.png` | Available, unused |
+Path generator for blog images lives in `blogData.ts` (`/images/blog/journal-NN.jpeg`).
 
 ---
 
@@ -240,7 +251,7 @@ Applied in: `CandidateHero.tsx`, `CandidateCta.tsx`, `CompanyHero.tsx`, `Company
 Both CTAs use **co-located `.css` files** (not Tailwind utilities) — intentional for components with many CSS custom properties and glass effects. Each CSS file defines scoped tokens on the shell class (`--cta-bg`, `--cta-accent`, `--cta-blue`).
 
 Structure:
-- Looping background video (`/common/CTABGV.mp4`, `opacity: 0.35`) with an ink-to-transparent gradient overlay
+- Looping background video (`/video/cta-background.mp4`, `opacity: 0.35`) with an ink-to-transparent gradient overlay
 - Eyebrow monospace label in gold + Playfair heading with italic gold `<span>` highlight
 - Email `<input>` (slate-glass, gold focus ring) + blue submit `<button>` in a flex row — stacks on mobile
 - 3 trust badge items: slate-glass icon circle (gold icon stroke) + label text
@@ -249,7 +260,7 @@ Structure:
 - **`CompanyCta`** mirrors `CandidateCta` exactly — same `useGSAP` + `SplitText` entrance sequence, same `slot-text` button roller. Label initialises to "Connect with us"; success rolls to "We'll be in touch!".
 - **`handleSubmit` is a `console.log` placeholder** — replace with real API call when backend exists
 - Candidate CTA: `id="waitlist"` · Company CTA: `id="company-waitlist"`
-- Video asset: `public/common/CTABGV.mp4` → served at `/common/CTABGV.mp4`
+- Video asset: `public/video/cta-background.mp4` → served at `/video/cta-background.mp4`
 
 ---
 
@@ -336,7 +347,7 @@ Applied to `/candidates` S2 (`TheProblem`). On hover, nearby tiles lift in 3D to
 
 ## Notes
 
-- `Payoff.tsx` in `src/components/candidates/` is an **unused stub** — the active S6 section is `OpportunitiesSection.tsx`.
+- `OpportunitiesSection.tsx` exists but is **not rendered** anywhere (the candidates page renders Hero → TheProblem → Bridge → HowVisibilityWorks → YourPassportMeasured → CandidateCta). It is dead code — wire it into `candidates/page.tsx` or delete it. (`Payoff.tsx` stub was removed.)
 - Trips page (`/trips`) is a supporting explainer page (currently a placeholder). It is **not** in the top nav — only linked from Candidates S4.
 - The `#waitlist` form section appears on every page as the final CTA.
 - No analytics, no CMS, no auth. Pure frontend.
@@ -359,7 +370,7 @@ Rebuilt as a flat-ink section (no photo, no glassmorphism, no sticky/scroll mach
 - **Demos** (`DemoCard` shell + `BriefDemo`/`JourneyDemo`/`MomentsDemo`/`CalendarDemo`): compact **dark-glass** cards — gradient `linear-gradient(160deg,#232b3e→#1C2231→#161d2b)`, gold top hairline, pearl text. **All demos stay dark** (no `#fff` surfaces — same rule as S3 below). One gold accent per demo.
 - **Teal token**: `--hiw-teal: #6fd0a3` (lightened from the design-system teal for legibility on the dark surface).
 - The `MiraRaoAvatar`/`ArnavNairAvatar` inline SVGs are reused in `CalendarDemo`.
-- `companiess2.jpeg` is **no longer used** by this section.
+- `companiess2.jpeg` was deleted (it was this section's pre-redesign background; the static zigzag uses no photo).
 
 ### CompanyWhatHappensInBackend — Dark Theme Rules
 

@@ -164,7 +164,7 @@ export const OpportunitiesSection: React.FC = () => {
 
         {/* Background */}
         <Image
-          src="/images/section6.jpeg"
+          src="/images/sections/opportunities-bg.jpeg"
           alt=""
           fill
           quality={90}
@@ -211,7 +211,7 @@ export const OpportunitiesSection: React.FC = () => {
 
               {/* Full illustration */}
               <Image
-                src="/opportunities-new.png"
+                src="/images/sections/opportunities.png"
                 alt="Career opportunities illustration"
                 fill
                 quality={90}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { useHeroLoad } from "@/components/loader/loaderContext";
 
 gsap.registerPlugin(useGSAP, SplitText);
 
@@ -15,9 +16,12 @@ export function CandidateHero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const { heroStart, onHeroReady } = useHeroLoad("/candidates");
 
   useGSAP(
     () => {
+      // Hold the entrance until the loader lifts, so it plays on a visible hero.
+      if (!heroStart) return;
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -82,7 +86,7 @@ export function CandidateHero() {
         );
       });
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [heroStart] }
   );
 
   return (
@@ -92,12 +96,17 @@ export function CandidateHero() {
     >
       {/* Background image */}
       <Image
-        src="/images/hero candidate.png"
+        src="/images/hero/candidate.png"
         alt="Career Passport hero"
         fill
         priority
         quality={90}
         className="object-cover object-center"
+        onLoad={onHeroReady}
+        ref={(el) => {
+          // Cached/complete images may not fire onLoad after hydration.
+          if (el?.complete) onHeroReady();
+        }}
       />
 
       {/* Dark overlay */}
@@ -108,19 +117,21 @@ export function CandidateHero() {
         {/* Eyebrow */}
         <p
           ref={eyebrowRef}
-          className="font-inter text-[0.72rem] tracking-[0.22em] uppercase text-gold whitespace-nowrap mb-4"
+          className="font-inter uppercase text-gold mb-4"
+          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.72rem)", letterSpacing: "0.18em" }}
         >
           A Trusted Identity in the Age of AI
         </p>
 
-        {/* Headline — wrapper carries font-size so SplitText can't clear it */}
-        <div style={{ fontSize: "clamp(2.8rem, 7vw, 6rem)" }}>
+        {/* Headline — wrapper carries font-size so SplitText can't clear it.
+            No whitespace-nowrap: lines wrap gracefully instead of clipping on phones. */}
+        <div style={{ fontSize: "clamp(2rem, 7.5vw, 6rem)" }}>
           <h1
             ref={headlineRef}
             className="font-playfair leading-[1.12] tracking-[-0.01em] mb-8"
           >
-            <span className="text-white whitespace-nowrap block">Your life is a journey</span>
-            <span style={{ color: "#C9A84C" }} className="whitespace-nowrap block">
+            <span className="text-white block">Your life is a journey</span>
+            <span style={{ color: "#C9A84C" }} className="block">
               worth designing.
             </span>
           </h1>
@@ -129,7 +140,8 @@ export function CandidateHero() {
         {/* Subheadline */}
         <p
           ref={subtextRef}
-          className="font-inter font-light text-[1.05rem] leading-[1.75] text-white/90 max-w-lg mx-auto mb-12"
+          className="font-inter font-light leading-[1.75] text-white/90 max-w-lg mx-auto mb-10 sm:mb-12"
+          style={{ fontSize: "clamp(0.95rem, 3.4vw, 1.05rem)" }}
         >
           Career Passport turns your work, your personality,
           <br className="hidden sm:block" />

@@ -45,7 +45,7 @@ export function HowVisibilityWorks() {
 
         {/* Photo background */}
         <Image
-          src="/images/Beautiful Nature Scenery Images.jpeg"
+          src="/images/sections/how-visibility.jpeg"
           alt="Career Passport trip session"
           fill
           quality={90}
@@ -56,10 +56,10 @@ export function HowVisibilityWorks() {
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/75" />
 
-        {/* Glass card — full area */}
-        <div className="absolute inset-0 z-10 p-6 md:p-12">
+        {/* Glass card — absolute-fill on desktop, in-flow & stacked on mobile */}
+        <div className="relative lg:absolute lg:inset-0 z-10 w-full p-4 sm:p-6 lg:p-12">
           <div
-            className="w-full h-full rounded-2xl flex overflow-hidden"
+            className="w-full h-auto lg:h-full rounded-2xl flex flex-col lg:flex-row overflow-hidden"
             style={{
               background: "rgba(11,14,20,0.6)",
               backdropFilter: "blur(28px)",
@@ -71,7 +71,7 @@ export function HowVisibilityWorks() {
 
             {/* ── LEFT 40% ── */}
             <motion.div
-              className="w-[40%] shrink-0 flex flex-col justify-center px-10 py-12 md:px-14 border-r border-white/10"
+              className="w-full lg:w-[40%] shrink-0 flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-14 border-b lg:border-b-0 lg:border-r border-white/10"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
@@ -127,11 +127,11 @@ export function HowVisibilityWorks() {
               </motion.div>
             </motion.div>
 
-            {/* ── 8% gap ── */}
-            <div className="w-[8%] shrink-0" />
+            {/* ── 8% gap (desktop only) ── */}
+            <div className="hidden lg:block lg:w-[8%] shrink-0" />
 
             {/* ── RIGHT 52% — clean step list ── */}
-            <div className="w-[52%] shrink-0 flex flex-col justify-center py-10 pr-10 gap-0">
+            <div className="w-full lg:w-[52%] shrink-0 flex flex-col justify-center px-6 py-8 sm:px-8 lg:px-0 lg:pr-10 lg:py-10 gap-0">
               {STEPS.map(({ num, title, body }, i) => (
                 <motion.div
                   key={num}

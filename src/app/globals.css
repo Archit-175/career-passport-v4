@@ -14,13 +14,13 @@
   --font-playfair: "Playfair Display", Georgia, serif;
   --font-inter:    Inter, system-ui, sans-serif;
 
-  /* Font sizes — fluid */
-  --text-display-xl: clamp(3rem, 8vw, 7rem);
-  --text-display-lg: clamp(2rem, 5vw, 4.5rem);
-  --text-display-md: clamp(1.5rem, 3vw, 2.75rem);
-  --text-body-lg:    1.125rem;
-  --text-body-md:    1rem;
-  --text-label-sm:   0.8125rem;
+  /* Font sizes — fluid (all clamp-based so type scales with the viewport) */
+  --text-display-xl: clamp(2.75rem, 1.8rem + 6vw, 7rem);
+  --text-display-lg: clamp(2rem, 1.4rem + 3.6vw, 4.5rem);
+  --text-display-md: clamp(1.5rem, 1.2rem + 1.6vw, 2.75rem);
+  --text-body-lg:    clamp(1.0625rem, 1rem + 0.4vw, 1.1875rem);
+  --text-body-md:    clamp(0.9375rem, 0.9rem + 0.3vw, 1.0625rem);
+  --text-label-sm:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
 
   /* Spacing */
   --spacing-section: clamp(5rem, 12vw, 10rem);
@@ -52,6 +52,15 @@ body {
   font-family: var(--font-inter);
   font-weight: 300;
   min-height: 100dvh;
+  /* Safety net: a stray wide child should never create a horizontal scrollbar.
+     `clip` (not `hidden`) avoids creating a scroll container, so position:sticky
+     and the fixed Nav keep working. Root-cause overflow is still fixed per-section. */
+  overflow-x: clip;
+}
+
+/* Media never overflows its container on small screens */
+img, svg, video, canvas {
+  max-width: 100%;
 }
 
 /* ── Selection ──────────────────────────────────────────────── */
@@ -153,4 +162,69 @@ body {
   inset: 0;
   background: transparent;
   pointer-events: none;
+}
+
+/* ── Loader Overlay ─────────────────────────────────────────── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; /* above .grain (999) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.4rem;
+  background: var(--color-ink);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.loader-overlay[data-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-wordmark {
+  font-family: var(--font-playfair);
+  font-size: clamp(1.75rem, 1.1rem + 3vw, 3rem);
+  letter-spacing: -0.01em;
+}
+
+.loader-progress {
+  width: clamp(120px, 30vw, 200px);
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(201, 168, 76, 0.18);
+  overflow: hidden;
+}
+
+.loader-progress::after {
+  content: "";
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-gold);
+  animation: loader-slide 1.1s ease-in-out infinite;
+}
+
+@keyframes loader-slide {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .text-gold-shimmer { animation: none; }
+
+  .loader-overlay { transition: opacity 0.001s linear; }
+  .loader-progress::after { animation: none; transform: none; width: 100%; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

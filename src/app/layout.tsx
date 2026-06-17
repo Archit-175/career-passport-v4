@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import "slot-text/style.css";
 import { Nav } from "@/components/layout/Nav";
+import { LoaderProvider } from "@/components/loader/LoaderProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -38,8 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="grain">
-        <Nav />
-        <main>{children}</main>
+        <LoaderProvider>
+          <Nav />
+          <main>{children}</main>
+        </LoaderProvider>
       </body>
     </html>
   );

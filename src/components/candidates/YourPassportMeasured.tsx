@@ -446,9 +446,42 @@ export function YourPassportMeasured() {
 
   return (
     <section className="ypm-section" id="passport-measured">
-      {/* Two-column layout: chart left, content right */}
+      {/* Grid layout (named areas): desktop = chart left + [header/content] right;
+          mobile/tablet stacks as text intro → radar → hover/detail block. */}
       <div className="ypm-layout">
-        {/* ── LEFT: Radar chart ── */}
+        {/* ── Header (text intro — first on mobile) ── */}
+        <div className="ypm-header">
+          <motion.span
+            className="ypm-eyebrow"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Your Passport, Measured
+          </motion.span>
+          <motion.h2
+            className="ypm-headline font-playfair"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.55 }}
+          >
+            How recruiters{" "}
+            <em className="ypm-headline__em">read</em> your passport
+          </motion.h2>
+          <motion.p
+            className="ypm-subhead font-inter"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.18, duration: 0.5 }}
+          >
+            Eight dimensions. Every score built from verified work.
+          </motion.p>
+        </div>
+
+        {/* ── Radar chart (the web structure) ── */}
         <motion.div
           className="ypm-chart-col"
           initial={{ opacity: 0, x: -20 }}
@@ -477,7 +510,7 @@ export function YourPassportMeasured() {
           </div>
         </motion.div>
 
-        {/* ── RIGHT: Text + card panel ── */}
+        {/* ── Hover/detail block (dimension card + trip CTA) ── */}
         <motion.div
           className="ypm-content-col"
           initial={{ opacity: 0, x: 20 }}
@@ -485,38 +518,6 @@ export function YourPassportMeasured() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {/* Header — always visible */}
-          <div className="ypm-header">
-            <motion.span
-              className="ypm-eyebrow"
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              Your Passport, Measured
-            </motion.span>
-            <motion.h2
-              className="ypm-headline font-playfair"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.55 }}
-            >
-              How recruiters{" "}
-              <em className="ypm-headline__em">read</em> your passport
-            </motion.h2>
-            <motion.p
-              className="ypm-subhead font-inter"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.18, duration: 0.5 }}
-            >
-              Eight dimensions. Every score built from verified work.
-            </motion.p>
-          </div>
-
           {/* Dynamic card area */}
           <div className="ypm-card-area">
             <AnimatePresence mode="wait">

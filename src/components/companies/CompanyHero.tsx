@@ -6,6 +6,7 @@ import { Mic, Workflow, Filter, CalendarCheck, Sparkles } from "lucide-react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { useHeroLoad } from "@/components/loader/loaderContext";
 
 gsap.registerPlugin(useGSAP, SplitText);
 
@@ -23,9 +24,12 @@ export function CompanyHero() {
   const subtextRef   = useRef<HTMLParagraphElement>(null);
   const ctaRef       = useRef<HTMLAnchorElement>(null);
   const stepsRef     = useRef<HTMLDivElement>(null);
+  const { heroStart, onHeroReady } = useHeroLoad("/companies");
 
   useGSAP(
     () => {
+      // Hold the entrance until the loader lifts, so it plays on a visible hero.
+      if (!heroStart) return;
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -84,7 +88,7 @@ export function CompanyHero() {
         );
       });
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [heroStart] }
   );
 
   return (
@@ -92,12 +96,16 @@ export function CompanyHero() {
 
       {/* Background image */}
       <Image
-        src="/images/companies hero.png"
+        src="/images/hero/companies.png"
         alt="Companies hero background"
         fill
-        quality={95}
+        quality={90}
         priority
         className="object-cover object-center"
+        onLoad={onHeroReady}
+        ref={(el) => {
+          if (el?.complete) onHeroReady();
+        }}
       />
 
       {/* Layered overlays */}
@@ -208,7 +216,7 @@ export function CompanyHero() {
         </div>
 
         {/* ── Steps row ── */}
-        <div className="w-full flex items-center justify-center mt-16">
+        <div className="w-full flex items-center justify-center mt-12 md:mt-16">
           <div className="w-full">
             <div
               className="w-full mb-10"
@@ -219,12 +227,12 @@ export function CompanyHero() {
               }}
             />
 
-            <div ref={stepsRef} className="flex items-center justify-between w-full">
+            <div ref={stepsRef} className="grid grid-cols-2 gap-x-6 gap-y-10 md:flex md:items-center md:justify-between w-full">
               {STEPS.map(({ num, icon: Icon, label }, i) => (
-                <div key={num} className="flex items-center flex-1">
+                <div key={num} className="flex items-center justify-center md:flex-1">
 
                   {/* Step card */}
-                  <div className="hero-step flex flex-col items-center gap-4 flex-1">
+                  <div className="hero-step flex flex-col items-center gap-4 md:flex-1">
                     <p
                       className="font-playfair italic"
                       style={{ fontSize: "1rem", color: "#C9A84C", letterSpacing: "0.05em" }}
@@ -255,9 +263,9 @@ export function CompanyHero() {
                     </p>
                   </div>
 
-                  {/* Connector */}
+                  {/* Connector — desktop row only */}
                   {i < STEPS.length - 1 && (
-                    <div className="flex items-center gap-1 shrink-0 mb-6" style={{ width: "60px" }}>
+                    <div className="hidden md:flex items-center gap-1 shrink-0 mb-6" style={{ width: "60px" }}>
                       <div
                         style={{
                           flex: 1,

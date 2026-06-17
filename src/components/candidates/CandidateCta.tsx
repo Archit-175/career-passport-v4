@@ -22,7 +22,7 @@ interface CandidateCtaProps {
 }
 
 export const CandidateCta: React.FC<CandidateCtaProps> = ({
-  videoSrc = "/common/CTABGV.mp4",
+  videoSrc = "/video/cta-background.mp4",
 }) => {
   const containerRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
