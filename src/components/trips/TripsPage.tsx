@@ -2,12 +2,19 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 const PX = "clamp(1.5rem, 7vw, 7rem)";
 const PY = "clamp(1.75rem, 2.5vw, 2.5rem)";
+
+const UL: React.CSSProperties = {
+  textDecoration: "underline",
+  textDecorationColor: "rgba(163,201,64,0.4)",
+  textUnderlineOffset: "5px",
+  textDecorationThickness: "1.5px",
+};
 
 function Reveal({
   children,
@@ -127,7 +134,7 @@ export function TripsPage() {
                 style={{ fontSize: "var(--text-display-xl)", letterSpacing: "-0.02em" }}
               >
                 What&apos;s a{" "}
-                <em className="text-gold not-italic">Trip</em>
+                <em className="text-gold not-italic" style={UL}>Trip</em>
               </motion.h1>
 
               <motion.div
@@ -222,7 +229,7 @@ export function TripsPage() {
                   style={{ fontSize: "var(--text-display-md)" }}
                 >
                   A Trip is where you go to do{" "}
-                  <em className="text-gold">real work</em>{" "}and find out what
+                  <em className="text-gold" style={UL}>real work</em>{" "}and find out what
                   you&apos;re actually made of.
                 </h2>
                 <div
@@ -271,7 +278,7 @@ export function TripsPage() {
                       className="font-playfair text-pearl leading-[1.1]"
                       style={{ fontSize: "var(--text-display-md)" }}
                     >
-                      A <em className="text-gold">Stamp</em>
+                      A <em className="text-gold" style={UL}>Stamp</em>
                     </h3>
                     <p
                       className="mt-2 font-inter font-light text-pearl/50 leading-[1.8]"
@@ -312,7 +319,7 @@ export function TripsPage() {
               >
                 Real scenarios.
                 <br />
-                No <em className="text-gold">coasting</em> through.
+                No <em className="text-gold" style={UL}>coasting</em> through.
               </h2>
             </Reveal>
 
@@ -356,7 +363,7 @@ export function TripsPage() {
               style={{ fontSize: "var(--text-display-lg)" }}
             >
               This is what we believe a career{" "}
-              <em className="text-gold">actually needs</em>.
+              <em className="text-gold" style={UL}>actually needs</em>.
             </h2>
             <p
               className="mt-3 font-inter font-light text-pearl/45 leading-[1.8] max-w-[48ch]"
@@ -460,7 +467,7 @@ export function TripsPage() {
             style={{ fontSize: "var(--text-display-md)" }}
           >
             Every journey begins with a{" "}
-            <em className="text-gold">single trip</em>.
+            <em className="text-gold" style={UL}>single trip</em>.
           </h2>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

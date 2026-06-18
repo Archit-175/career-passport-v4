@@ -135,38 +135,6 @@ export function GlobeVisibility() {
             />
           </div>
 
-          {/* ── Button — sits below the globe ── */}
-          <motion.div
-            className="gv-btn-wrap"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-          >
-            <motion.a
-              href="/trips"
-              className="gv-trip-btn"
-              variants={fadeUp}
-              custom={0.1}
-            >
-              What&rsquo;s a Trip?
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.a>
-          </motion.div>
-
           {/* ── Numbered steps — glow one by one ── */}
           <motion.div
             className="gv-items"

@@ -106,7 +106,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 
 /blog           ✅ BlogGallery              — full-screen Three.js gallery (phantom.land-style): flat tight grid at rest, curves into a sphere + zooms out while dragging; click a card → article dialog animates in. See "Blog — Gallery" below.
 
-/trips          ✅ TripsPage                — branded responsive "coming soon" page (eyebrow + Playfair headline + body + waitlist/back links). Linked from /candidates S4 & S5, NOT in global nav.
+/trips          ✅ TripsPage                — full editorial content page explaining "What's a Trip." `"use client"` — Framer Motion scroll reveals. **No `min-h-[100dvh]`** on any section (sizes to content). Shared constants: `PX = "clamp(1.5rem, 7vw, 7rem)"`, `PY = "clamp(1.75rem, 2.5vw, 2.5rem)"`. **Sections:** (1) Hero — 2-col `lg:grid-cols-[3fr,2fr]` with `lg:items-center`; Playfair "What's a Trip" + gold italic "Trip" left col, `lg:pr-16 lg:border-r lg:border-white/[0.07]`; body + italic pullquote right col, `lg:pl-16`; decorative `"Trip"` watermark `rgba(245,242,236,0.025)` hidden below xl; bottom fade gradient; (2) "What a Trip Is" — equal 2-col grid, centred absolute `1px rgba(255,255,255,0.06)` divider at `left-1/2`; mono gold eyebrow + Playfair headline + body each col; (3) "How Trips Work" — asymmetric `lg:grid-cols-[5fr,7fr]`; (4) Four Trip Types — 2×2 card grid, dark-glass cards (`linear-gradient(160deg,#1e2638→#1C2231→#161d2b)`) + gold top hairline `rgba(163,201,64,0.22) 1.5px` + hover radial glow; types: **Discovery / Skill / Job Specific / Journalling** (no hyphens in names); (5) CTA — centered, links to `/candidates#waitlist` + `/candidates`. **Fixed "← Candidates" back link** (`position: fixed bottom-7 left-7 z-50`) — slate-glass pill (`rgba(28,34,49,0.75)` + `backdrop-filter: blur(12px)` + `1px solid rgba(255,255,255,0.08)`) always visible during scroll. Section separators: standalone `1px rgba(255,255,255,0.07)` rule divs between each section. Files: `src/app/trips/page.tsx` (RSC metadata wrapper) + `src/components/trips/TripsPage.tsx`. Linked from /candidates S3.5 globe "What's a Trip?" button, NOT in global nav.
 ```
 
 ### Responsiveness
@@ -152,7 +152,7 @@ src/
 │   ├── blog/
 │   │   └── page.tsx                  ← server component; renders <BlogGallery /> + route metadata
 │   ├── trips/
-│   │   └── page.tsx                  ← placeholder
+│   │   └── page.tsx                  ← RSC metadata wrapper; renders <TripsPage />
 │   └── sandbox/
 │       └── bridge/
 │           └── page.tsx              ← isolated preview route for BridgeV2 (safe to delete)
@@ -185,6 +185,8 @@ src/
 │   ├── blog/
 │   │   ├── BlogGallery.tsx           ← "use client" — Three.js sphere gallery + GSAP + article dialog
 │   │   └── blogData.ts               ← POSTS array, image list, shared article body/pull-quote
+│   ├── trips/
+│   │   └── TripsPage.tsx             ← "use client" — full editorial Trips explainer (5 sections, Framer Motion reveals, fixed back pill)
 │   └── loader/
 │       ├── LoaderProvider.tsx        ← "use client" — phase machine, scroll-reset, body-lock (wraps Nav + main)
 │       ├── Loader.tsx                ← "use client" — branded splash overlay
