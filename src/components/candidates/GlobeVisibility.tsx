@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { WireframeGlobe, type GlobeMarker } from "./WireframeGlobe";
 import "./GlobeVisibility.css";
@@ -41,12 +40,9 @@ const LOCATIONS: Loc[] = [
 ];
 
 const GLOBE_MARKERS: GlobeMarker[] = [
+  { lat: 20.5937, lon: 78.9629, countryId: "IND" },
   { lat: 40.7128, lon: -74.006, countryId: "USA" },
-  { lat: 35.6895, lon: 139.6917, countryId: "JPN" },
 ];
-
-const CYCLE_MS = 2200;
-const CYCLE_START_MS = 900;
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const fadeUp: Variants = {
@@ -59,51 +55,8 @@ const fadeUp: Variants = {
 };
 
 export function GlobeVisibility() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [reduced, setReduced] = useState(false);
-
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const manualRef = useRef(false);
-  const inViewRef = useRef(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener?.("change", onChange);
-    return () => mq.removeEventListener?.("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        inViewRef.current = entries[0]?.isIntersecting ?? false;
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (reduced) return;
-    let i = 0;
-    let timer: ReturnType<typeof setTimeout>;
-    const step = () => {
-      if (!manualRef.current && inViewRef.current) {
-        setActiveIndex(i);
-        i = (i + 1) % LOCATIONS.length;
-      }
-      timer = setTimeout(step, CYCLE_MS);
-    };
-    timer = setTimeout(step, CYCLE_START_MS);
-    return () => clearTimeout(timer);
-  }, [reduced]);
-
   return (
-    <section ref={sectionRef} id="globe" className="gv-section">
+    <section id="globe" className="gv-section">
       <div className="gv-inner">
         <div className="gv-layout">
           {/* ── Intro ── */}
@@ -135,7 +88,7 @@ export function GlobeVisibility() {
             />
           </div>
 
-          {/* ── Numbered steps — glow one by one ── */}
+          {/* ── Numbered steps ── */}
           <motion.div
             className="gv-items"
             initial="hidden"
@@ -146,23 +99,9 @@ export function GlobeVisibility() {
               <motion.button
                 key={loc.num}
                 type="button"
-                className={`gv-item${activeIndex === i ? " gv-item--active" : ""}`}
+                className="gv-item"
                 variants={fadeUp}
                 custom={0.1 + i * 0.08}
-                onMouseEnter={() => {
-                  manualRef.current = true;
-                  setActiveIndex(i);
-                }}
-                onMouseLeave={() => {
-                  manualRef.current = false;
-                }}
-                onFocus={() => {
-                  manualRef.current = true;
-                  setActiveIndex(i);
-                }}
-                onBlur={() => {
-                  manualRef.current = false;
-                }}
                 aria-label={`${loc.title}. ${loc.desc}`}
               >
                 <span className="gv-item__num">{loc.num}</span>

@@ -60,6 +60,46 @@ function latLonToVec3(latDeg: number, lonDeg: number, r = GLOBE_R): THREE.Vector
   );
 }
 
+/* ── Inverse: 3-D point on sphere → [lat, lon] ─────────────────── */
+function vec3ToLatLon(v: THREE.Vector3): [number, number] {
+  const len = v.length();
+  const phi = Math.acos(Math.max(-1, Math.min(1, v.y / len)));
+  const theta = Math.atan2(v.z, -v.x); // returns [-π, π]
+  const lat = 90 - (phi * 180) / Math.PI;
+  let lon = (theta * 180) / Math.PI - 180; // maps to [-360, 0]
+  if (lon < -180) lon += 360; // normalise to [-180, 180]
+  return [lat, lon];
+}
+
+/* ── Ray-casting point-in-polygon (GeoJSON ring = [[lon,lat]…]) ── */
+function pointInRing(lat: number, lon: number, ring: number[][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i]; // GeoJSON: [lon, lat]
+    const [xj, yj] = ring[j];
+    if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function findCountryAtLatLon(lat: number, lon: number, feats: GeoFeature[]): string | null {
+  for (const f of feats) {
+    if (!f.id || typeof f.id !== "string") continue;
+    const g = f.geometry;
+    if (g.type === "Polygon") {
+      const rings = g.coordinates as number[][][];
+      if (rings[0] && pointInRing(lat, lon, rings[0])) return f.id;
+    } else if (g.type === "MultiPolygon") {
+      for (const poly of g.coordinates as number[][][][]) {
+        if (poly[0] && pointInRing(lat, lon, poly[0])) return f.id;
+      }
+    }
+  }
+  return null;
+}
+
 /* ── Radial-gradient glow sprite texture (shared) ─────────────── */
 function makeGlowTexture(): THREE.CanvasTexture {
   const size = 128;
@@ -229,7 +269,7 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
       const batchPos: number[] = [];
       const hiPos: Record<string, number[]> = {};
 
-      const pushRing = (ring: number[][], target: number[]) => {
+      const pushRing = (ring: number[][], target: number[], secondary: number[]) => {
         for (let k = 1; k < ring.length; k++) {
           const a = ring[k - 1];
           const b = ring[k];
@@ -237,6 +277,7 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
           const va = latLonToVec3(a[1], a[0], R_BORDER);
           const vb = latLonToVec3(b[1], b[0], R_BORDER);
           target.push(va.x, va.y, va.z, vb.x, vb.y, vb.z);
+          secondary.push(va.x, va.y, va.z, vb.x, vb.y, vb.z);
         }
       };
 
@@ -244,14 +285,20 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
         const id = f.id;
         const isHi = typeof id === "string" && HI_IDS.has(id);
         const target = isHi ? (hiPos[id as string] ||= []) : batchPos;
+        const perCountry: number[] = [];
         const geom = f.geometry;
         if (geom.type === "Polygon") {
-          for (const ring of geom.coordinates as number[][][]) pushRing(ring, target);
+          for (const ring of geom.coordinates as number[][][]) pushRing(ring, target, perCountry);
         } else if (geom.type === "MultiPolygon") {
           for (const poly of geom.coordinates as number[][][][])
-            for (const ring of poly) pushRing(ring, target);
+            for (const ring of poly) pushRing(ring, target, perCountry);
+        }
+        if (typeof id === "string" && perCountry.length > 0) {
+          countryPositions.set(id, perCountry);
         }
       }
+
+      features = fc.features;
 
       if (disposed) return;
 
@@ -292,6 +339,42 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
       applyHighlight(currentActive, true);
     };
     const buildCleanup: Array<() => void> = [];
+
+    /* ── Hover-country glow state ───────────────────────────────── */
+    let features: GeoFeature[] = [];
+    const countryPositions = new Map<string, number[]>();
+    let hoverLS: THREE.LineSegments | null = null;
+    let hoverGeo: THREE.BufferGeometry | null = null;
+    let hoverMat: THREE.LineBasicMaterial | null = null;
+    let prevHoverId: string | null = null;
+    let lastHoverMs = 0;
+
+    const highlightCountry = (id: string | null) => {
+      if (disposed || id === prevHoverId) return;
+      // Fade out and dispose the old highlight
+      if (hoverLS) {
+        const oldLS = hoverLS, oldGeo = hoverGeo!, oldMat = hoverMat!;
+        hoverLS = hoverGeo = hoverMat = null;
+        gsap.killTweensOf(oldMat);
+        gsap.to(oldMat, {
+          opacity: 0, duration: 0.22, ease: "power2.in",
+          onComplete: () => { oldLS.removeFromParent(); oldGeo.dispose(); oldMat.dispose(); },
+        });
+      }
+      prevHoverId = id;
+      if (!id) return;
+      const pos = countryPositions.get(id);
+      if (!pos || pos.length === 0) return;
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+      const mat = new THREE.LineBasicMaterial({
+        color: GREEN_HI, transparent: true, opacity: 0, depthWrite: false,
+      });
+      const ls = new THREE.LineSegments(geo, mat);
+      globe.add(ls);
+      gsap.to(mat, { opacity: 0.88, duration: 0.28, ease: "power2.out" });
+      hoverLS = ls; hoverGeo = geo; hoverMat = mat;
+    };
 
     /* ── Orientation state (quaternion-driven) ──────────────────── */
     let velX = 0; // angular velocity around world X (drag inertia)
@@ -396,8 +479,40 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
       }
     };
 
+    /* ── Hover: ray-cast → lat/lon → country highlight ─────────── */
+    const _hoverRay = new THREE.Raycaster();
+    const _hoverSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), GLOBE_R);
+    const _hoverHit = new THREE.Vector3();
+    const _hoverInvQ = new THREE.Quaternion();
+
+    const onPointerHover = (e: PointerEvent) => {
+      if (dragging) {
+        if (prevHoverId !== null) highlightCountry(null);
+        return;
+      }
+      const now = performance.now();
+      if (now - lastHoverMs < 50) return; // ~20fps for hover updates
+      lastHoverMs = now;
+      const rect = dom.getBoundingClientRect();
+      const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      _hoverRay.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+      if (!_hoverRay.ray.intersectSphere(_hoverSphere, _hoverHit)) {
+        highlightCountry(null);
+        return;
+      }
+      _hoverInvQ.copy(globe.quaternion).invert();
+      const localPos = _hoverHit.clone().applyQuaternion(_hoverInvQ);
+      const [lat, lon] = vec3ToLatLon(localPos);
+      highlightCountry(findCountryAtLatLon(lat, lon, features));
+    };
+
+    const onPointerLeave = () => highlightCountry(null);
+
     dom.addEventListener("pointerdown", onDown);
     dom.addEventListener("pointermove", onMove);
+    dom.addEventListener("pointermove", onPointerHover);
+    dom.addEventListener("pointerleave", onPointerLeave);
     window.addEventListener("pointerup", onUp);
 
     /* ── Resize ─────────────────────────────────────────────────── */
@@ -492,7 +607,14 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
       ro.disconnect();
       dom.removeEventListener("pointerdown", onDown);
       dom.removeEventListener("pointermove", onMove);
+      dom.removeEventListener("pointermove", onPointerHover);
+      dom.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("pointerup", onUp);
+
+      if (hoverMat) gsap.killTweensOf(hoverMat);
+      if (hoverLS) hoverLS.removeFromParent();
+      hoverGeo?.dispose();
+      hoverMat?.dispose();
 
       gratGeo.dispose();
       gratMat.dispose();
