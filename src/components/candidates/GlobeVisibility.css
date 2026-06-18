@@ -35,8 +35,7 @@
   grid-template-columns: 45% 55%;
   grid-template-areas:
     "intro globe"
-    "items globe"
-    "items btn";
+    "items globe";
   column-gap: 3rem;
   row-gap: clamp(1.5rem, 3vh, 2.25rem);
   align-items: start;
@@ -58,14 +57,9 @@
   width: 100%;
   height: clamp(420px, 46vw, 600px);
   align-self: center;
-}
-
-.gv-btn-wrap {
-  grid-area: btn;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: clamp(0.5rem, 1.5vh, 1rem);
 }
 
 /* Laptop & larger: fit the whole section within one viewport. */
@@ -119,31 +113,6 @@
   color: rgba(245, 242, 236, 0.62);
   margin: clamp(0.8rem, 1.6vh, 1.25rem) 0 0;
   max-width: 32ch;
-}
-
-/* ── "What's a Trip?" CTA ───────────────────────────────────────── */
-.gv-trip-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.25rem;
-  border-radius: 999px;
-  border: 1px solid rgba(163, 201, 64, 0.55);
-  font-family: var(--font-inter);
-  font-weight: 500;
-  font-size: 0.88rem;
-  letter-spacing: 0.01em;
-  color: var(--gold);
-  text-decoration: none;
-  transition: background 0.25s ease, border-color 0.25s ease, gap 0.25s ease;
-}
-
-.gv-trip-btn:hover,
-.gv-trip-btn:focus-visible {
-  background: rgba(163, 201, 64, 0.1);
-  border-color: var(--gold);
-  gap: 0.75rem;
-  outline: none;
 }
 
 /* ── Numbered items ─────────────────────────────────────────────── */
@@ -266,8 +235,7 @@
     grid-template-areas:
       "intro"
       "items"
-      "globe"
-      "btn";
+      "globe";
     row-gap: 2.5rem;
   }
 
@@ -280,11 +248,6 @@
     height: min(82vw, 380px);
     margin: 0 auto;
     max-width: 460px;
-  }
-
-  .gv-btn-wrap {
-    justify-content: flex-start;
-    padding-top: 0;
   }
 
   .gv-subhead {
