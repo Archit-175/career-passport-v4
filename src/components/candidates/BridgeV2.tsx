@@ -48,6 +48,12 @@ export function BridgeV2() {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/60" />
 
+        {/* Top blend — receives fade from TheProblem's black bg */}
+        <div
+          className="absolute top-0 left-0 right-0 h-40 z-[1] pointer-events-none"
+          style={{ background: "linear-gradient(to top, transparent, rgba(0,0,0,0.95))" }}
+        />
+
         {/* Bottom blend — fades into HowVisibilityWorks */}
         <div
           className="absolute bottom-0 left-0 right-0 h-40 z-[1] pointer-events-none"
@@ -98,7 +104,7 @@ export function BridgeV2() {
                 custom={0.22}
               >
                 Career Passport bridges the gap between what you&apos;ve done and what the
-                world can see — turning raw experience into proof.
+                world can.
               </motion.p>
             </motion.div>
 

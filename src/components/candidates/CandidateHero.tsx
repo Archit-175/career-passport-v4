@@ -112,13 +112,19 @@ export function CandidateHero() {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/55 z-10" />
 
+      {/* Bottom blend — dissolves into TheProblem's black bg */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 z-[11] pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.97))" }}
+      />
+
       {/* Content */}
       <div className="relative z-20 mx-auto max-w-4xl px-6 text-center">
         {/* Eyebrow */}
         <p
           ref={eyebrowRef}
           className="font-inter uppercase text-gold mb-4"
-          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.72rem)", letterSpacing: "0.18em" }}
+          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.72rem)", letterSpacing: "0.28em" }}
         >
           Built on what you&apos;ve done
         </p>

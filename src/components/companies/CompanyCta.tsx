@@ -192,7 +192,7 @@ export const CompanyCta: React.FC = () => {
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </div>
-            <span className="company-cta-trust-text">Pay only when you hire</span>
+            <span className="company-cta-trust-text">Pay as you go</span>
           </div>
 
           <span className="company-cta-trust-divider" aria-hidden="true">|</span>
@@ -224,8 +224,8 @@ export const CompanyCta: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        <div className="company-cta-bottom-tagline">BUILT FOR MODERN HIRING TEAMS</div>
+{/* 
+        <div className="company-cta-bottom-tagline">BUILT FOR MODERN HIRING TEAMS</div> */}
       </div>
     </section>
   );

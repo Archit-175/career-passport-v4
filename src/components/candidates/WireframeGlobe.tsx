@@ -452,10 +452,11 @@ export function WireframeGlobe({ markers, activeIndex, onProject, className }: W
         m.hover = lerp(m.hover, want, 0.14);
         const dim = anyActive && currentActive !== i ? 0.28 : 1;
         let scale = m.baseGlow * (1 + m.hover * 0.95);
-        if (m.hover > 0.5 && !reduceMotion) scale += 0.012 * Math.sin(t * 0.16);
+        // Gentle continuous breathing so the points always feel alive.
+        if (!reduceMotion) scale += m.baseGlow * 0.16 * Math.sin(t * 0.045 + i * 2.1);
         m.glow.scale.setScalar(scale);
-        m.glowMat.opacity = (0.5 + m.hover * 0.5) * dim;
-        m.coreMat.opacity = 0.85 * dim + m.hover * 0.15;
+        m.glowMat.opacity = (0.62 + m.hover * 0.38) * dim;
+        m.coreMat.opacity = 0.9 * dim + m.hover * 0.1;
 
         // Project to canvas-local pixels + front/back visibility.
         _world.copy(m.localDir).multiplyScalar(R_MARKER).applyMatrix4(globe.matrixWorld);

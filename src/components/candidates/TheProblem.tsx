@@ -1,60 +1,53 @@
 // import TileOverlay from "@/components/TileOverlay"; // temporarily disabled
+import Link from "next/link";
 
 const ITEMS = [
   {
     n: "01",
-    line: (
-      <>
-        You&apos;ve worked hard.
-      </>
-    ),
-    accent: "Nobody can tell.",
+    line: <>You hit apply.</>,
+    accent: "It went nowhere.",
   },
   {
     n: "02",
     line: (
       <>
-        Your résumé <span className="line-through text-white/35">stands out</span>.
+        A person <span className="line-through opacity-35">reads</span> every résumé.
       </>
     ),
-    accent: "It doesn't.",
+    accent: "Software does.",
   },
   {
     n: "03",
-    line: (
-      <>
-        Take a trip with us
-        <br />
-        to stand out
-      </>
-    ),
-    accent: null,
+    line: <>What gets you noticed now?</>,
+    accent: "Proof.",
     cta: true,
   },
 ];
 
 export function TheProblem() {
   return (
-    <section className="relative bg-black px-6 py-24 sm:py-32">
-      <div data-tile-content className="mx-auto max-w-6xl flex flex-col lg:flex-row gap-16 lg:gap-20">
-
-        {/* ── LEFT 40% — heading block ───────────────────────── */}
-        <div className="lg:w-2/5 lg:shrink-0">
-          {/* Eyebrow with dot */}
-          <div className="flex items-center gap-2.5 mb-7">
+    <section className="relative bg-black px-6 py-20 sm:py-28 lg:py-32">
+      <div
+        data-tile-content
+        className="mx-auto max-w-6xl flex flex-col lg:flex-row lg:gap-20"
+      >
+        {/* ── LEFT — editorial block ───────────────────────────── */}
+        <div className="lg:w-2/5 lg:shrink-0 pb-12 lg:pb-0 border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/[0.08] lg:pr-16">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-2.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
-            <span className="font-inter text-[0.7rem] tracking-[0.22em] uppercase text-white/50">
-              A Trusted Identity in the Age of AI
+            <span className="font-inter text-[0.68rem] tracking-[0.22em] uppercase text-white/45">
+              The reality
             </span>
           </div>
 
-          {/* Faint divider */}
-          <div className="h-px w-full bg-white/10 mb-8" />
+          {/* Divider */}
+          <div className="h-px w-full bg-white/10 mb-7" />
 
           {/* Headline */}
           <h2
-            className="font-playfair text-white/90 leading-[1.1] tracking-[-0.01em]"
-            style={{ fontSize: "clamp(1.75rem, 4vw, 3.25rem)" }}
+            className="font-playfair text-white/90 leading-[1.12] tracking-[-0.01em]"
+            style={{ fontSize: "clamp(1.65rem, 3.8vw, 3.1rem)" }}
           >
             The best candidate doesn&apos;t always{" "}
             <span className="text-gold">get noticed.</span>
@@ -62,58 +55,71 @@ export function TheProblem() {
 
           {/* Body */}
           <p
-            className="font-inter font-light leading-[1.7] text-white/55 mt-7 max-w-md"
-            style={{ fontSize: "clamp(0.9rem, 1.4vw, 1rem)" }}
+            className="font-inter font-light leading-[1.75] text-white/45 mt-6"
+            style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.97rem)" }}
           >
-            Career Passport turns your work, your personality, and your
-            experiences into a{" "}
-            <span className="text-gold/90">trustworthy, proof-backed identity.</span>
+            Talent rarely survives the first scan.
           </p>
         </div>
 
-        {/* ── RIGHT 60% — minimalist numbered column ─────────── */}
-        <div className="lg:flex-1 pl-50 flex flex-col justify-center gap-10 sm:gap-12">
+        {/* ── RIGHT — numbered column ──────────────────────────── */}
+        <div className="lg:flex-1 pt-10 lg:pt-0 flex flex-col justify-center divide-y divide-white/[0.07]">
           {ITEMS.map((item) => (
-            <div key={item.n} className="flex flex-col gap-4">
-              <span className="font-inter text-[0.68rem] tracking-[0.24em] uppercase text-white/25">
+            <div
+              key={item.n}
+              className="flex gap-6 sm:gap-8 py-8 sm:py-9 first:pt-0 lg:first:pt-0 last:pb-0"
+            >
+              {/* Number */}
+              <span
+                className="font-mono text-white/20 shrink-0 leading-none mt-[0.2em]"
+                style={{ fontSize: "clamp(0.65rem, 1vw, 0.72rem)", letterSpacing: "0.18em" }}
+              >
                 {item.n}
               </span>
-              <p
-                className="font-playfair text-white leading-[1.25]"
-                style={{ fontSize: "clamp(1.4rem, 2.2vw, 2rem)" }}
-              >
-                {item.line}
-              </p>
 
-              {item.accent && (
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-px bg-gold/60 shrink-0" />
-                  <p
-                    className="font-playfair italic text-gold/80"
-                    style={{ fontSize: "clamp(1.05rem, 1.6vw, 1.3rem)" }}
+              {/* Content */}
+              <div className="flex flex-col gap-3">
+                <p
+                  className="font-playfair text-white/90 leading-[1.25]"
+                  style={{ fontSize: "clamp(1.25rem, 2vw, 1.85rem)" }}
+                >
+                  {item.line}
+                </p>
+
+                {item.accent && (
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-3 h-px bg-gold/55 shrink-0" />
+                    <p
+                      className="font-playfair italic text-gold/75"
+                      style={{ fontSize: "clamp(0.95rem, 1.45vw, 1.2rem)" }}
+                    >
+                      {item.accent}
+                    </p>
+                  </div>
+                )}
+
+                {item.cta && (
+                  <Link
+                    href="#globe"
+                    className="flex items-center gap-2 group w-fit mt-2"
                   >
-                    {item.accent}
-                  </p>
-                </div>
-              )}
-
-              {item.cta && (
-                <div className="flex items-center gap-2 group cursor-pointer w-fit mt-1">
-                  <span className="font-inter text-[0.78rem] tracking-[0.1em] uppercase text-gold">
-                    See how it works
-                  </span>
-                  <span className="text-gold text-sm transition-transform duration-200 group-hover:translate-x-1">
-                    →
-                  </span>
-                </div>
-              )}
+                    <span
+                      className="font-inter uppercase text-gold tracking-[0.12em] transition-opacity duration-200 group-hover:opacity-70"
+                      style={{ fontSize: "clamp(0.65rem, 0.9vw, 0.72rem)" }}
+                    >
+                      See how it works
+                    </span>
+                    <span className="text-gold text-xs transition-transform duration-200 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                )}
+              </div>
             </div>
           ))}
         </div>
-
       </div>
 
-      {/* Tile hover effect overlay */}
       {/* <TileOverlay className="absolute inset-0 z-10" /> */}
     </section>
   );

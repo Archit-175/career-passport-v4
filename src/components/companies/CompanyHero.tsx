@@ -151,7 +151,7 @@ export function CompanyHero() {
               className="font-inter font-light tracking-[0.14em] uppercase"
               style={{ fontSize: "0.72rem", color: "rgba(245,242,236,0.85)" }}
             >
-              For hiring teams
+              BUILT FOR MODERN HIRING TEAMS
             </span>
           </div>
 

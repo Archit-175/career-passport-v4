@@ -280,9 +280,11 @@ export const CompanyHowItWorks: React.FC = () => {
       <div className="hiw-inner">
         <header className="hiw-header">
           <span className="hiw-eyebrow">THE PROCESS</span>
+          <div className="hiw-header-rule" />
           <h2 id="hiw-title" className="hiw-title">
             How it <span className="hiw-title-em">works</span>
           </h2>
+          <div className="hiw-gold-rule" />
           <p className="hiw-subtitle">
             You speak naturally about the role. We shape the process. You act on the moments that matter.
           </p>
@@ -302,6 +304,7 @@ export const CompanyHowItWorks: React.FC = () => {
                 <span className="hiw-step-num">
                   {step.num}<span className="hiw-step-kicker">— {step.kicker}</span>
                 </span>
+                <div className="hiw-step-rule" />
                 <h3 className="hiw-step-headline">{step.headline}</h3>
                 <p className="hiw-step-body">{step.body}</p>
               </motion.div>

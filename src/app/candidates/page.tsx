@@ -2,7 +2,7 @@ import { CandidateHero } from "@/components/candidates/CandidateHero";
 import { TheProblem } from "@/components/candidates/TheProblem";
 import { BridgeV2 } from "@/components/candidates/BridgeV2";
 import { GlobeVisibility } from "@/components/candidates/GlobeVisibility";
-import { HowVisibilityWorks } from "@/components/candidates/HowVisibilityWorks";
+// import { HowVisibilityWorks } from "@/components/candidates/HowVisibilityWorks";
 import { YourPassportMeasured } from "@/components/candidates/YourPassportMeasured";
 import { CandidateCta } from "@/components/candidates/CandidateCta";
 
@@ -21,9 +21,9 @@ export default function CandidatesPage() {
       <div>
         <GlobeVisibility />
       </div>
-      <div>
+      {/* <div>
         <HowVisibilityWorks />
-      </div>
+      </div> */}
       <div>
         <YourPassportMeasured />
       </div>
