@@ -32,7 +32,8 @@ A premium waitlist landing website for **Career Passport** — a platform that g
 | Font | Role | Usage |
 |---|---|---|
 | **Playfair Display** (serif) | Emotion | Headlines, stats, pull quotes, brand moments |
-| **Inter 300** (sans) | Function | Body copy, labels, navigation, UI text |
+| **Inter** (sans) | Function | Body copy (300), labels, navigation, UI text. Heavy weights (700/800) used only for the S3.5 GlobeVisibility headline |
+| **IBM Plex Mono** (`--font-mono`) | Data/technical | S3.5 eyebrow, numerals (01–04) & coordinates. Loaded in `layout.tsx`, exposed via `@theme` + `.font-mono` |
 
 The contrast between serif emotion and sans function creates the "premium register." Never swap these roles.
 
@@ -92,6 +93,7 @@ Custom spacing: `py-section` (clamp 5rem → 10rem)
 /candidates     ✅ S1 CandidateHero          — images/hero/candidate.png bg; GSAP/SplitText masked-line headline entrance + eyebrow/subtext/CTA fade-up; eyebrow "Built on what you've done"; headline "Design the career / you're *proud* of."; CTA bg `#A3C940` with `text-ink`
                 ✅ S2 TheProblem             — black bg, **2-column layout** (left 40%: eyebrow dot + divider + Playfair headline + body copy; right: 3 numbered items with strikethrough/accent lines); TileOverlay **temporarily disabled** (commented out in TheProblem.tsx — uncomment import + JSX to restore); RSC — no Framer Motion, no opacity:0 on mount
                 ✅ S3 BridgeV2              — `images/sections/bridge.jpeg` bg, glass card, **vertical transformation rail** (3 stages: Raw material → Career Passport analysis → Verified proof); left 40% col (editorial copy); right 60% col (numbered spine with connector, stage content chips/list/proof stamps); Framer Motion fade-up stagger on scroll; **bottom blend gradient** (`transparent → rgba(0,0,0,0.95)`, `h-40`, `z-[1]`) dissolves photo edge into S4
+                ✅ S3.5 GlobeVisibility      — **pure-black `#000000`** bg, 2-col interactive ("Trip" globe section, inserted after S3). LEFT: mono lime eyebrow + **bold sans (Inter 800)** headline (NOT Playfair — intentional, matches the supplied design) + subtext + 4 numbered feature items (mono numerals/coords + title + desc; hover lifts the row & lights the numeral). RIGHT: a 3D **wireframe globe** (`WireframeGlobe.tsx`, Three.js) — graticule + GeoJSON country outlines (`/data/countries.geo.json`) + glowing city markers (NY/London/Tokyo/Sydney), drag-to-rotate + release inertia. **Auto-cycles 1→2→3→4 on a loop** (`CYCLE_MS` in `GlobeVisibility.tsx`): each step the globe GSAP-slerps that marker to front, **highlights its country** (brighter/recolored border), emphasizes the marker & dims others, and a single **SVG connector line** (eased crossfade, front-hemisphere only; CSS-hidden ≤900px) is drawn from that item to its marker. Manual hover/focus sets `manualRef` → pauses the cycle and pins that item; leaving resumes it. Cycle only runs while the section is in view (IntersectionObserver). `prefers-reduced-motion` → no cycle, static globe, highlight-only. Section is **capped to `100dvh` at ≥901px** (vh-sized globe `min(56vh,560px)` + vh padding) so it fits one screen on laptops & larger; stacks and scrolls naturally ≤900px. **WebGL init is deferred one rAF** so React StrictMode's throwaway mount never creates a context that `forceContextLoss()` would block on the real remount (otherwise: "caused context loss and was blocked"). Files: `WireframeGlobe.tsx` + `GlobeVisibility.tsx`/`.css`. **NOTE:** reuses S4's eyebrow/headline/4-step copy verbatim — it is the redesigned version of S4 and likely supersedes it (decide whether to remove S4).
                 ✅ S4 HowVisibilityWorks     — full-bleed `images/sections/s4.png` bg, `bg-black/60` overlay, glass card (`rgba(255,255,255,0.07)` + `blur(28px)` + `border rgba(255,255,255,0.14)`); **top blend gradient** (`rgba(0,0,0,0.95) → transparent`, `h-40`, `z-[1]`) receives the fade from S3; left 40% col (eyebrow `0.65rem / tracking-[0.28em]` gold, Playfair heading `clamp(1.75–2.6rem)` with gold italic `<em>` highlights, gold rule `w-8`, 2-line subtext `leading-[1.7]`, rounded-full gold-border CTA link); right 52% col (step list `01–04`: large Playfair gold numerals `clamp(1.3–1.7rem) / rgba(163,201,64,0.55)` + Playfair title `clamp(1.05–1.2rem) / opacity 0.95 pearl` + Inter light body `clamp(0.83–0.9rem) / rgba(245,242,236,0.65)` + `border-white/[0.12]` dividers + `py-7` rows); Framer Motion fade-up stagger on both cols
                 ✅ S5 YourPassportMeasured  — black bg, 2-col: interactive SVG radar chart (8 dimensions, whole-chart continuous hover) left + headline/detail-card/trip-CTA right; Framer Motion reveals. See "YourPassportMeasured — Radar Hover" below.
                 ⚠️ OpportunitiesSection      — NOT rendered (dead code; see Notes). opportunities-bg.jpeg bg, glass card with GSAP looping gold word + opportunities.png + 4 floating recruiter cards
@@ -164,6 +166,9 @@ src/
 │   │   ├── TheProblem.tsx            ← S2
 │   │   ├── BridgeV2.tsx              ← S3 (active)
 │   │   ├── Bridge.tsx                ← S3 legacy (dead code — replaced by BridgeV2; uses s3.png bg)
+│   │   ├── GlobeVisibility.tsx       ← S3.5 ("Trip" globe section — layout/hover/SVG connectors)
+│   │   ├── GlobeVisibility.css       ← S3.5 styles (grid-areas, mono numerals, connector overlay)
+│   │   ├── WireframeGlobe.tsx        ← S3.5 WebGL globe (Three.js: graticule + GeoJSON borders + markers)
 │   │   ├── HowVisibilityWorks.tsx    ← S4
 │   │   ├── YourPassportMeasured.tsx  ← S5 (radar-chart skill section)
 │   │   ├── OpportunitiesSection.tsx  ← S6
@@ -196,6 +201,7 @@ The `/public` folder is organised into subfolders with kebab-case, conventionall
 ```
 public/
   common/CTA.png                        → CompanyCta (S4) background image (opacity 0.85; top-blend gradient in CSS)
+  data/countries.geo.json               → GlobeVisibility (S3.5) world country borders (Natural Earth 110m GeoJSON; id = ISO-A3) — fetched client-side by WireframeGlobe
   images/
     hero/candidate.png                  → CandidateHero (S1) background
     hero/companies.png                  → CompanyHero (S1) background
